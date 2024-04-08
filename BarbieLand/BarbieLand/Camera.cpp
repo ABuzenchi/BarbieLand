@@ -1,16 +1,6 @@
 #include "Camera.h"
-
 //MOVEMENT TYPES(maybe move to another file)
-enum ECameraMovementType
-{
-	UNKNOWN,
-	FORWARD,
-	BACKWARD,
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN
-};
+
 
 Camera::Camera(const int width, const int height, const glm::vec3& position)
 {
