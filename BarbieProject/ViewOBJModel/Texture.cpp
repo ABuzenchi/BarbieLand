@@ -1,13 +1,15 @@
 #include "Texture.h"
 
+
+
 Texture::Texture(char const* path)
 {
-	ID = loadTexture(path);
+	id = loadTexture(path);
 }
 
 Texture::Texture(std::vector<std::string> faces)
 {
-	ID = loadCubemapTexture(faces);
+	id = loadCubemapTexture(faces);
 }
 
 unsigned int Texture::loadTexture(char const* path)
@@ -44,7 +46,9 @@ unsigned int Texture::loadTexture(char const* path)
 		stbi_image_free(data);
 	}
 
-	ID = textureID;
+	id = textureID;
+	type = path;
+	this->path = path;
 	return textureID;
 }
 
@@ -75,6 +79,6 @@ unsigned int Texture::loadCubemapTexture(std::vector<std::string> faces)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	ID = textureID;
+	id = textureID;
 	return textureID;
 }

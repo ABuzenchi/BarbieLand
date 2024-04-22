@@ -9,7 +9,7 @@
 #include <math.h> 
 
 #include <GL/glew.h>
-
+#define GLM_FORCE_CTOR_INIT
 #include <GLM.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -24,6 +24,8 @@
 
 #include "ECameraMovementType.h"
 #include "Camera.h"
+//#define STB_IMAGE_IMPLEMENTATION
+//#include "stb_image.h"
 
 #pragma comment (lib, "glfw3dll.lib")
 #pragma comment (lib, "glew32.lib")
@@ -38,6 +40,8 @@ const unsigned int SCR_HEIGHT = 600;
 
 GLuint ProjMatrixLocation, ViewMatrixLocation, WorldMatrixLocation;
 Camera* pCamera = nullptr;
+
+
 
 void Cleanup()
 {
@@ -176,6 +180,14 @@ int main()
 
 	Shader lightingShader((currentPath + "\\Shaders\\PhongLight.vs").c_str(), (currentPath + "\\Shaders\\PhongLight.fs").c_str());
 	Shader lampShader((currentPath + "\\Shaders\\Lamp.vs").c_str(), (currentPath + "\\Shaders\\Lamp.fs").c_str());
+	Shader shadowMappingShader((currentPath + "\\Shaders\\ShadowMapping.vs").c_str(), (currentPath + "\\Shaders\\ShadowMapping.fs").c_str());
+	Shader shadowMappingDepthShader((currentPath + "\\Shaders\\ShadowMappingDepth.vs").c_str(), (currentPath + "\\Shaders\\ShadowMappingDepth.fs").c_str());
+
+	// load textures
+	// -------------
+	std::string texturePath = currentPath + "\\Textures\\ColoredFloor.png";
+	Texture floorTexture(texturePath.c_str());
+
 
 	std::string objFileName = (currentPath + "\\Models\\CylinderProject.obj");
 	Model objModel(objFileName, false);
