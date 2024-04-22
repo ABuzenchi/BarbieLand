@@ -386,6 +386,12 @@ int main()
 	std::string horseObjFileName = (currentPath + "\\Models\\Animals\\Horse.obj");
 	Model horseObjModel(horseObjFileName, false);
 
+	std::string PoolFileName = (currentPath + "\\Models\\objects\\pool.obj");
+	Model poolObjModel(PoolFileName, false);
+
+	std::string treeFileName = (currentPath + "\\Models\\plants\\tree.obj");
+	Model treeObjModel(treeFileName, false);
+
 
 
 	// render loop
@@ -427,6 +433,25 @@ int main()
 		glm::mat4 horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
 		lightingShader.setMat4("model", horseModel2);
 		horseObjModel.Draw(lightingShader);
+
+		lightingShader.SetVec3("objectColor", 1.0f, 1.0f, 0.6f);
+
+		glm::mat4 poolModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		poolModel = glm::translate(poolModel, glm::vec3(15.0, 0.0, 0.0));
+		lightingShader.setMat4("model", poolModel);
+		poolObjModel.Draw(lightingShader);
+
+		lightingShader.SetVec3("objectColor", 0.76f, 0.64f, 0.6f);
+
+		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel = glm::translate(treeModel, glm::vec3(-3.0, 0.0, 0.0));
+		lightingShader.setMat4("model", treeModel);
+		treeObjModel.Draw(lightingShader);
+
+		glm::mat4 treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel2 = glm::translate(treeModel, glm::vec3(-6.0, 0.0, 1.0));
+		lightingShader.setMat4("model", treeModel2);
+		treeObjModel.Draw(lightingShader);
 
 		glBindVertexArray(lightVAO);
 		//glDrawArrays(GL_TRIANGLES, 0, 36);
