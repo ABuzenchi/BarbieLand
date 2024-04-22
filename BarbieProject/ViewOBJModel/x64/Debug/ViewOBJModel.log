@@ -1,19 +1,16 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (ViewOBJModel.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿D:\vs2\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (ViewOBJModel.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Mesh.cpp
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\Mesh.cpp(8,31): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\Mesh.cpp(17,29): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
   Model.cpp
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\Mesh.h(2,10): error C1083: Cannot open include file: 'GLM.hpp': No such file or directory
+  (compiling source file 'Mesh.cpp')
+  
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\Mesh.h(2,10): error C1083: Cannot open include file: 'GLM.hpp': No such file or directory
+  (compiling source file 'Model.cpp')
+  
   Shader.cpp
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\Shader.h(3,10): error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  (compiling source file 'Shader.cpp')
+  
   BarbieLand.cpp
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\BarbieLand.cpp(401,20): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\BarbieLand.cpp(401,20): warning C4244:         with
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\BarbieLand.cpp(401,20): warning C4244:         [
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\BarbieLand.cpp(401,20): warning C4244:             T=float
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\BarbieLand.cpp(401,20): warning C4244:         ]
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\BarbieLand.cpp(402,20): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\BarbieLand.cpp(402,20): warning C4244:         with
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\BarbieLand.cpp(402,20): warning C4244:         [
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\BarbieLand.cpp(402,20): warning C4244:             T=float
-C:\Users\HP\Desktop\BarbieLand\ViewOBJModel\BarbieLand.cpp(402,20): warning C4244:         ]
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(11,10): error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
   Generating Code...
-  ViewOBJModel.vcxproj -> C:\Users\HP\Desktop\BarbieLand\x64\Debug\BarbieLand.exe
