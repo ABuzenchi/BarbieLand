@@ -1,5 +1,10 @@
 #include "Texture.h"
 
+Texture::Texture()
+{
+	//empty
+}
+
 Texture::Texture(char const* path)
 {
 	ID = loadTexture(path);

@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <glew.h>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -11,6 +12,7 @@
 class Texture
 {
 public:
+	Texture();
 	Texture(char const* path);
 	Texture(std::vector<std::string> faces);
 
