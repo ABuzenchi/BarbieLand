@@ -2,37 +2,35 @@
 
 void Skybox::setVAO(unsigned int value)
 {
-	skyboxVAO = value;
+    skyboxVAO = value;
 }
 
 void Skybox::setVBO(unsigned int value)
 {
-	skyboxVBO = value;
+    skyboxVBO = value;
 }
 
 void Skybox::setTexture(unsigned int id)
 {
-	textureID = id;
+    textureID = id;
 }
 
 unsigned int Skybox::getVAO()
 {
-	return skyboxVAO;
+    return skyboxVAO;
 }
 
 unsigned int Skybox::getVBO()
 {
-	return skyboxVBO;
+    return skyboxVBO;
 }
 
 void Skybox::setFaces(std::vector<std::string> faces)
 {
-	this->faces = faces;
+    this->faces = faces;
 }
 
 std::vector<std::string> Skybox::getFaces()
 {
-	return faces;
+    return faces;
 }
-
-
