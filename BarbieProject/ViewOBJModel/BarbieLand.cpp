@@ -22,6 +22,8 @@
 #include "Shader.h"
 #include "Model.h"
 
+#include "ECameraMovementType.h"
+
 #pragma comment (lib, "glfw3dll.lib")
 #pragma comment (lib, "glew32.lib")
 #pragma comment (lib, "OpenGL32.lib")
@@ -30,16 +32,6 @@
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-enum ECameraMovementType
-{
-	UNKNOWN,
-	FORWARD,
-	BACKWARD,
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN
-};
 
 class Camera
 {
