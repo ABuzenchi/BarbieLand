@@ -2,8 +2,10 @@
 #include <iostream>
 #include <vector>
 
-#include <GL/glew.h>
-#include <stb_image.h>
+#include <glew.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 
 
 class Texture
@@ -16,5 +18,7 @@ public:
 	unsigned int loadCubemapTexture(std::vector<std::string> faces);
 public:
 	unsigned int ID;
+	std::string type;
+	std::string path;
 };
 
