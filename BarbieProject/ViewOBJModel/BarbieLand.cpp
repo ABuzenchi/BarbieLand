@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <math.h> 
 
-#include <glew.h>
+#include <GL/glew.h>
 
 #include <GLM.hpp>
 #include <gtc/matrix_transform.hpp>
@@ -286,7 +286,7 @@ int main()
 	glfwSetKeyCallback(window, key_callback);
 
 	// tell GLFW to capture our mouse
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	glewInit();
 
@@ -383,7 +383,10 @@ int main()
 	std::string objFileName = (currentPath + "\\Models\\CylinderProject.obj");
 	Model objModel(objFileName, false);
 
-	
+	std::string horseObjFileName = (currentPath + "\\Models\\Animals\\Horse.obj");
+	Model horseObjModel(horseObjFileName, false);
+
+
 
 	// render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -402,7 +405,8 @@ int main()
 		lightPos.z = 0.5 * sin(glfwGetTime());
 
 		lightingShader.use();
-		lightingShader.SetVec3("objectColor", 0.5f, 1.0f, 0.31f);
+		lightingShader.SetVec3("objectColor", 1.0f, 0.0f, 0.6f);
+
 		lightingShader.SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
 		lightingShader.SetVec3("lightPos", lightPos);
 		lightingShader.SetVec3("viewPos", pCamera->GetPosition());
@@ -411,14 +415,21 @@ int main()
 		lightingShader.setMat4("view", pCamera->GetViewMatrix());
 
 		// render the model
-		//glm::mat4 model = glm::scale(glm::mat4(1.0), glm::vec3(0.001f));
-		//lightingShader.setMat4("model", model);
-		//objModel.Draw(lightingShader);
+		/*glm::mat4 model = glm::scale(glm::mat4(1.0), glm::vec3(0.001f));
+		lightingShader.setMat4("model", model);
+		objModel.Draw(lightingShader);*/
 
-		
-		
+		glm::mat4 horseModel1 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		horseModel1 = glm::translate(horseModel1, glm::vec3(4.0, 0.0, 0.0));
+		lightingShader.setMat4("model", horseModel1);
+		horseObjModel.Draw(lightingShader);
+
+		glm::mat4 horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
+		lightingShader.setMat4("model", horseModel2);
+		horseObjModel.Draw(lightingShader);
+
 		glBindVertexArray(lightVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);
