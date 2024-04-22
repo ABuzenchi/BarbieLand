@@ -175,7 +175,7 @@ private:
 		up = glm::normalize(glm::cross(right, forward));
 	}
 
-protected:
+public:
 	const float cameraSpeedFactor = 2.5f;
 	const float mouseSensitivity = 0.1f;
 

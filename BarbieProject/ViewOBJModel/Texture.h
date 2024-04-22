@@ -10,7 +10,7 @@
 class Texture
 {
 public:
-	Texture() {}
+	Texture() { id = -1; }
 	Texture(char const* path);
 	Texture(std::vector<std::string> faces);
 
