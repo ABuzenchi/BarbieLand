@@ -74,12 +74,12 @@ void renderFloor(unsigned int textureId) {
 	if (planeVAO == 0) {
 		float planeVertices[] = {
 			// positions            // normals         // texcoords
-			25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
-			-25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
-			-25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
-			25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
-			-25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
-			25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,  25.0f, 25.0f
+			25.0f, -0.0f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
+			-25.0f, -0.0f,  25.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
+			-25.0f, -0.0f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
+			25.0f, -0.0f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
+			-25.0f, -0.0f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
+			25.0f, -0.0f, -25.0f,  0.0f, 1.0f, 0.0f,  25.0f, 25.0f
 		};
 		glGenVertexArrays(1, &planeVAO);
 		glGenBuffers(1, &planeVBO);
@@ -299,7 +299,7 @@ int main()
 	skyboxShader.setInt("skybox", 0);
 
 	// Create camera
-	pCamera = new Camera(SCR_WIDTH, SCR_HEIGHT, glm::vec3(0.0, 0.0, 3.0));
+	pCamera = new Camera(SCR_WIDTH, SCR_HEIGHT, glm::vec3(0.0, 1.0, 3.0));
 
 	glm::vec3 lightPos(0.0f, 2.0f, 1.0f);
 	
@@ -372,7 +372,7 @@ int main()
 
 		lightingShader.setMat4("projection", pCamera->GetProjectionMatrix());
 		lightingShader.setMat4("view", pCamera->GetViewMatrix());
-		renderScene(shadowMappingDepthShader, floorTexture.id);
+		
 
 		// render the model
 		/*glm::mat4 model = glm::scale(glm::mat4(1.0), glm::vec3(0.001f));
@@ -407,6 +407,8 @@ int main()
 		lightingShader.setMat4("model", treeModel2);
 		treeObjModel.Draw(lightingShader);
 
+		lightingShader.SetVec3("objectColor", 1.0f, 0.0f, 0.6f);
+		renderScene(lightingShader, floorTexture.id);
 		glBindVertexArray(lightVAO);
 		//glDrawArrays(GL_TRIANGLES, 0, 36);
 
