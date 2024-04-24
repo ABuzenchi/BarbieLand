@@ -326,7 +326,11 @@ int main()
 	std::string treeFileName = (currentPath + "\\Models\\plants\\tree.obj");
 	Model treeObjModel(treeFileName, false);
 
+	std::string houseFileName = (currentPath + "\\Models\\House.obj");
+	Model houseObjModel(houseFileName, false);
 
+	std::string houseMainFileName = (currentPath + "\\Models\\house2.obj");
+	Model houseMainObjModel(houseMainFileName, false);
 
 	// render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -334,7 +338,6 @@ int main()
 		double currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-
 		// input
 		processInput(window);
 
@@ -357,7 +360,6 @@ int main()
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture.id);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
-		//enable writing in the depth buffer for the rest of the scene
 		glDepthMask(GL_TRUE);
 
 		lightPos.x = 0.5 * cos(glfwGetTime());
@@ -373,12 +375,7 @@ int main()
 		lightingShader.setMat4("projection", pCamera->GetProjectionMatrix());
 		lightingShader.setMat4("view", pCamera->GetViewMatrix());
 		
-
-		// render the model
-		/*glm::mat4 model = glm::scale(glm::mat4(1.0), glm::vec3(0.001f));
-		lightingShader.setMat4("model", model);
-		objModel.Draw(lightingShader);*/
-
+		//ANIMALS
 		glm::mat4 horseModel1 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		horseModel1 = glm::translate(horseModel1, glm::vec3(4.0, 0.0, 0.0));
 		lightingShader.setMat4("model", horseModel1);
@@ -388,15 +385,16 @@ int main()
 		lightingShader.setMat4("model", horseModel2);
 		horseObjModel.Draw(lightingShader);
 
+		//OBJECTS
 		lightingShader.SetVec3("objectColor", 1.0f, 1.0f, 0.6f);
-
 		glm::mat4 poolModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		poolModel = glm::translate(poolModel, glm::vec3(15.0, 0.0, 0.0));
 		lightingShader.setMat4("model", poolModel);
 		poolObjModel.Draw(lightingShader);
 
+		//NATURE
 		lightingShader.SetVec3("objectColor", 0.76f, 0.64f, 0.6f);
-
+		
 		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel = glm::translate(treeModel, glm::vec3(-3.0, 0.0, 0.0));
 		lightingShader.setMat4("model", treeModel);
@@ -407,12 +405,25 @@ int main()
 		lightingShader.setMat4("model", treeModel2);
 		treeObjModel.Draw(lightingShader);
 
+		//HOUSES
+		lightingShader.SetVec3("objectColor", 1.0f, 0.3f, 0.20f);
+		glm::mat4 houseModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		houseModel = glm::translate(houseModel, glm::vec3(-15.0, 0.0, 0.0));
+		lightingShader.setMat4("model", houseModel);
+		houseObjModel.Draw(lightingShader);
+
+		lightingShader.SetVec3("objectColor", 0.8f, 0.40f, 0.40f);
+		glm::mat4 houseMainModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		houseMainModel = glm::translate(houseMainModel, glm::vec3(20.0, 0.0, 12.0));
+		houseMainModel = glm::rotate(houseMainModel, glm::radians(270.0f), glm::vec3(0.0f, 1.0f, 0.0f)); 
+		lightingShader.setMat4("model", houseMainModel);
+		houseMainObjModel.Draw(lightingShader);
+
+		//Floor
 		lightingShader.SetVec3("objectColor", 1.0f, 0.0f, 0.6f);
 		renderScene(lightingShader, floorTexture.id);
 		glBindVertexArray(lightVAO);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+	
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
