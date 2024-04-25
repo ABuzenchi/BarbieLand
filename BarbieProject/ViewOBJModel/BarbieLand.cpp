@@ -332,6 +332,9 @@ int main()
 	std::string houseMainFileName = (currentPath + "\\Models\\house2.obj");
 	Model houseMainObjModel(houseMainFileName, false);
 
+	std::string fenceFileName = (currentPath + "\\Models\\objects\\fence.obj");
+	Model fenceMainObjModel(fenceFileName, false);
+
 	// render loop
 	while (!glfwWindowShouldClose(window)) {
 		// per-frame time logic
@@ -418,6 +421,16 @@ int main()
 		houseMainModel = glm::rotate(houseMainModel, glm::radians(270.0f), glm::vec3(0.0f, 1.0f, 0.0f)); 
 		lightingShader.setMat4("model", houseMainModel);
 		houseMainObjModel.Draw(lightingShader);
+
+		//fence
+
+		lightingShader.SetVec3("objectColor", 0.8f, 0.40f, 0.40f);
+		glm::mat4 fenceModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		fenceModel = glm::translate(fenceModel, glm::vec3(0.0, 0.5, 6.0));
+		fenceModel = glm::rotate(fenceModel, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		fenceModel = glm::scale(fenceModel, glm::vec3(0.01, 0.01, 0.01));
+		lightingShader.setMat4("model", fenceModel);
+		fenceMainObjModel.Draw(lightingShader);
 
 		//Floor
 		lightingShader.SetVec3("objectColor", 1.0f, 0.0f, 0.6f);
