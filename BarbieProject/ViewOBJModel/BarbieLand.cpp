@@ -1,4 +1,4 @@
-// ViewOBJModel.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// ViewOBJModel.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
 #include <Windows.h>
 #include <locale>
@@ -74,12 +74,12 @@ void renderFloor(unsigned int textureId) {
 	if (planeVAO == 0) {
 		float planeVertices[] = {
 			// positions            // normals         // texcoords
-			25.0f, -0.0f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
-			-25.0f, -0.0f,  25.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
-			-25.0f, -0.0f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
-			25.0f, -0.0f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
-			-25.0f, -0.0f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
-			25.0f, -0.0f, -25.0f,  0.0f, 1.0f, 0.0f,  25.0f, 25.0f
+			200.0f, -0.0f,  200.0f,  0.0f, 1.0f, 0.0f,  200.0f,  0.0f,
+			-200.0f, -0.0f,  200.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
+			-200.0f, -0.0f, -200.0f,  0.0f, 1.0f, 0.0f,   0.0f, 200.0f,
+			200.0f, -0.0f,  200.0f,  0.0f, 1.0f, 0.0f,  200.0f,  0.0f,
+			-200.0f, -0.0f, -200.0f,  0.0f, 1.0f, 0.0f,   0.0f, 200.0f,
+			200.0f, -0.0f, -200.0f,  0.0f, 1.0f, 0.0f,  200.0f, 200.0f
 		};
 		glGenVertexArrays(1, &planeVAO);
 		glGenBuffers(1, &planeVBO);
@@ -426,42 +426,26 @@ int main()
 
 	
 		glm::vec3 fenceScale(0.01f, 0.01f, 0.01f);
-		glm::vec3 fenceTranslation(0.0f, 0.5f, 6.0f);
-		float fenceRotationAngle = 270.0f; 
+		glm::vec3 initialFenceTranslation(50.0f, 0.5f, 50.0f); // Poziția inițială a primului gard
+		float fenceRotationAngle = 270.0f;
 
-		
-		const int squareSize = 8;
+		const int squareSize = 16;
 
-		
 		for (int row = 0; row < squareSize; ++row) {
+			glm::vec3 fenceTranslation = initialFenceTranslation; // Resetare la poziția inițială la începutul fiecărui rând
 			for (int col = 0; col < squareSize; ++col) {
-				
 				if (row == 0 || row == squareSize - 1 || col == 0 || col == squareSize - 1) {
 					glm::mat4 fenceModel = glm::mat4(1.0f);
-
-					
 					fenceModel = glm::translate(fenceModel, fenceTranslation);
-
-					
 					fenceModel = glm::rotate(fenceModel, glm::radians(fenceRotationAngle), glm::vec3(1.0f, 0.0f, 0.0f));
-
-					
 					fenceModel = glm::scale(fenceModel, fenceScale);
-
-					
 					lightingShader.setMat4("model", fenceModel);
 					fenceMainObjModel.Draw(lightingShader);
 				}
-
-				
 				fenceTranslation.x += 1.0f;
 			}
-
-			
-			fenceTranslation.x = 0.0f;
-			fenceTranslation.z += 1.0f;
+			initialFenceTranslation.z += 1.0f; // Incrementare coordonată z pentru a începe un nou rând
 		}
-
 
 
 
