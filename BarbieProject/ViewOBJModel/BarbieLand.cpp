@@ -326,10 +326,10 @@ int main()
 	std::string treeFileName = (currentPath + "\\Models\\plants\\tree.obj");
 	Model treeObjModel(treeFileName, false);
 
-	std::string houseFileName = (currentPath + "\\Models\\House.obj");
+	std::string houseFileName = (currentPath + "\\Models\\objects\\House.obj");
 	Model houseObjModel(houseFileName, false);
 
-	std::string houseMainFileName = (currentPath + "\\Models\\house2.obj");
+	std::string houseMainFileName = (currentPath + "\\Models\\objects\\house2.obj");
 	Model houseMainObjModel(houseMainFileName, false);
 
 	std::string fenceFileName = (currentPath + "\\Models\\objects\\fence.obj");
