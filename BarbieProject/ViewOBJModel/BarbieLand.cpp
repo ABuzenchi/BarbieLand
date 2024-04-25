@@ -424,13 +424,46 @@ int main()
 
 		//fence
 
-		lightingShader.SetVec3("objectColor", 0.8f, 0.40f, 0.40f);
-		glm::mat4 fenceModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		fenceModel = glm::translate(fenceModel, glm::vec3(0.0, 0.5, 6.0));
-		fenceModel = glm::rotate(fenceModel, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		fenceModel = glm::scale(fenceModel, glm::vec3(0.01, 0.01, 0.01));
-		lightingShader.setMat4("model", fenceModel);
-		fenceMainObjModel.Draw(lightingShader);
+	
+		glm::vec3 fenceScale(0.01f, 0.01f, 0.01f);
+		glm::vec3 fenceTranslation(0.0f, 0.5f, 6.0f);
+		float fenceRotationAngle = 270.0f; 
+
+		
+		const int squareSize = 8;
+
+		
+		for (int row = 0; row < squareSize; ++row) {
+			for (int col = 0; col < squareSize; ++col) {
+				
+				if (row == 0 || row == squareSize - 1 || col == 0 || col == squareSize - 1) {
+					glm::mat4 fenceModel = glm::mat4(1.0f);
+
+					
+					fenceModel = glm::translate(fenceModel, fenceTranslation);
+
+					
+					fenceModel = glm::rotate(fenceModel, glm::radians(fenceRotationAngle), glm::vec3(1.0f, 0.0f, 0.0f));
+
+					
+					fenceModel = glm::scale(fenceModel, fenceScale);
+
+					
+					lightingShader.setMat4("model", fenceModel);
+					fenceMainObjModel.Draw(lightingShader);
+				}
+
+				
+				fenceTranslation.x += 1.0f;
+			}
+
+			
+			fenceTranslation.x = 0.0f;
+			fenceTranslation.z += 1.0f;
+		}
+
+
+
 
 		//Floor
 		lightingShader.SetVec3("objectColor", 1.0f, 0.0f, 0.6f);
