@@ -61,6 +61,11 @@ void processInput(GLFWwindow* window);
 double deltaTime = 0.0f;	// time between current frame and last frame
 double lastFrame = 0.0f;
 
+//day->night transition
+float mixValue = 0.0f;
+bool transitioning = false;
+bool nightMode = false;
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_A && action == GLFW_PRESS) {
@@ -279,7 +284,19 @@ int main()
 		"../Textures/skybox/front.jpg",
 		"../Textures/skybox/back.jpg"
 	};
-	Texture cubemapTexture(faces);
+
+	std::vector<std::string> faces2
+	{
+		"../Textures/skybox2/right.jpg",
+		"../Textures/skybox2/left.jpg",
+		"../Textures/skybox2/top.jpg",
+		"../Textures/skybox2/bottom.jpg",
+		"../Textures/skybox2/front.jpg",
+		"../Textures/skybox2/back.jpg"
+	};
+
+	Texture cubemapTexture(faces);  // Day skybox
+	Texture nightCubemap(faces2);   // Night skybox
 	skyboxDay.setFaces(faces);
 	skyboxDay.setTexture(cubemapTexture.id);
 
@@ -296,7 +313,9 @@ int main()
 	// --------------------
 	Shader skyboxShader((currentPath + "\\Shaders\\skybox.vs").c_str(), (currentPath + "\\Shaders\\skybox.fs").c_str());
 	skyboxShader.use();
-	skyboxShader.setInt("skybox", 0);
+	skyboxShader.use();
+	skyboxShader.setInt("skyboxDay", 0);
+	skyboxShader.setInt("skyboxNight", 1);
 
 	// Create camera
 	pCamera = new Camera(SCR_WIDTH, SCR_HEIGHT, glm::vec3(0.0, 1.0, 3.0));
@@ -353,14 +372,37 @@ int main()
 		// draw skybox first
 		//disable writting in the depth buffer
 		glDepthMask(GL_FALSE);
+
+		if (transitioning) {
+			const float transitionSpeed = 0.5f; // Transition speed factor
+			if (nightMode) {
+				mixValue += deltaTime * transitionSpeed;
+				if (mixValue >= 1.0f) {
+					mixValue = 1.0f;
+					transitioning = false;  // Stop transitioning
+				}
+			}
+			else {
+				mixValue -= deltaTime * transitionSpeed;
+				if (mixValue <= 0.0f) {
+					mixValue = 0.0f;
+					transitioning = false;  // Stop transitioning
+				}
+			}
+		}
+
 		skyboxShader.use();
+		skyboxShader.setFloat("mixValue", mixValue);
 		view = glm::mat4(glm::mat3(pCamera->GetViewMatrix())); // remove translation from the view matrix
 		skyboxShader.setMat4("view", view);
 		skyboxShader.setMat4("projection", projection);
 		// skybox cube
 		glBindVertexArray(skyboxVAO);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture.id);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture.id);  // Day texture
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, nightCubemap.id);    // Night texture
+		glActiveTexture(GL_TEXTURE1);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
 		glDepthMask(GL_TRUE);
@@ -487,6 +529,10 @@ void processInput(GLFWwindow* window)
 		pCamera->ProcessKeyboard(ECameraMovementType::UP, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
 		pCamera->ProcessKeyboard(ECameraMovementType::DOWN, (float)deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
+		transitioning = true;
+		nightMode = !nightMode;  // Toggle mode
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 		int width, height;
