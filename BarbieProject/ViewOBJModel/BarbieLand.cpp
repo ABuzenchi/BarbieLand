@@ -354,6 +354,9 @@ int main()
 	std::string fenceFileName = (currentPath + "\\Models\\objects\\fence.obj");
 	Model fenceMainObjModel(fenceFileName, false);
 
+
+	std::string firFileName = (currentPath + "\\Models\\plants\\fir.obj");
+	Model firObjModel(firFileName, false);
 	// render loop
 	while (!glfwWindowShouldClose(window)) {
 		// per-frame time logic
@@ -466,29 +469,49 @@ int main()
 
 		//fence
 
-	
-		glm::vec3 fenceScale(0.01f, 0.01f, 0.01f);
-		glm::vec3 initialFenceTranslation(50.0f, 0.5f, 50.0f); // Poziția inițială a primului gard
-		float fenceRotationAngle = 270.0f;
+		glm::vec3 initialFenceTranslationLine0(0.0f, 0.5f, 50.0f);
+		glm::vec3 initialFenceTranslationLine15(0.0f, 0.5f, 70.0f);
+		glm::vec3 initialFenceTranslationLeft(0.0f, 0.5f, 50.0f); 
+		glm::vec3 initialFenceTranslationRight(30.0f, 0.5f, 50.0f); 
+		for (int coloana = 0; coloana < 16; coloana++)
+		{
+			
+			lightingShader.SetVec3("objectColor", 0.30f, 0.40f, 0.40f);
+			glm::mat4 fenceModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+			fenceModel = glm::translate(fenceModel, initialFenceTranslationLine0);
+			fenceModel = glm::rotate(fenceModel, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			fenceModel = glm::scale(fenceModel, glm::vec3(0.01, 0.01, 0.01));
+			lightingShader.setMat4("model", fenceModel);
+			fenceMainObjModel.Draw(lightingShader);
 
-		const int squareSize = 16;
+			lightingShader.SetVec3("objectColor", 0.30f, 0.40f, 0.40f);
+			glm::mat4 fenceModelLine15 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+			fenceModelLine15 = glm::translate(fenceModelLine15, initialFenceTranslationLine15);
+			fenceModelLine15 = glm::rotate(fenceModelLine15, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			fenceModelLine15 = glm::scale(fenceModelLine15, glm::vec3(0.01, 0.01, 0.01));
+			lightingShader.setMat4("model", fenceModelLine15);
+			fenceMainObjModel.Draw(lightingShader);
 
-		for (int row = 0; row < squareSize; ++row) {
-			glm::vec3 fenceTranslation = initialFenceTranslation; // Resetare la poziția inițială la începutul fiecărui rând
-			for (int col = 0; col < squareSize; ++col) {
-				if (row == 0 || row == squareSize - 1 || col == 0 || col == squareSize - 1) {
-					glm::mat4 fenceModel = glm::mat4(1.0f);
-					fenceModel = glm::translate(fenceModel, fenceTranslation);
-					fenceModel = glm::rotate(fenceModel, glm::radians(fenceRotationAngle), glm::vec3(1.0f, 0.0f, 0.0f));
-					fenceModel = glm::scale(fenceModel, fenceScale);
-					lightingShader.setMat4("model", fenceModel);
-					fenceMainObjModel.Draw(lightingShader);
-				}
-				fenceTranslation.x += 1.0f;
-			}
-			initialFenceTranslation.z += 1.0f; // Incrementare coordonată z pentru a începe un nou rând
+			initialFenceTranslationLine0.x += 2.0f;
+			initialFenceTranslationLine15.x += 2.0f;
 		}
+		
 
+		for (int rand = 0; rand < 5; rand++)
+		{
+			glm::mat4 firModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+			firModel = glm::translate(firModel,initialFenceTranslationLeft);
+			lightingShader.setMat4("model", firModel);
+			firObjModel.Draw(lightingShader);
+
+			glm::mat4 firModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+			firModel2 = glm::translate(firModel, initialFenceTranslationRight);
+			lightingShader.setMat4("model", firModel2);
+			firObjModel.Draw(lightingShader);
+
+			initialFenceTranslationLeft.z += 4.0f;
+			initialFenceTranslationRight.z += 4.0f;
+		}
 
 
 		//Floor
