@@ -425,11 +425,12 @@ int main()
 		
 		//ANIMALS
 		glm::mat4 horseModel1 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		horseModel1 = glm::translate(horseModel1, glm::vec3(4.0, 0.0, 0.0));
+		horseModel1 = glm::translate(horseModel1, glm::vec3(20.0, 0.0, 64.0));
 		lightingShader.setMat4("model", horseModel1);
 		horseObjModel.Draw(lightingShader);
 
 		glm::mat4 horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
+		horseModel2 = glm::translate(horseModel2, glm::vec3(25.0f, 0.0f, 60.0f));
 		lightingShader.setMat4("model", horseModel2);
 		horseObjModel.Draw(lightingShader);
 
@@ -471,8 +472,8 @@ int main()
 
 		glm::vec3 initialFenceTranslationLine0(0.0f, 0.5f, 50.0f);
 		glm::vec3 initialFenceTranslationLine15(0.0f, 0.5f, 70.0f);
-		glm::vec3 initialFenceTranslationLeft(0.0f, 0.5f, 50.0f); 
-		glm::vec3 initialFenceTranslationRight(30.0f, 0.5f, 50.0f); 
+		glm::vec3 initialFenceTranslationLeft(-1.0f, 0.5f, 50.0f); 
+		glm::vec3 initialFenceTranslationRight(32.0f, 0.0f, 0.0f);
 		for (int coloana = 0; coloana < 16; coloana++)
 		{
 			
@@ -497,7 +498,7 @@ int main()
 		}
 		
 
-		for (int rand = 0; rand < 5; rand++)
+		for (int rand = 0; rand < 6; rand++)
 		{
 			glm::mat4 firModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 			firModel = glm::translate(firModel,initialFenceTranslationLeft);
@@ -509,8 +510,8 @@ int main()
 			lightingShader.setMat4("model", firModel2);
 			firObjModel.Draw(lightingShader);
 
-			initialFenceTranslationLeft.z += 4.0f;
-			initialFenceTranslationRight.z += 4.0f;
+			initialFenceTranslationLeft.z += 3.5f;
+			initialFenceTranslationRight.z += 0.7f;
 		}
 
 
