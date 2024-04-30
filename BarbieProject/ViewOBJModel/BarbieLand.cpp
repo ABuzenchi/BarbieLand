@@ -357,6 +357,11 @@ int main()
 
 	std::string firFileName = (currentPath + "\\Models\\plants\\fir.obj");
 	Model firObjModel(firFileName, false);
+
+	std::string streetLampFileName = (currentPath + "\\Models\\objects\\streetLamp.obj");
+	Model streetLampObjModel(streetLampFileName, false);
+
+
 	// render loop
 	while (!glfwWindowShouldClose(window)) {
 		// per-frame time logic
@@ -513,6 +518,13 @@ int main()
 			initialFenceTranslationLeft.z += 3.5f;
 			initialFenceTranslationRight.z += 0.7f;
 		}
+
+		//streetLamp
+
+		glm::mat4 streetLampModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		streetLampModel = glm::translate(streetLampModel, glm::vec3(2.0, -7.0, 0.0));
+		lightingShader.setMat4("model", streetLampModel);
+		streetLampObjModel.Draw(lightingShader);
 
 
 		//Floor
