@@ -39,9 +39,9 @@
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+std::unique_ptr<Mesh> floorObj;
 
-
-
+GLuint floorTextureId;
 GLuint ProjMatrixLocation, ViewMatrixLocation, WorldMatrixLocation;
 Camera* pCamera = nullptr;
 
@@ -105,13 +105,46 @@ void renderFloor(unsigned int textureId) {
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind the texture
 }
+void LoadFloor()
+{
 
-void renderScene(const Shader& shader, unsigned int floorTexture) {
-	glm::mat4 model;
-	shader.setMat4("model", model);
-	renderFloor(floorTexture); // Pass the texture ID to renderFloor function
+	Texture floorTexture("../Textures/ColoredFloor.png");
+
+	floorTextureId = floorTexture.id;
+
+	const float floorSize = 50.0f;
+	std::vector<Vertex> floorVertices({
+		// positions            // normals           // texcoords
+	   { floorSize, 0.0f,  floorSize,  0.0f, 1.0f, 0.0f,    floorSize,  0.0f},
+	   {-floorSize, 0.0f,  floorSize,  0.0f, 1.0f, 0.0f,    0.0f,  0.0f},
+	   {-floorSize, 0.0f, -floorSize,  0.0f, 1.0f, 0.0f,    0.0f, floorSize},
+
+	   { floorSize, 0.0f,  floorSize,  0.0f, 1.0f, 0.0f,    floorSize,  0.0f},
+	   {-floorSize, 0.0f, -floorSize,  0.0f, 1.0f, 0.0f,    0.0f, floorSize},
+	   { floorSize, 0.0f, -floorSize,  0.0f, 1.0f, 0.0f,    floorSize, floorSize}
+		});
+
+
+
+	floorObj = std::make_unique<Mesh>(floorVertices, std::vector<unsigned int>(), std::vector<Texture>{floorTexture});
+
 
 }
+
+void RenderScene(Shader& shader, bool shadowPass = false) {
+	glDisable(GL_CULL_FACE);  // Disabling face culling to avoid missing triangles in shadow rendering
+
+	if (!shadowPass) {
+		shader.setFloat("shininess", 32.0f);
+		shader.setInt("diffuse", 0);
+		shader.setInt("specular", 1);
+	}
+
+	// Floor rendering
+	floorObj->RenderMesh(shader);
+}
+
+
 
 int main()
 {
@@ -320,17 +353,48 @@ int main()
 	// Create camera
 	pCamera = new Camera(SCR_WIDTH, SCR_HEIGHT, glm::vec3(0.0, 1.0, 3.0));
 
-	glm::vec3 lightPos(0.0f, 2.0f, 1.0f);
-	
-	Shader lightingShader((currentPath + "\\Shaders\\PhongLight.vs").c_str(), (currentPath + "\\Shaders\\PhongLight.fs").c_str());
-	Shader lampShader((currentPath + "\\Shaders\\Lamp.vs").c_str(), (currentPath + "\\Shaders\\Lamp.fs").c_str());
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	Shader shadowMappingShader((currentPath + "\\Shaders\\ShadowMapping.vs").c_str(), (currentPath + "\\Shaders\\ShadowMapping.fs").c_str());
 	Shader shadowMappingDepthShader((currentPath + "\\Shaders\\ShadowMappingDepth.vs").c_str(), (currentPath + "\\Shaders\\ShadowMappingDepth.fs").c_str());
 
+	const unsigned int SHADOW_WIDTH = 4096, SHADOW_HEIGHT = 4096;
+	unsigned int depthMapFBO;
+	glGenFramebuffers(1, &depthMapFBO);
+	// create depth texture
+	unsigned int depthMap;
+	glGenTextures(1, &depthMap);
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+	float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	shadowMappingShader.use();
+	shadowMappingShader.setInt("diffuseTexture", 0);
+	shadowMappingShader.setInt("shadowMap", 1);
+
+	glEnable(GL_CULL_FACE);
+
+	LoadFloor();
+
+
+	glm::vec3 lightPos(0.0f, 2.0f, 1.0f);
+	float hue = 1.0;
+	float floorHue = 0.9;
 	// load textures
 	// -------------
-	std::string texturePath = currentPath + "\\Textures\\ColoredFloor.png";
-	Texture floorTexture(texturePath.c_str());
+
 
 
 	std::string objFileName = (currentPath + "\\Models\\CylinderProject.obj");
@@ -379,7 +443,7 @@ int main()
 
 		// draw skybox first
 		//disable writting in the depth buffer
-		glDepthMask(GL_FALSE);
+
 
 		if (transitioning) {
 			const float transitionSpeed = 0.5f; // Transition speed factor
@@ -398,7 +462,8 @@ int main()
 				}
 			}
 		}
-
+		glDepthMask(GL_FALSE);  // Disable writing to the depth buffer
+		glDisable(GL_DEPTH_TEST);  // Disable depth testing
 		skyboxShader.use();
 		skyboxShader.setFloat("mixValue", mixValue);
 		view = glm::mat4(glm::mat3(pCamera->GetViewMatrix())); // remove translation from the view matrix
@@ -414,19 +479,46 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
 		glDepthMask(GL_TRUE);
+		glEnable(GL_DEPTH_TEST);
 
-		lightPos.x = 0.5 * cos(glfwGetTime());
-		lightPos.z = 0.5 * sin(glfwGetTime());
 
-		lightingShader.use();
-		lightingShader.SetVec3("objectColor", 1.0f, 0.0f, 0.6f);
 
-		lightingShader.SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetVec3("lightPos", lightPos);
-		lightingShader.SetVec3("viewPos", pCamera->GetPosition());
 
-		lightingShader.setMat4("projection", pCamera->GetProjectionMatrix());
-		lightingShader.setMat4("view", pCamera->GetViewMatrix());
+		glm::mat4 lightProjection, lightView;
+		glm::mat4 lightSpaceMatrix;
+		float near_plane = 5.0f, far_plane = 50.f;
+		lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
+		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		lightSpaceMatrix = lightProjection * lightView;
+
+		/*shadowMappingDepthShader.use();
+		shadowMappingDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		RenderScene(shadowMappingDepthShader, true);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
+
+		// Reset viewport
+	/*	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
+
+		// Render scene with shadows
+		shadowMappingShader.use();
+		shadowMappingShader.setMat4("projection", pCamera->GetProjectionMatrix());
+		shadowMappingShader.setMat4("view", pCamera->GetViewMatrix());
+		shadowMappingShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+		shadowMappingShader.SetVec3("lightPos", lightPos);
+		shadowMappingShader.SetVec3("viewPos", pCamera->GetPosition());
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, floorTextureId);  // Bind floor texture
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, depthMap);  // Bind shadow map
+		RenderScene(shadowMappingShader, false);
+
+
+
 
 		//ANIMALS
 		float horseSpeed = 2.0f; // Viteza de deplasare a calului
@@ -434,15 +526,16 @@ int main()
 		glm::vec3 horsePositionOffset = glm::vec3(20.0f, 0.0f, 64.0f); // Offsetul poziției calului
 		glm::mat4 horseModel1 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 
-		// Calculăm poziția calului pe axa X și Z folosind funcția sinusoidală
+		//Calculăm poziția calului pe axa X și Z folosind funcția sinusoidală
 		float horseX = horseAmplitude * sin(glfwGetTime() * horseSpeed); // Mișcare pe axa X
 		float horseZ = horseAmplitude * cos(glfwGetTime() * horseSpeed); // Mișcare pe axa Z
 		horsePositionOffset.x += horseX; // Actualizăm poziția pe axa X
 		horsePositionOffset.z += horseZ; // Actualizăm poziția pe axa Z
 
 		horseModel1 = glm::translate(glm::mat4(1.0f), horsePositionOffset); // Aplicăm noul offset de poziție
-		lightingShader.setMat4("model", horseModel1);
-		horseObjModel.Draw(lightingShader);
+		shadowMappingShader.setMat4("model", horseModel1);
+		horseObjModel.RenderModel(shadowMappingShader, horseModel1);
+		horseObjModel.RenderModel(shadowMappingDepthShader, horseModel1);
 
 		//ANIMALS
 		float horseSpeedZ = 2.0f; // Viteza de deplasare a calului pe axa Z
@@ -450,108 +543,116 @@ int main()
 		glm::vec3 horsePositionOffset2 = glm::vec3(25.0f, 0.0f, 60.0f); // Offsetul poziției calului
 		glm::mat4 horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
 
-		// Calculăm poziția calului pe axa Z folosind funcția sinusoidală
+		//Calculăm poziția calului pe axa Z folosind funcția sinusoidală
 		float horseZ2 = horseAmplitudeZ * sin(glfwGetTime() * horseSpeedZ); // Mișcare pe axa Z
 		horsePositionOffset2.z += horseZ; // Actualizăm poziția pe axa Z
 
 		horseModel2 = glm::translate(glm::mat4(1.0f), horsePositionOffset2); // Aplicăm noul offset de poziție
-		lightingShader.setMat4("model", horseModel2);
-		horseObjModel.Draw(lightingShader);
+		shadowMappingShader.setMat4("model", horseModel2);
+		horseObjModel.RenderModel(shadowMappingShader, horseModel2);
+		horseObjModel.RenderModel(shadowMappingDepthShader, horseModel2);
 
 
 		//OBJECTS
-		lightingShader.SetVec3("objectColor", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
 		glm::mat4 poolModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		poolModel = glm::translate(poolModel, glm::vec3(15.0, 0.0, 0.0));
-		lightingShader.setMat4("model", poolModel);
-		poolObjModel.Draw(lightingShader);
+		shadowMappingShader.setMat4("model", poolModel);
+		poolObjModel.RenderModel(shadowMappingShader, poolModel);
+		poolObjModel.RenderModel(shadowMappingDepthShader, poolModel);
 
 		//NATURE
-		lightingShader.SetVec3("objectColor", 0.76f, 0.64f, 0.6f);
-		
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+
 		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel = glm::translate(treeModel, glm::vec3(-3.0, 0.0, 0.0));
-		lightingShader.setMat4("model", treeModel);
-		treeObjModel.Draw(lightingShader);
+		shadowMappingShader.setMat4("model", treeModel);
+		treeObjModel.RenderModel(shadowMappingShader, treeModel);
+		treeObjModel.RenderModel(shadowMappingDepthShader, treeModel);
+
 
 		glm::mat4 treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel2 = glm::translate(treeModel, glm::vec3(-6.0, 0.0, 1.0));
-		lightingShader.setMat4("model", treeModel2);
-		treeObjModel.Draw(lightingShader);
+		shadowMappingShader.setMat4("model", treeModel2);
+		treeObjModel.RenderModel(shadowMappingShader, treeModel2);
+		treeObjModel.RenderModel(shadowMappingDepthShader, treeModel2);
 
 		//HOUSES
-		lightingShader.SetVec3("objectColor", 1.0f, 0.3f, 0.20f);
+		shadowMappingShader.SetVec3("color", 1.0f, 0.3f, 0.20f);
 		glm::mat4 houseModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		houseModel = glm::translate(houseModel, glm::vec3(-15.0, 0.0, 0.0));
-		lightingShader.setMat4("model", houseModel);
-		houseObjModel.Draw(lightingShader);
+		shadowMappingShader.setMat4("model", houseModel);
+		houseObjModel.RenderModel(shadowMappingShader, houseModel);
+		houseObjModel.RenderModel(shadowMappingDepthShader, houseModel);
 
-		lightingShader.SetVec3("objectColor", 0.8f, 0.40f, 0.40f);
+		shadowMappingShader.SetVec3("color", 0.8f, 0.40f, 0.40f);
 		glm::mat4 houseMainModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		houseMainModel = glm::translate(houseMainModel, glm::vec3(20.0, 0.0, 12.0));
-		houseMainModel = glm::rotate(houseMainModel, glm::radians(270.0f), glm::vec3(0.0f, 1.0f, 0.0f)); 
-		lightingShader.setMat4("model", houseMainModel);
-		houseMainObjModel.Draw(lightingShader);
+		houseMainModel = glm::rotate(houseMainModel, glm::radians(270.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		shadowMappingShader.setMat4("model", houseMainModel);
+		houseObjModel.RenderModel(shadowMappingShader, houseMainModel);
+		houseObjModel.RenderModel(shadowMappingDepthShader, houseMainModel);
 
 		//fence
 
 		glm::vec3 initialFenceTranslationLine0(0.0f, 0.5f, 50.0f);
 		glm::vec3 initialFenceTranslationLine15(0.0f, 0.5f, 70.0f);
-		glm::vec3 initialFenceTranslationLeft(-1.0f, 0.5f, 50.0f); 
+		glm::vec3 initialFenceTranslationLeft(-1.0f, 0.5f, 50.0f);
 		glm::vec3 initialFenceTranslationRight(32.0f, 0.0f, 0.0f);
 		for (int coloana = 0; coloana < 16; coloana++)
 		{
-			
-			lightingShader.SetVec3("objectColor", 0.30f, 0.40f, 0.40f);
+
+			shadowMappingShader.SetVec3("color", 0.30f, 0.40f, 0.40f);
 			glm::mat4 fenceModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 			fenceModel = glm::translate(fenceModel, initialFenceTranslationLine0);
 			fenceModel = glm::rotate(fenceModel, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			fenceModel = glm::scale(fenceModel, glm::vec3(0.01, 0.01, 0.01));
-			lightingShader.setMat4("model", fenceModel);
-			fenceMainObjModel.Draw(lightingShader);
+			shadowMappingShader.setMat4("model", fenceModel);
+			fenceMainObjModel.Draw(shadowMappingShader);
 
-			lightingShader.SetVec3("objectColor", 0.30f, 0.40f, 0.40f);
+			shadowMappingShader.SetVec3("color", 0.30f, 0.40f, 0.40f);
 			glm::mat4 fenceModelLine15 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 			fenceModelLine15 = glm::translate(fenceModelLine15, initialFenceTranslationLine15);
 			fenceModelLine15 = glm::rotate(fenceModelLine15, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			fenceModelLine15 = glm::scale(fenceModelLine15, glm::vec3(0.01, 0.01, 0.01));
-			lightingShader.setMat4("model", fenceModelLine15);
-			fenceMainObjModel.Draw(lightingShader);
+			shadowMappingShader.setMat4("model", fenceModelLine15);
+			fenceMainObjModel.Draw(shadowMappingShader);
 
 			initialFenceTranslationLine0.x += 2.0f;
 			initialFenceTranslationLine15.x += 2.0f;
 		}
-		
+
 
 		for (int rand = 0; rand < 6; rand++)
 		{
 			glm::mat4 firModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-			firModel = glm::translate(firModel,initialFenceTranslationLeft);
-			lightingShader.setMat4("model", firModel);
-			firObjModel.Draw(lightingShader);
+			firModel = glm::translate(firModel, initialFenceTranslationLeft);
+			shadowMappingShader.setMat4("model", firModel);
+			firObjModel.Draw(shadowMappingShader);
 
 			glm::mat4 firModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 			firModel2 = glm::translate(firModel, initialFenceTranslationRight);
-			lightingShader.setMat4("model", firModel2);
-			firObjModel.Draw(lightingShader);
+			shadowMappingShader.setMat4("model", firModel2);
+			firObjModel.Draw(shadowMappingShader);
 
 			initialFenceTranslationLeft.z += 3.5f;
 			initialFenceTranslationRight.z += 0.7f;
 		}
 
 		//streetLamp
-		lightingShader.SetVec3("objectColor", 1.0f, 1.0f, 1.0f);
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 1.0f);
 		glm::mat4 streetLampModel = glm::scale(glm::mat4(0.5), glm::vec3(0.5f));
 		streetLampModel = glm::translate(streetLampModel, glm::vec3(2.0, -7.0, 0.0));
-		lightingShader.setMat4("model", streetLampModel);
-		streetLampObjModel.Draw(lightingShader);
+		shadowMappingShader.setMat4("model", streetLampModel);
+		streetLampObjModel.Draw(shadowMappingShader);
 
 
 		//Floor
-		lightingShader.SetVec3("objectColor", 1.0f, 0.0f, 0.6f);
-		renderScene(lightingShader, floorTexture.id);
+		//shadowMappingShader.SetVec3("color", 1.0f, 0.0f, 0.6f);
+
+		//RenderScene(shadowMappingShader);
 		glBindVertexArray(lightVAO);
-	
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
@@ -562,7 +663,6 @@ int main()
 	glDeleteVertexArrays(1, &lightVAO);
 	glDeleteBuffers(1, &VBO);
 
-	// glfw: terminate, clearing all previously allocated GLFW resources
 	glfwTerminate();
 	return 0;
 }
