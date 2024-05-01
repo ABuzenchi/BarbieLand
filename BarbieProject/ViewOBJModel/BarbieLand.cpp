@@ -540,8 +540,8 @@ int main()
 		}
 
 		//streetLamp
-
-		glm::mat4 streetLampModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		lightingShader.SetVec3("objectColor", 1.0f, 1.0f, 1.0f);
+		glm::mat4 streetLampModel = glm::scale(glm::mat4(0.5), glm::vec3(0.5f));
 		streetLampModel = glm::translate(streetLampModel, glm::vec3(2.0, -7.0, 0.0));
 		lightingShader.setMat4("model", streetLampModel);
 		streetLampObjModel.Draw(lightingShader);
