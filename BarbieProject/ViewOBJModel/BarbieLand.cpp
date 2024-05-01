@@ -112,7 +112,7 @@ void LoadFloor()
 
 	floorTextureId = floorTexture.id;
 
-	const float floorSize = 50.0f;
+	const float floorSize = 120.0f;
 	std::vector<Vertex> floorVertices({
 		// positions            // normals           // texcoords
 	   { floorSize, 0.0f,  floorSize,  0.0f, 1.0f, 0.0f,    floorSize,  0.0f},
@@ -143,8 +143,6 @@ void RenderScene(Shader& shader, bool shadowPass = false) {
 	// Floor rendering
 	floorObj->RenderMesh(shader);
 }
-
-
 
 int main()
 {
@@ -359,6 +357,7 @@ int main()
 	Shader shadowMappingShader((currentPath + "\\Shaders\\ShadowMapping.vs").c_str(), (currentPath + "\\Shaders\\ShadowMapping.fs").c_str());
 	Shader shadowMappingDepthShader((currentPath + "\\Shaders\\ShadowMappingDepth.vs").c_str(), (currentPath + "\\Shaders\\ShadowMappingDepth.fs").c_str());
 
+
 	const unsigned int SHADOW_WIDTH = 4096, SHADOW_HEIGHT = 4096;
 	unsigned int depthMapFBO;
 	glGenFramebuffers(1, &depthMapFBO);
@@ -504,6 +503,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
 
 		// Render scene with shadows
+
 		shadowMappingShader.use();
 		shadowMappingShader.setMat4("projection", pCamera->GetProjectionMatrix());
 		shadowMappingShader.setMat4("view", pCamera->GetViewMatrix());
