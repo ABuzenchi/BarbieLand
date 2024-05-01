@@ -20,6 +20,8 @@ public:
 
     // constructor, expects a filepath to a 3D model.
     Model(string const& path, bool bSmoothNormals, bool gamma = false);
+    void RenderModel(Shader& shader, const glm::mat4& model = glm::mat4(1));
+    void RenderModelMesh(Shader& shader, glm::mat4& model, int meshID, glm::mat4& meshModel);
 
     // draws the model, and thus all its meshes
     void Draw(Shader& shader);

@@ -169,6 +169,20 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
     }
     return textures;
 }
+void Model::RenderModel(Shader& shader, const glm::mat4& model)
+{
+    for (unsigned int i = 0; i < meshes.size(); i++)
+        meshes[i].RenderMesh(shader, model);
+}
+
+void Model::RenderModelMesh(Shader& shader, glm::mat4& model, int meshID, glm::mat4& meshModel)
+{
+    for (unsigned int i = 0; i < meshes.size(); i++)
+    {
+        if (i == meshID) meshes[i].RenderMesh(shader, meshModel);
+        else meshes[i].RenderMesh(shader, model);
+    }
+}
 
 unsigned int TextureFromFile(const char* path, const string& directory, bool gamma)
 {

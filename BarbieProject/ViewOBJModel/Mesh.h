@@ -25,6 +25,7 @@ public:
 
     Mesh(const vector<Vertex>& vertices, const vector<unsigned int>& indices, const vector<Texture>& textures);
     Mesh(unsigned int numVertices, std::shared_ptr <Vertex> vertices, unsigned int numIndexes, std::shared_ptr <unsigned int> indices, const vector<Texture>& textures);
+    void RenderMesh(Shader& shader, const glm::mat4& model = glm::mat4(1));
     void Draw(Shader& shader);
 
 private:
