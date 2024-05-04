@@ -422,6 +422,7 @@ int main()
 	Model firObjModel(firFileName, false);
 
 	std::string streetLampFileName = (currentPath + "\\Models\\objects\\streetLamp.obj");
+	Texture streetLampTexture("../Models/Objects/StreetLamp.jpg");
 	Model streetLampObjModel(streetLampFileName, false);
 
 
@@ -640,11 +641,17 @@ int main()
 		}
 
 		//streetLamp
-		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 1.0f);
+		glActiveTexture(GL_TEXTURE0); // Activate the texture unit 0
+		glBindTexture(GL_TEXTURE_2D, streetLampTexture.id); // Bind the texture
+		shadowMappingShader.use(); // Activate the shader
+		shadowMappingShader.setInt("diffuseTexture", 0); // Bind street lamp texture
+		//shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 1.0f);
 		glm::mat4 streetLampModel = glm::scale(glm::mat4(0.5), glm::vec3(0.5f));
 		streetLampModel = glm::translate(streetLampModel, glm::vec3(2.0, -7.0, 0.0));
 		shadowMappingShader.setMat4("model", streetLampModel);
-		streetLampObjModel.Draw(shadowMappingShader);
+		//streetLampObjModel.Draw(shadowMappingShader);
+		streetLampObjModel.RenderModel(shadowMappingShader, streetLampModel);
+		streetLampObjModel.RenderModel(shadowMappingDepthShader, streetLampModel);
 
 
 		//Floor
