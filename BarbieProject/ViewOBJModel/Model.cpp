@@ -186,7 +186,7 @@ void Model::RenderModelMesh(Shader& shader, glm::mat4& model, int meshID, glm::m
 
 
 
-unsigned int TextureFromFile(const char* path,  string& directory, bool gamma)
+unsigned int TextureFromFile(const char* path,  string directory, bool gamma)
 {
     string filename = string(path);
 

@@ -402,21 +402,20 @@ int main()
 	std::string horseObjFileName = (currentPath + "\\Models\\Animals\\Horse.obj");
 	Model horseObjModel(horseObjFileName, false);
 
-	std::string PoolFileName = (currentPath + "\\Models\\objects\\pool.obj");
+	std::string PoolFileName = (currentPath + "\\Models\\objects\\pool\\pool.obj");
 	Model poolObjModel(PoolFileName, false);
 
-	std::string treeFileName = (currentPath + "\\Models\\plants\\tree.obj");
+	std::string treeFileName = (currentPath + "\\Models\\plants\\tree\\tree.obj");
 	Model treeObjModel(treeFileName, false);
 
 	std::string houseFileName = (currentPath + "\\Models\\objects\\House.obj");
 	Model houseObjModel(houseFileName, false);
 
-	std::string houseMainFileName = (currentPath + "\\Models\\objects\\house2.obj");
+	std::string houseMainFileName = (currentPath + "\\Models\\objects\\MainHouse\\mainHouse.obj");
 	Model houseMainObjModel(houseMainFileName, false);
 
 	std::string fenceFileName = (currentPath + "\\Models\\objects\\fence.obj");
 	Model fenceMainObjModel(fenceFileName, false);
-
 
 	std::string firFileName = (currentPath + "\\Models\\plants\\fir.obj");
 	Model firObjModel(firFileName, false);
@@ -519,7 +518,20 @@ int main()
 		RenderScene(shadowMappingShader, false);
 
 
+		//NATURE
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel = glm::translate(treeModel, glm::vec3(-3.0, 0.0, 0.0));
+		shadowMappingShader.setMat4("model", treeModel);
+		treeObjModel.RenderModel(shadowMappingShader, treeModel);
+		treeObjModel.RenderModel(shadowMappingDepthShader, treeModel);
 
+
+		glm::mat4 treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel2 = glm::translate(treeModel, glm::vec3(-6.0, 0.0, 1.0));
+		shadowMappingShader.setMat4("model", treeModel2);
+		treeObjModel.RenderModel(shadowMappingShader, treeModel2);
+		treeObjModel.RenderModel(shadowMappingDepthShader, treeModel2);
 
 		//ANIMALS
 		float horseSpeed = 2.0f; // Viteza de deplasare a calului
@@ -562,21 +574,7 @@ int main()
 		poolObjModel.RenderModel(shadowMappingShader, poolModel);
 		poolObjModel.RenderModel(shadowMappingDepthShader, poolModel);
 
-		//NATURE
-		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
-
-		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		treeModel = glm::translate(treeModel, glm::vec3(-3.0, 0.0, 0.0));
-		shadowMappingShader.setMat4("model", treeModel);
-		treeObjModel.RenderModel(shadowMappingShader, treeModel);
-		treeObjModel.RenderModel(shadowMappingDepthShader, treeModel);
-
-
-		glm::mat4 treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		treeModel2 = glm::translate(treeModel, glm::vec3(-6.0, 0.0, 1.0));
-		shadowMappingShader.setMat4("model", treeModel2);
-		treeObjModel.RenderModel(shadowMappingShader, treeModel2);
-		treeObjModel.RenderModel(shadowMappingDepthShader, treeModel2);
+		
 
 		//HOUSES
 		shadowMappingShader.SetVec3("color", 1.0f, 0.3f, 0.20f);
@@ -591,8 +589,8 @@ int main()
 		houseMainModel = glm::translate(houseMainModel, glm::vec3(20.0, 0.0, 12.0));
 		houseMainModel = glm::rotate(houseMainModel, glm::radians(270.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		shadowMappingShader.setMat4("model", houseMainModel);
-		houseObjModel.RenderModel(shadowMappingShader, houseMainModel);
-		houseObjModel.RenderModel(shadowMappingDepthShader, houseMainModel);
+		houseMainObjModel.RenderModel(shadowMappingShader, houseMainModel);
+		houseMainObjModel.RenderModel(shadowMappingDepthShader, houseMainModel);
 
 		//fence
 

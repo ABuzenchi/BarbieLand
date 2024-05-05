@@ -7,7 +7,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-unsigned int TextureFromFile(const char* path,  string& directory, bool gamma = false);
+unsigned int TextureFromFile(const char* path,  string directory, bool gamma = false);
 
 class Model
 {
