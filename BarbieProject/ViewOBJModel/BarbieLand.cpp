@@ -394,16 +394,11 @@ int main()
 	// load textures
 	// -------------
 
-
-
-	std::string objFileName = (currentPath + "\\Models\\CylinderProject.obj");
-	Model objModel(objFileName, false);
+	std::string PoolFileName = (currentPath + "\\Models\\objects\\pool\\pool.obj");
+	Model poolObjModel(PoolFileName, false);
 
 	std::string horseObjFileName = (currentPath + "\\Models\\Animals\\Horse.obj");
 	Model horseObjModel(horseObjFileName, false);
-
-	std::string PoolFileName = (currentPath + "\\Models\\objects\\pool\\pool.obj");
-	Model poolObjModel(PoolFileName, false);
 
 	std::string treeFileName = (currentPath + "\\Models\\plants\\tree\\tree.obj");
 	Model treeObjModel(treeFileName, false);
@@ -414,7 +409,7 @@ int main()
 	std::string houseMainFileName = (currentPath + "\\Models\\objects\\MainHouse\\mainHouse.obj");
 	Model houseMainObjModel(houseMainFileName, false);
 
-	std::string fenceFileName = (currentPath + "\\Models\\objects\\fence.obj");
+	std::string fenceFileName = (currentPath + "\\Models\\objects\\fence\\fence.obj");
 	Model fenceMainObjModel(fenceFileName, false);
 
 	std::string firFileName = (currentPath + "\\Models\\plants\\fir.obj");
