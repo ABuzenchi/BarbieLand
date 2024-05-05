@@ -184,10 +184,23 @@ void Model::RenderModelMesh(Shader& shader, glm::mat4& model, int meshID, glm::m
     }
 }
 
-unsigned int TextureFromFile(const char* path, const string& directory, bool gamma)
+
+
+unsigned int TextureFromFile(const char* path,  string& directory, bool gamma)
 {
     string filename = string(path);
-    filename = directory + '/' + filename;
+
+    size_t lastDot = directory.find_last_of(".");
+    if (lastDot != std::string::npos) {
+        directory = directory.substr(0, lastDot);
+    }
+
+    // Find the last slash to isolate the directory
+    size_t lastSlash = directory.find_last_of("\\/");
+    if (lastSlash != std::string::npos) {
+        directory = directory.substr(0, lastSlash);
+    }
+    filename = directory + '\\' + filename;
 
     unsigned int textureID;
     glGenTextures(1, &textureID);
