@@ -23,7 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{d40162b5-4dd6-44cb-a939-4e6bcb7ad8b3}</ProjectGuid>
     <RootNamespace>ViewOBJModel</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
     <ProjectName>BarbieLand</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -73,20 +73,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\_external\GLEW\;..\_external\GLFW\;..\_external\glm\;..\_external\stb\;$(IncludePath)</IncludePath>
+    <IncludePath>..\_external\GLEW\;..\_external\GLFW\;..\_external\glm\;..\_external\stb\;$(IncludePath);..\_external\GLEW;..\_external\GLFW</IncludePath>
     <LibraryPath>..\_external\GLEW\x86\;..\_external\GLFW\x86\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;..\_external\GLEW;..\_external\GLFW</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\_external\GLEW;..\_external\glfw;..\_external\glm;..\_external\stb;$(IncludePath)</IncludePath>
+    <IncludePath>..\_external\GLEW;..\_external\glfw;..\_external\glm;..\_external\stb;$(IncludePath);..\_external\GLEW;..\_external\GLFW</IncludePath>
     <LibraryPath>..\_external\GLFW;..\_external\GLEW\GL;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Projects\ViewOBJModel\_external\GLEW;..\_external\glfw;..\_external\glm;..\_external\stb;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Projects\ViewOBJModel\_external\GLEW;..\_external\glfw;..\_external\glm;..\_external\stb;$(IncludePath);..\_external\GLEW;..\_external\GLFW</IncludePath>
     <LibraryPath>..\_external\GLFW;..\_external\GLEW\GL;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
