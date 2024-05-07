@@ -65,6 +65,9 @@ double lastFrame = 0.0f;
 float mixValue = 0.0f;
 bool transitioning = false;
 bool nightMode = false;
+float factorAmbienta = 1.0f; //pentru modificarea intensitatii luminii noapte-zi
+float factorDifuzie = 1.0f;
+float factorSpecular = 1.0f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -440,9 +443,18 @@ int main()
 
 
 		if (transitioning) {
-			const float transitionSpeed = 0.5f; // Transition speed factor
+			const float transitionSpeed = 0.3f; // Transition speed factor
 			if (nightMode) {
 				mixValue += deltaTime * transitionSpeed;
+				factorAmbienta -= deltaTime * transitionSpeed;
+				if (factorAmbienta <= 0.0f)
+					factorAmbienta = 0.0f;
+				factorDifuzie -= deltaTime * transitionSpeed;
+				if (factorDifuzie <= 0.2f)
+					factorDifuzie = 0.2f;
+				factorSpecular -= deltaTime * transitionSpeed;
+				if (factorSpecular <= 0.2f)
+					factorSpecular = 0.2f;
 				if (mixValue >= 1.0f) {
 					mixValue = 1.0f;
 					transitioning = false;  // Stop transitioning
@@ -450,6 +462,16 @@ int main()
 			}
 			else {
 				mixValue -= deltaTime * transitionSpeed;
+				factorAmbienta += deltaTime * transitionSpeed;
+				if (factorAmbienta >= 1.0f)
+					factorAmbienta = 1.0f;
+				factorDifuzie += deltaTime * transitionSpeed;
+				if (factorDifuzie >= 1.0f)
+					factorDifuzie = 1.0f;
+				factorSpecular += deltaTime * transitionSpeed;
+				if (factorSpecular >= 1.0f)
+					factorSpecular = 1.0f;
+				
 				if (mixValue <= 0.0f) {
 					mixValue = 0.0f;
 					transitioning = false;  // Stop transitioning
@@ -485,17 +507,17 @@ int main()
 		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 		lightSpaceMatrix = lightProjection * lightView;
 
-		/*shadowMappingDepthShader.use();
-		shadowMappingDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		RenderScene(shadowMappingDepthShader, true);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
+		//shadowMappingDepthShader.use();
+		//shadowMappingDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+		//glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		//glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		//glClear(GL_DEPTH_BUFFER_BIT);
+		//RenderScene(shadowMappingDepthShader, true);
+		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		// Reset viewport
-	/*	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
+		//// Reset viewport
+		//glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Render scene with shadows
 
@@ -505,6 +527,10 @@ int main()
 		shadowMappingShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 		shadowMappingShader.SetVec3("lightPos", lightPos);
 		shadowMappingShader.SetVec3("viewPos", pCamera->GetPosition());
+
+		shadowMappingShader.setFloat("factorAmbienta", factorAmbienta);
+		shadowMappingShader.setFloat("factorDifuzie", factorDifuzie);
+		shadowMappingShader.setFloat("factorSpecular", factorSpecular);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, floorTextureId);  // Bind floor texture
