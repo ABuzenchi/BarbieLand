@@ -628,7 +628,8 @@ int main()
 			fenceModel = glm::rotate(fenceModel, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			fenceModel = glm::scale(fenceModel, glm::vec3(0.01, 0.01, 0.01));
 			shadowMappingShader.setMat4("model", fenceModel);
-			fenceMainObjModel.Draw(shadowMappingShader);
+			fenceMainObjModel.RenderModel(shadowMappingShader, fenceModel);
+			fenceMainObjModel.RenderModel(shadowMappingDepthShader, fenceModel);
 
 			shadowMappingShader.SetVec3("color", 0.30f, 0.40f, 0.40f);
 			glm::mat4 fenceModelLine15 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
@@ -636,7 +637,8 @@ int main()
 			fenceModelLine15 = glm::rotate(fenceModelLine15, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			fenceModelLine15 = glm::scale(fenceModelLine15, glm::vec3(0.01, 0.01, 0.01));
 			shadowMappingShader.setMat4("model", fenceModelLine15);
-			fenceMainObjModel.Draw(shadowMappingShader);
+			fenceMainObjModel.RenderModel(shadowMappingShader, fenceModelLine15);
+			fenceMainObjModel.RenderModel(shadowMappingDepthShader, fenceModelLine15);
 
 			initialFenceTranslationLine0.x += 2.0f;
 			initialFenceTranslationLine15.x += 2.0f;
@@ -648,11 +650,14 @@ int main()
 			glm::mat4 firModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 			firModel = glm::translate(firModel, initialFenceTranslationLeft);
 			shadowMappingShader.setMat4("model", firModel);
-			firObjModel.Draw(shadowMappingShader);
+			firObjModel.RenderModel(shadowMappingShader, firModel);
+			firObjModel.RenderModel(shadowMappingDepthShader, firModel);
+			
 
 			glm::mat4 firModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 			firModel2 = glm::translate(firModel, initialFenceTranslationRight);
 			shadowMappingShader.setMat4("model", firModel2);
+			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
 			firObjModel.Draw(shadowMappingShader);
 
 			initialFenceTranslationLeft.z += 3.5f;

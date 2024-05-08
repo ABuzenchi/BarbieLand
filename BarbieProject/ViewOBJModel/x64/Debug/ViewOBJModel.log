@@ -1,11 +1,17 @@
 ﻿D:\vs2\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (ViewOBJModel.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   BarbieLand.cpp
-D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(393,17): warning C4305: 'initializing': truncation from 'double' to 'float'
-D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(445,27): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(452,27): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(538,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(539,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(555,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(396,17): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(448,27): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(449,33): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(452,32): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(455,33): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(464,27): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(465,33): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(468,32): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(471,33): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(564,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(565,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\ViewOBJModel\BarbieLand.cpp(581,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   ViewOBJModel.vcxproj -> D:\facultate\anul2\sem2\S3D\lab\apps\BarbieLand\BarbieProject\x64\Debug\BarbieLand.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.
