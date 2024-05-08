@@ -27,7 +27,7 @@
 #include "Skybox.h"
 
 #include "ECameraMovementType.h"
-#include "Camera.h"
+//#include "Camera.h"
 //#define STB_IMAGE_IMPLEMENTATION
 //#include "stb_image.h"
 
@@ -247,93 +247,6 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Skybox:
-	Skybox skyboxDay;
-
-	//find a way to move these into the skybox class
-	float skyboxVertices[] =
-	{
-		-1.0f,  1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		-1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f
-	};
-
-	// skybox VAO & VBO
-	unsigned int skyboxVAO;
-	unsigned int skyboxVBO;
-	glGenVertexArrays(1, &skyboxVAO);
-	glGenBuffers(1, &skyboxVBO);
-	glBindVertexArray(skyboxVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	skyboxDay.setVAO(skyboxVAO);
-	skyboxDay.setVBO(skyboxVBO);
-
-	std::vector<std::string> faces
-	{
-		"../Textures/skybox/right.jpg",
-		"../Textures/skybox/left.jpg",
-		"../Textures/skybox/top.jpg",
-		"../Textures/skybox/bottom.jpg",
-		"../Textures/skybox/front.jpg",
-		"../Textures/skybox/back.jpg"
-	};
-
-	std::vector<std::string> faces2
-	{
-		"../Textures/skybox2/right.jpg",
-		"../Textures/skybox2/left.jpg",
-		"../Textures/skybox2/top.jpg",
-		"../Textures/skybox2/bottom.jpg",
-		"../Textures/skybox2/front.jpg",
-		"../Textures/skybox2/back.jpg"
-	};
-
-	Texture cubemapTexture(faces);  // Day skybox
-	Texture nightCubemap(faces2);   // Night skybox
-	skyboxDay.setFaces(faces);
-	skyboxDay.setTexture(cubemapTexture.id);
-
 	wchar_t buffer[MAX_PATH];
 	GetCurrentDirectoryW(MAX_PATH, buffer);
 
@@ -343,13 +256,35 @@ int main()
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 	std::string currentPath = converter.to_bytes(wscurrentPath);
 
-	// shader configuration
-	// --------------------
-	Shader skyboxShader((currentPath + "\\Shaders\\skybox.vs").c_str(), (currentPath + "\\Shaders\\skybox.fs").c_str());
-	skyboxShader.use();
-	skyboxShader.use();
-	skyboxShader.setInt("skyboxDay", 0);
-	skyboxShader.setInt("skyboxNight", 1);
+	//-----------SKYBOX--SETUP------------------------
+	//VBO & VAO
+	Skybox skybox;
+	skybox.createSkyboxVBO();
+
+	//Texture loading
+	std::vector<std::string> dayTex
+	{
+		"../Textures/skybox/right.jpg",
+		"../Textures/skybox/left.jpg",
+		"../Textures/skybox/top.jpg",
+		"../Textures/skybox/bottom.jpg",
+		"../Textures/skybox/front.jpg",
+		"../Textures/skybox/back.jpg"
+	};
+	std::vector<std::string> nightTex
+	{
+		"../Textures/skybox2/right.jpg",
+		"../Textures/skybox2/left.jpg",
+		"../Textures/skybox2/top.jpg",
+		"../Textures/skybox2/bottom.jpg",
+		"../Textures/skybox2/front.jpg",
+		"../Textures/skybox2/back.jpg"
+	};
+	skybox.loadSkyboxTextures(dayTex, nightTex);
+
+	//Shader config
+	skybox.shaderConfiguration(currentPath);
+	//--------------------------------------------------------------
 
 	// Create camera
 	pCamera = new Camera(SCR_WIDTH, SCR_HEIGHT, glm::vec3(0.0, 1.0, 3.0));
@@ -359,7 +294,6 @@ int main()
 
 	Shader shadowMappingShader((currentPath + "\\Shaders\\ShadowMapping.vs").c_str(), (currentPath + "\\Shaders\\ShadowMapping.fs").c_str());
 	Shader shadowMappingDepthShader((currentPath + "\\Shaders\\ShadowMappingDepth.vs").c_str(), (currentPath + "\\Shaders\\ShadowMappingDepth.fs").c_str());
-
 
 	const unsigned int SHADOW_WIDTH = 4096, SHADOW_HEIGHT = 4096;
 	unsigned int depthMapFBO;
@@ -438,10 +372,7 @@ int main()
 		glm::mat4 view;
 		glm::mat4 projection = glm::perspective(glm::radians(pCamera->FoVy), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
-		// draw skybox first
-		//disable writting in the depth buffer
-
-
+		//Day-Night transitions (to refactor)
 		if (transitioning) {
 			const float transitionSpeed = 0.3f; // Transition speed factor
 			if (nightMode) {
@@ -478,27 +409,9 @@ int main()
 				}
 			}
 		}
-		glDepthMask(GL_FALSE);  // Disable writing to the depth buffer
-		glDisable(GL_DEPTH_TEST);  // Disable depth testing
-		skyboxShader.use();
-		skyboxShader.setFloat("mixValue", mixValue);
-		view = glm::mat4(glm::mat3(pCamera->GetViewMatrix())); // remove translation from the view matrix
-		skyboxShader.setMat4("view", view);
-		skyboxShader.setMat4("projection", projection);
-		// skybox cube
-		glBindVertexArray(skyboxVAO);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture.id);  // Day texture
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, nightCubemap.id);    // Night texture
-		glActiveTexture(GL_TEXTURE1);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
-		glDepthMask(GL_TRUE);
-		glEnable(GL_DEPTH_TEST);
 
-
-
+		//Render skybox
+		skybox.renderSkybox(mixValue, pCamera, SCR_WIDTH, SCR_HEIGHT);
 
 		glm::mat4 lightProjection, lightView;
 		glm::mat4 lightSpaceMatrix;
