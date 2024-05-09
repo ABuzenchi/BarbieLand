@@ -117,7 +117,7 @@ void renderFloor(unsigned int textureId) {
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind the texture
 }
-void LoadFloor()
+void LoadScene()
 {
 
 	Texture floorTexture("../Textures/ColoredFloor.png");
@@ -139,6 +139,40 @@ void LoadFloor()
 
 
 	floorObj = std::make_unique<Mesh>(floorVertices, std::vector<unsigned int>(), std::vector<Texture>{floorTexture});
+	wchar_t buffer[MAX_PATH];
+	GetCurrentDirectoryW(MAX_PATH, buffer);
+
+	std::wstring executablePath(buffer);
+	std::wstring wscurrentPath = executablePath.substr(0, executablePath.find_last_of(L"\\/"));
+
+	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+	std::string currentPath = converter.to_bytes(wscurrentPath);
+
+	std::string PoolFileName = (currentPath + "\\Models\\objects\\pool\\pool.obj");
+	poolObjModel = std::make_unique<Model>(PoolFileName, false);
+
+	std::string horseObjFileName = (currentPath + "\\Models\\Animals\\Horse.obj");
+	horseObjModel = std::make_unique<Model>(horseObjFileName, false);
+
+	std::string treeFileName = (currentPath + "\\Models\\plants\\tree\\tree.obj");
+	treeObjModel = std::make_unique<Model>(treeFileName, false);
+
+	std::string houseFileName = (currentPath + "\\Models\\objects\\House.obj");
+	houseObjModel = std::make_unique<Model>(houseFileName, false);
+
+	std::string houseMainFileName = (currentPath + "\\Models\\objects\\MainHouse\\mainHouse.obj");
+	houseMainObjModel = std::make_unique<Model>(houseMainFileName, false);
+
+	std::string fenceFileName = (currentPath + "\\Models\\objects\\fence\\fence.obj");
+	fenceMainObjModel = std::make_unique<Model>(fenceFileName, false);
+
+	std::string firFileName = (currentPath + "\\Models\\plants\\fir.obj");
+	firObjModel = std::make_unique<Model>(firFileName, false);
+
+	std::string streetLampFileName = (currentPath + "\\Models\\objects\\streetLamp.obj");
+	Texture streetLampTexture("../Models/Objects/StreetLamp.jpg");
+	streetLampObjModel = std::make_unique<Model>(streetLampFileName, false);
+	streetLampTextureId = streetLampTexture.id;
 
 
 }
@@ -331,39 +365,13 @@ int main()
 
 	glEnable(GL_CULL_FACE);
 
-	LoadFloor();
+	LoadScene();
 
 
 	glm::vec3 lightPos(0.0f, 2.0f, 1.0f);
 	float hue = 1.0;
 	float floorHue = 0.9;
-	// load textures
-	// -------------
 
-	std::string PoolFileName = (currentPath + "\\Models\\objects\\pool\\pool.obj");
-	Model poolObjModel(PoolFileName, false);
-
-	std::string horseObjFileName = (currentPath + "\\Models\\Animals\\Horse.obj");
-	Model horseObjModel(horseObjFileName, false);
-
-	std::string treeFileName = (currentPath + "\\Models\\plants\\tree\\tree.obj");
-	Model treeObjModel(treeFileName, false);
-
-	std::string houseFileName = (currentPath + "\\Models\\objects\\House.obj");
-	Model houseObjModel(houseFileName, false);
-
-	std::string houseMainFileName = (currentPath + "\\Models\\objects\\MainHouse\\mainHouse.obj");
-	Model houseMainObjModel(houseMainFileName, false);
-
-	std::string fenceFileName = (currentPath + "\\Models\\objects\\fence\\fence.obj");
-	Model fenceMainObjModel(fenceFileName, false);
-
-	std::string firFileName = (currentPath + "\\Models\\plants\\fir.obj");
-	Model firObjModel(firFileName, false);
-
-	std::string streetLampFileName = (currentPath + "\\Models\\objects\\streetLamp.obj");
-	Texture streetLampTexture("../Models/Objects/StreetLamp.jpg");
-	Model streetLampObjModel(streetLampFileName, false);
 
 
 	// render loop
@@ -411,7 +419,7 @@ int main()
 				factorSpecular += deltaTime * transitionSpeed;
 				if (factorSpecular >= 1.0f)
 					factorSpecular = 1.0f;
-				
+
 				if (mixValue <= 0.0f) {
 					mixValue = 0.0f;
 					transitioning = false;  // Stop transitioning
@@ -466,15 +474,15 @@ int main()
 		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel = glm::translate(treeModel, glm::vec3(-3.0, 0.0, 0.0));
 		shadowMappingShader.setMat4("model", treeModel);
-		treeObjModel.RenderModel(shadowMappingShader, treeModel);
-		treeObjModel.RenderModel(shadowMappingDepthShader, treeModel);
+		treeObjModel->RenderModel(shadowMappingShader, treeModel);
+		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel);
 
 
 		glm::mat4 treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel2 = glm::translate(treeModel, glm::vec3(-6.0, 0.0, 1.0));
 		shadowMappingShader.setMat4("model", treeModel2);
-		treeObjModel.RenderModel(shadowMappingShader, treeModel2);
-		treeObjModel.RenderModel(shadowMappingDepthShader, treeModel2);
+		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
 
 		//ANIMALS
 		float horseSpeed = 2.0f; // Viteza de deplasare a calului
@@ -490,8 +498,8 @@ int main()
 
 		horseModel1 = glm::translate(glm::mat4(1.0f), horsePositionOffset); // Aplicăm noul offset de poziție
 		shadowMappingShader.setMat4("model", horseModel1);
-		horseObjModel.RenderModel(shadowMappingShader, horseModel1);
-		horseObjModel.RenderModel(shadowMappingDepthShader, horseModel1);
+		horseObjModel->RenderModel(shadowMappingShader, horseModel1);
+		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel1);
 
 		//ANIMALS
 		float horseSpeedZ = 2.0f; // Viteza de deplasare a calului pe axa Z
@@ -505,8 +513,8 @@ int main()
 
 		horseModel2 = glm::translate(glm::mat4(1.0f), horsePositionOffset2); // Aplicăm noul offset de poziție
 		shadowMappingShader.setMat4("model", horseModel2);
-		horseObjModel.RenderModel(shadowMappingShader, horseModel2);
-		horseObjModel.RenderModel(shadowMappingDepthShader, horseModel2);
+		horseObjModel->RenderModel(shadowMappingShader, horseModel2);
+		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel2);
 
 
 		//OBJECTS
@@ -514,26 +522,26 @@ int main()
 		glm::mat4 poolModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		poolModel = glm::translate(poolModel, glm::vec3(15.0, 0.0, 0.0));
 		shadowMappingShader.setMat4("model", poolModel);
-		poolObjModel.RenderModel(shadowMappingShader, poolModel);
-		poolObjModel.RenderModel(shadowMappingDepthShader, poolModel);
+		poolObjModel->RenderModel(shadowMappingShader, poolModel);
+		poolObjModel->RenderModel(shadowMappingDepthShader, poolModel);
 
-		
+
 
 		//HOUSES
 		shadowMappingShader.SetVec3("color", 1.0f, 0.3f, 0.20f);
 		glm::mat4 houseModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		houseModel = glm::translate(houseModel, glm::vec3(-15.0, 0.0, 0.0));
 		shadowMappingShader.setMat4("model", houseModel);
-		houseObjModel.RenderModel(shadowMappingShader, houseModel);
-		houseObjModel.RenderModel(shadowMappingDepthShader, houseModel);
+		houseObjModel->RenderModel(shadowMappingShader, houseModel);
+		houseObjModel->RenderModel(shadowMappingDepthShader, houseModel);
 
 		shadowMappingShader.SetVec3("color", 0.8f, 0.40f, 0.40f);
 		glm::mat4 houseMainModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		houseMainModel = glm::translate(houseMainModel, glm::vec3(20.0, 0.0, 12.0));
 		houseMainModel = glm::rotate(houseMainModel, glm::radians(270.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		shadowMappingShader.setMat4("model", houseMainModel);
-		houseMainObjModel.RenderModel(shadowMappingShader, houseMainModel);
-		houseMainObjModel.RenderModel(shadowMappingDepthShader, houseMainModel);
+		houseMainObjModel->RenderModel(shadowMappingShader, houseMainModel);
+		houseMainObjModel->RenderModel(shadowMappingDepthShader, houseMainModel);
 
 		//fence
 
@@ -550,8 +558,8 @@ int main()
 			fenceModel = glm::rotate(fenceModel, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			fenceModel = glm::scale(fenceModel, glm::vec3(0.01, 0.01, 0.01));
 			shadowMappingShader.setMat4("model", fenceModel);
-			fenceMainObjModel.RenderModel(shadowMappingShader, fenceModel);
-			fenceMainObjModel.RenderModel(shadowMappingDepthShader, fenceModel);
+			fenceMainObjModel->RenderModel(shadowMappingShader, fenceModel);
+			fenceMainObjModel->RenderModel(shadowMappingDepthShader, fenceModel);
 
 			shadowMappingShader.SetVec3("color", 0.30f, 0.40f, 0.40f);
 			glm::mat4 fenceModelLine15 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
@@ -559,8 +567,8 @@ int main()
 			fenceModelLine15 = glm::rotate(fenceModelLine15, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			fenceModelLine15 = glm::scale(fenceModelLine15, glm::vec3(0.01, 0.01, 0.01));
 			shadowMappingShader.setMat4("model", fenceModelLine15);
-			fenceMainObjModel.RenderModel(shadowMappingShader, fenceModelLine15);
-			fenceMainObjModel.RenderModel(shadowMappingDepthShader, fenceModelLine15);
+			fenceMainObjModel->RenderModel(shadowMappingShader, fenceModelLine15);
+			fenceMainObjModel->RenderModel(shadowMappingDepthShader, fenceModelLine15);
 
 			initialFenceTranslationLine0.x += 2.0f;
 			initialFenceTranslationLine15.x += 2.0f;
@@ -572,15 +580,15 @@ int main()
 			glm::mat4 firModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 			firModel = glm::translate(firModel, initialFenceTranslationLeft);
 			shadowMappingShader.setMat4("model", firModel);
-			firObjModel.RenderModel(shadowMappingShader, firModel);
-			firObjModel.RenderModel(shadowMappingDepthShader, firModel);
-			
+			firObjModel->RenderModel(shadowMappingShader, firModel);
+			firObjModel->RenderModel(shadowMappingDepthShader, firModel);
+
 
 			glm::mat4 firModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 			firModel2 = glm::translate(firModel, initialFenceTranslationRight);
 			shadowMappingShader.setMat4("model", firModel2);
 			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-			firObjModel.Draw(shadowMappingShader);
+			firObjModel->Draw(shadowMappingShader);
 
 			initialFenceTranslationLeft.z += 3.5f;
 			initialFenceTranslationRight.z += 0.7f;
@@ -588,7 +596,7 @@ int main()
 
 		//streetLamp
 		glActiveTexture(GL_TEXTURE0); // Activate the texture unit 0
-		glBindTexture(GL_TEXTURE_2D, streetLampTexture.id); // Bind the texture
+		glBindTexture(GL_TEXTURE_2D, streetLampTextureId); // Bind the texture
 		shadowMappingShader.use(); // Activate the shader
 		shadowMappingShader.setInt("diffuseTexture", 0); // Bind street lamp texture
 		//shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 1.0f);
@@ -596,8 +604,8 @@ int main()
 		streetLampModel = glm::translate(streetLampModel, glm::vec3(2.0, -7.0, 0.0));
 		shadowMappingShader.setMat4("model", streetLampModel);
 		//streetLampObjModel.Draw(shadowMappingShader);
-		streetLampObjModel.RenderModel(shadowMappingShader, streetLampModel);
-		streetLampObjModel.RenderModel(shadowMappingDepthShader, streetLampModel);
+		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel);
+		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel);
 
 
 		//Floor
