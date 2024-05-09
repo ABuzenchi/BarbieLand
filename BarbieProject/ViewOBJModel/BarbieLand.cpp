@@ -40,8 +40,17 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 std::unique_ptr<Mesh> floorObj;
+std::unique_ptr<Model> poolObjModel;
+std::unique_ptr<Model> horseObjModel;
+std::unique_ptr<Model> treeObjModel;
+std::unique_ptr<Model> houseObjModel;
+std::unique_ptr<Model> houseMainObjModel;
+std::unique_ptr<Model> fenceMainObjModel;
+std::unique_ptr<Model> firObjModel;
+std::unique_ptr<Model> streetLampObjModel;
 
 GLuint floorTextureId;
+GLuint streetLampTextureId;
 GLuint ProjMatrixLocation, ViewMatrixLocation, WorldMatrixLocation;
 Camera* pCamera = nullptr;
 
