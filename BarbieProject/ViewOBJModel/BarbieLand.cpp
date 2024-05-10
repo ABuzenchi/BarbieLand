@@ -148,7 +148,7 @@ void LoadScene()
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 	std::string currentPath = converter.to_bytes(wscurrentPath);
 
-	std::string PoolFileName = (currentPath + "\\Models\\objects\\pool\\pool.obj");
+	std::string PoolFileName = (currentPath + "\\Models\\objects\\fountain\\MarbleFountain1.obj");
 	poolObjModel = std::make_unique<Model>(PoolFileName, false);
 
 	std::string horseObjFileName = (currentPath + "\\Models\\Animals\\Horse.obj");
@@ -519,7 +519,7 @@ int main()
 
 		//OBJECTS
 		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-		glm::mat4 poolModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		glm::mat4 poolModel = glm::scale(glm::mat4(1.0), glm::vec3(0.3f));
 		poolModel = glm::translate(poolModel, glm::vec3(15.0, 0.0, 0.0));
 		shadowMappingShader.setMat4("model", poolModel);
 		poolObjModel->RenderModel(shadowMappingShader, poolModel);
