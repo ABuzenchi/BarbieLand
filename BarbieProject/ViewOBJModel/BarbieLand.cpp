@@ -166,8 +166,8 @@ void LoadScene()
 	std::string firFileName = (currentPath + "\\Models\\plants\\fir.obj");
 	firObjModel = std::make_unique<Model>(firFileName, false);
 
-	std::string streetLampFileName = (currentPath + "\\Models\\Object\\streetLamp.obj");
-	Texture streetLampTexture("../Models/Objects/StreetLamp.jpg");
+	std::string streetLampFileName = (currentPath + "\\Models\\Object\\streetLamp\\streetLamp.obj");
+	Texture streetLampTexture("../Models/Object/streetLamp/StreetLamp.jpg");
 	streetLampObjModel = std::make_unique<Model>(streetLampFileName, false);
 	streetLampTextureId = streetLampTexture.id;
 
