@@ -148,7 +148,7 @@ void LoadScene()
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 	std::string currentPath = converter.to_bytes(wscurrentPath);
 
-	std::string PoolFileName = (currentPath + "\\Models\\objects\\fountain\\MarbleFountain1.obj");
+	std::string PoolFileName = (currentPath + "\\Models\\Object\\fountain\\MarbleFountain1.obj");
 	poolObjModel = std::make_unique<Model>(PoolFileName, false);
 
 	std::string horseObjFileName = (currentPath + "\\Models\\Animals\\Horse.obj");
@@ -157,19 +157,16 @@ void LoadScene()
 	std::string treeFileName = (currentPath + "\\Models\\plants\\tree\\tree.obj");
 	treeObjModel = std::make_unique<Model>(treeFileName, false);
 
-	std::string houseFileName = (currentPath + "\\Models\\objects\\House.obj");
-	houseObjModel = std::make_unique<Model>(houseFileName, false);
-
-	std::string houseMainFileName = (currentPath + "\\Models\\objects\\MainHouse\\mainHouse.obj");
+	std::string houseMainFileName = (currentPath + "\\Models\\Object\\MainHouse\\mainHouse.obj");
 	houseMainObjModel = std::make_unique<Model>(houseMainFileName, false);
 
-	std::string fenceFileName = (currentPath + "\\Models\\objects\\fence\\fence.obj");
+	std::string fenceFileName = (currentPath + "\\Models\\Object\\fence\\fence.obj");
 	fenceMainObjModel = std::make_unique<Model>(fenceFileName, false);
 
 	std::string firFileName = (currentPath + "\\Models\\plants\\fir.obj");
 	firObjModel = std::make_unique<Model>(firFileName, false);
 
-	std::string streetLampFileName = (currentPath + "\\Models\\objects\\streetLamp.obj");
+	std::string streetLampFileName = (currentPath + "\\Models\\Object\\streetLamp.obj");
 	Texture streetLampTexture("../Models/Objects/StreetLamp.jpg");
 	streetLampObjModel = std::make_unique<Model>(streetLampFileName, false);
 	streetLampTextureId = streetLampTexture.id;
@@ -528,13 +525,7 @@ int main()
 
 
 		//HOUSES
-		shadowMappingShader.SetVec3("color", 1.0f, 0.3f, 0.20f);
-		glm::mat4 houseModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		houseModel = glm::translate(houseModel, glm::vec3(-15.0, 0.0, 0.0));
-		shadowMappingShader.setMat4("model", houseModel);
-		houseObjModel->RenderModel(shadowMappingShader, houseModel);
-		houseObjModel->RenderModel(shadowMappingDepthShader, houseModel);
-
+		
 		shadowMappingShader.SetVec3("color", 0.8f, 0.40f, 0.40f);
 		glm::mat4 houseMainModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		houseMainModel = glm::translate(houseMainModel, glm::vec3(20.0, 0.0, 12.0));

@@ -1,6 +1,6 @@
 # Blender v2.91.0 OBJ File: 'Ev.blend'
 # www.blender.org
-mtllib Ev.mtl
+mtllib mainHouse.mtl
 o Cube_Cube.001
 v -4.988641 0.102142 -1.663380
 v -4.988641 -0.102142 -1.663380
