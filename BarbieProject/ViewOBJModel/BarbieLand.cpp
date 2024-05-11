@@ -7,7 +7,7 @@
 #include <stdlib.h> // necesare pentru citirea shader-elor
 #include <stdio.h>
 #include <math.h> 
-
+#include "SoundManager.h"
 #include <GL/glew.h>
 #define GLM_FORCE_CTOR_INIT
 #include <GLM.hpp>
@@ -211,6 +211,17 @@ int main()
 
 	// tell GLFW to capture our mouse
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+
+	SoundManager soundManager;
+	try {
+		soundManager.playSound("../Audio/barbie.mp3", true);  // Replace with the actual path and set loop to true or false as needed
+	}
+	catch (const std::runtime_error& e) {
+		std::cerr << "Error: " << e.what() << std::endl;
+		glfwTerminate();
+		return -1;
+	}
 
 	glewInit();
 
