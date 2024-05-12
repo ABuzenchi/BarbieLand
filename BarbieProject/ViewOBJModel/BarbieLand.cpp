@@ -478,8 +478,8 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, depthMap);  // Bind shadow map
 		RenderScene(shadowMappingShader, false);
 
-		glm::mat4 groundModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		groundModel = glm::translate(groundModel, glm::vec3(-3.0, 0.0, 0.0));
+		glm::mat4 groundModel = glm::scale(glm::mat4(1.0), glm::vec3(3.f));
+		groundModel = glm::translate(groundModel, glm::vec3(0.0, 1.2, 0.0));
 		shadowMappingShader.setMat4("model", groundModel);
 		groundObj->RenderModel(shadowMappingShader, groundModel);
 		groundObj->RenderModel(shadowMappingDepthShader, groundModel);
