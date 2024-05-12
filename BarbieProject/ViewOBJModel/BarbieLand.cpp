@@ -49,6 +49,7 @@ std::unique_ptr<Model> fenceMainObjModel;
 std::unique_ptr<Model> firObjModel;
 std::unique_ptr<Model> streetLampObjModel;
 std::unique_ptr<Model> groundObj;
+std::unique_ptr<Model>catObjModel;
 
 GLuint floorTextureId;
 GLuint streetLampTextureId;
@@ -164,7 +165,7 @@ void LoadScene()
 	std::string fenceFileName = (currentPath + "\\Models\\Object\\fence\\fence.obj");
 	fenceMainObjModel = std::make_unique<Model>(fenceFileName, false);
 
-	std::string firFileName = (currentPath + "\\Models\\plants\\fir.obj");
+	std::string firFileName = (currentPath + "\\Models\\plants\\pineTree\\Tree2.obj");
 	firObjModel = std::make_unique<Model>(firFileName, false);
 
 	std::string streetLampFileName = (currentPath + "\\Models\\Object\\streetLamp\\streetLamp.obj");
@@ -174,6 +175,9 @@ void LoadScene()
 	
 	std::string groundFileName = (currentPath + "\\Models\\objects\\ground\\ground.obj");
 	groundObj = std::make_unique<Model>(groundFileName, false);
+
+	std::string catObjFileName = (currentPath + "\\Models\\Animals\\Cat\\cat.obj");
+	catObjModel = std::make_unique<Model>(catObjFileName, false);
 }
 
 void RenderScene(Shader& shader, bool shadowPass = false) {
@@ -602,6 +606,16 @@ int main()
 			initialFenceTranslationLeft.z += 3.5f;
 			initialFenceTranslationRight.z += 0.7f;
 		}
+
+		//cat
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		catModel = glm::translate(catModel, glm::vec3(-3.0, 0.0, 0.0));
+		shadowMappingShader.setMat4("model", catModel);
+		catObjModel->RenderModel(shadowMappingShader, catModel);
+		catObjModel->RenderModel(shadowMappingDepthShader, catModel);
+
+
 
 		//streetLamp
 		glActiveTexture(GL_TEXTURE0); // Activate the texture unit 0
