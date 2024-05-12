@@ -48,6 +48,7 @@ std::unique_ptr<Model> houseMainObjModel;
 std::unique_ptr<Model> fenceMainObjModel;
 std::unique_ptr<Model> firObjModel;
 std::unique_ptr<Model> streetLampObjModel;
+std::unique_ptr<Model> groundObj;
 
 GLuint floorTextureId;
 GLuint streetLampTextureId;
@@ -170,8 +171,9 @@ void LoadScene()
 	Texture streetLampTexture("../Models/Object/streetLamp/StreetLamp.jpg");
 	streetLampObjModel = std::make_unique<Model>(streetLampFileName, false);
 	streetLampTextureId = streetLampTexture.id;
-
-
+	
+	std::string groundFileName = (currentPath + "\\Models\\objects\\ground\\ground.obj");
+	groundObj = std::make_unique<Model>(groundFileName, false);
 }
 
 void RenderScene(Shader& shader, bool shadowPass = false) {
@@ -476,6 +478,11 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, depthMap);  // Bind shadow map
 		RenderScene(shadowMappingShader, false);
 
+		glm::mat4 groundModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		groundModel = glm::translate(groundModel, glm::vec3(-3.0, 0.0, 0.0));
+		shadowMappingShader.setMat4("model", groundModel);
+		groundObj->RenderModel(shadowMappingShader, groundModel);
+		groundObj->RenderModel(shadowMappingDepthShader, groundModel);
 
 		//NATURE
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
