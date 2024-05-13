@@ -50,6 +50,7 @@ std::unique_ptr<Model> firObjModel;
 std::unique_ptr<Model> streetLampObjModel;
 std::unique_ptr<Model> groundObj;
 std::unique_ptr<Model>catObjModel;
+std::unique_ptr<Model> signObjModel;
 
 GLuint floorTextureId;
 GLuint streetLampTextureId;
@@ -178,6 +179,9 @@ void LoadScene()
 
 	std::string catObjFileName = (currentPath + "\\Models\\Animals\\Cat\\cat.obj");
 	catObjModel = std::make_unique<Model>(catObjFileName, false);
+
+	std::string signObjFilename = (currentPath + "\\Models\\Object\\sign\\sign.obj");
+	signObjModel = std::make_unique<Model>(signObjFilename, false);
 }
 
 void RenderScene(Shader& shader, bool shadowPass = false) {
@@ -481,6 +485,12 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap);  // Bind shadow map
 		RenderScene(shadowMappingShader, false);
+
+		glm::mat4 signModel = glm::scale(glm::mat4(1.0), glm::vec3(0.2f));
+		signModel = glm::translate(signModel, glm::vec3(0.0, 1.2, 0.0));
+		shadowMappingShader.setMat4("model", signModel);
+		signObjModel->RenderModel(shadowMappingShader, signModel);
+		signObjModel->RenderModel(shadowMappingDepthShader, signModel);
 
 		glm::mat4 groundModel = glm::scale(glm::mat4(1.0), glm::vec3(3.f));
 		groundModel = glm::translate(groundModel, glm::vec3(0.0, 1.2, 0.0));
