@@ -669,19 +669,67 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, streetLampTextureId); // Bind the texture
 		shadowMappingShader.use(); // Activate the shader
 		shadowMappingShader.setInt("diffuseTexture", 0); // Bind street lamp texture
-		//shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 1.0f);
-		glm::mat4 streetLampModel = glm::scale(glm::mat4(0.5), glm::vec3(0.5f));
-		streetLampModel = glm::translate(streetLampModel, glm::vec3(2.0, -7.0, 0.0));
+
+		glm::mat4 streetLampModel = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
+		streetLampModel = glm::translate(streetLampModel, glm::vec3(50.0, -8.0, 15.0));
 		shadowMappingShader.setMat4("model", streetLampModel);
-		//streetLampObjModel.Draw(shadowMappingShader);
 		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel);
 		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel);
 
+		glm::mat4 streetLampModel8 = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
+		streetLampModel8 = glm::translate(streetLampModel8, glm::vec3(5.0, -8.0, 50.0));
+		shadowMappingShader.setMat4("model", streetLampModel8);
+		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel8);
+		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel8);
 
-		//Floor
-		//shadowMappingShader.SetVec3("color", 1.0f, 0.0f, 0.6f);
+		glm::mat4 streetLampModel9 = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
+		streetLampModel9 = glm::translate(streetLampModel9, glm::vec3(-9.0, -8.0, 45.0));
+		shadowMappingShader.setMat4("model", streetLampModel9);
+		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel9);
+		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel9);
 
-		//RenderScene(shadowMappingShader);
+		glm::mat4 streetLampModel10 = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
+		streetLampModel10 = glm::translate(streetLampModel10, glm::vec3(-35.0, -8.0, 45.0));
+		shadowMappingShader.setMat4("model", streetLampModel10);
+		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel10);
+		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel10);
+
+		glm::mat4 streetLampModel2 = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
+		streetLampModel2 = glm::translate(streetLampModel2, glm::vec3(35.0, -8.0, 35.0));
+		shadowMappingShader.setMat4("model", streetLampModel2);
+		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel2);
+		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel2);
+
+		glm::mat4 streetLampModel3 = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
+		streetLampModel3 = glm::translate(streetLampModel3, glm::vec3(56.0, -8.0, -30.0));
+		shadowMappingShader.setMat4("model", streetLampModel3);
+		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel3);
+		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel3);
+
+		glm::mat4 streetLampModel4 = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
+		streetLampModel4 = glm::translate(streetLampModel4, glm::vec3(50.0, -8.0, -52.0));
+		shadowMappingShader.setMat4("model", streetLampModel4);
+		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel4);
+		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel4);
+
+		glm::mat4 streetLampModel5 = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
+		streetLampModel5 = glm::translate(streetLampModel5, glm::vec3(20.0, -8.0, -75.0));
+		shadowMappingShader.setMat4("model", streetLampModel5);
+		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel5);
+		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel5);
+
+
+		glm::mat4 streetLampModel6 = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
+		streetLampModel6 = glm::translate(streetLampModel6, glm::vec3(-5.0, -8.0, -90.0));
+		shadowMappingShader.setMat4("model", streetLampModel6);
+		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel6);
+		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel6);
+
+		glm::mat4 streetLampModel7 = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
+		streetLampModel7 = glm::translate(streetLampModel7, glm::vec3(-40.0, -8.0, -70.0));
+		shadowMappingShader.setMat4("model", streetLampModel7);
+		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel7);
+		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel7);
 		glBindVertexArray(lightVAO);
 
 		glfwSwapBuffers(window);
