@@ -562,14 +562,43 @@ int main()
 
 
 		//HOUSES
-		
+
 		shadowMappingShader.SetVec3("color", 0.8f, 0.40f, 0.40f);
 		glm::mat4 houseMainModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		houseMainModel = glm::translate(houseMainModel, glm::vec3(20.0, 0.0, 12.0));
-		houseMainModel = glm::rotate(houseMainModel, glm::radians(270.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		houseMainModel = glm::translate(houseMainModel, glm::vec3(10.0, 0.0, 15.3));
+		houseMainModel = glm::rotate(houseMainModel, glm::radians(215.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		shadowMappingShader.setMat4("model", houseMainModel);
 		houseMainObjModel->RenderModel(shadowMappingShader, houseMainModel);
 		houseMainObjModel->RenderModel(shadowMappingDepthShader, houseMainModel);
+
+		glm::mat4 houseMainModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		houseMainModel2 = glm::translate(houseMainModel2, glm::vec3(-7.0, 0.0, 18.0));
+		houseMainModel2 = glm::rotate(houseMainModel2, glm::radians(170.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		shadowMappingShader.setMat4("model", houseMainModel2);
+		houseMainObjModel->RenderModel(shadowMappingShader, houseMainModel2);
+		houseMainObjModel->RenderModel(shadowMappingDepthShader, houseMainModel2);
+
+		glm::mat4 houseMainModel3 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		houseMainModel3 = glm::translate(houseMainModel3, glm::vec3(-9.8, 0.0, -26.0));
+		houseMainModel3 = glm::rotate(houseMainModel3, glm::radians(17.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		shadowMappingShader.setMat4("model", houseMainModel3);
+		houseMainObjModel->RenderModel(shadowMappingShader, houseMainModel3);
+		houseMainObjModel->RenderModel(shadowMappingDepthShader, houseMainModel3);
+
+		glm::mat4 houseMainModel4 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		houseMainModel4 = glm::translate(houseMainModel4, glm::vec3(9.5, 0.0, -25.5));
+		houseMainModel4 = glm::rotate(houseMainModel4, glm::radians(339.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		shadowMappingShader.setMat4("model", houseMainModel4);
+		houseMainObjModel->RenderModel(shadowMappingShader, houseMainModel4);
+		houseMainObjModel->RenderModel(shadowMappingDepthShader, houseMainModel4);
+
+		glm::mat4 houseMainModel5 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		houseMainModel5 = glm::translate(houseMainModel5, glm::vec3(21.5, 0.0, -7.5));
+		houseMainModel5 = glm::rotate(houseMainModel5, glm::radians(280.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		shadowMappingShader.setMat4("model", houseMainModel5);
+		houseMainObjModel->RenderModel(shadowMappingShader, houseMainModel5);
+		houseMainObjModel->RenderModel(shadowMappingDepthShader, houseMainModel5);
+
 
 		//fence
 
