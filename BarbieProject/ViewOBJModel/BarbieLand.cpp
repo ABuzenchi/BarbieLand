@@ -184,6 +184,13 @@ void LoadScene()
 	signObjModel = std::make_unique<Model>(signObjFilename, false);
 }
 
+float horseSpeed = 1.0f; // Horse movement speed
+float horseAmplitude = 5.0f; // Amplitude of movement forward and backward
+
+float horseX = 0.0f; // Initial movement on the X axis
+float horseY = 0.0f; // Initial movement on the Y axis
+
+
 void RenderScene(Shader& shader, bool shadowPass = false) {
 	glDisable(GL_CULL_FACE);  // Disabling face culling to avoid missing triangles in shadow rendering
 
@@ -518,34 +525,10 @@ int main()
 		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
 		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
 
-		//ANIMALS
-		float horseSpeed = 2.0f; // Viteza de deplasare a calului
-		float horseAmplitude = 5.0f; // Amplitudinea mișcării înainte și înapoi
-		glm::vec3 horsePositionOffset = glm::vec3(20.0f, 0.0f, 64.0f); // Offsetul poziției calului
-		glm::mat4 horseModel1 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-
-		//Calculăm poziția calului pe axa X și Z folosind funcția sinusoidală
-		float horseX = horseAmplitude * sin(glfwGetTime() * horseSpeed); // Mișcare pe axa X
-		float horseZ = horseAmplitude * cos(glfwGetTime() * horseSpeed); // Mișcare pe axa Z
-		horsePositionOffset.x += horseX; // Actualizăm poziția pe axa X
-		horsePositionOffset.z += horseZ; // Actualizăm poziția pe axa Z
-
-		horseModel1 = glm::translate(glm::mat4(1.0f), horsePositionOffset); // Aplicăm noul offset de poziție
-		shadowMappingShader.setMat4("model", horseModel1);
-		horseObjModel->RenderModel(shadowMappingShader, horseModel1);
-		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel1);
-
-		//ANIMALS
-		float horseSpeedZ = 2.0f; // Viteza de deplasare a calului pe axa Z
-		float horseAmplitudeZ = 2.0f; // Amplitudinea mișcării pe axa Z
-		glm::vec3 horsePositionOffset2 = glm::vec3(25.0f, 0.0f, 60.0f); // Offsetul poziției calului
+		////ANIMALS
+		
 		glm::mat4 horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
-
-		//Calculăm poziția calului pe axa Z folosind funcția sinusoidală
-		float horseZ2 = horseAmplitudeZ * sin(glfwGetTime() * horseSpeedZ); // Mișcare pe axa Z
-		horsePositionOffset2.z += horseZ; // Actualizăm poziția pe axa Z
-
-		horseModel2 = glm::translate(glm::mat4(1.0f), horsePositionOffset2); // Aplicăm noul offset de poziție
+		horseModel2 = glm::translate(horseModel2, glm::vec3(28.0f, 0.0f, 55.0f));
 		shadowMappingShader.setMat4("model", horseModel2);
 		horseObjModel->RenderModel(shadowMappingShader, horseModel2);
 		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel2);
