@@ -554,15 +554,14 @@ int main()
 		//OBJECTS
 		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
 		glm::mat4 poolModel = glm::scale(glm::mat4(1.0), glm::vec3(0.3f));
-		poolModel = glm::translate(poolModel, glm::vec3(15.0, 0.0, 0.0));
+		poolModel = glm::translate(poolModel, glm::vec3(-5.0, 0.0, -5.0));
 		shadowMappingShader.setMat4("model", poolModel);
 		poolObjModel->RenderModel(shadowMappingShader, poolModel);
 		poolObjModel->RenderModel(shadowMappingDepthShader, poolModel);
 
 
 
-		//HOUSES
-
+#pragma region MainHouses
 		shadowMappingShader.SetVec3("color", 0.8f, 0.40f, 0.40f);
 		glm::mat4 houseMainModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		houseMainModel = glm::translate(houseMainModel, glm::vec3(10.0, 0.0, 15.3));
@@ -598,10 +597,9 @@ int main()
 		shadowMappingShader.setMat4("model", houseMainModel5);
 		houseMainObjModel->RenderModel(shadowMappingShader, houseMainModel5);
 		houseMainObjModel->RenderModel(shadowMappingDepthShader, houseMainModel5);
+#pragma endregion
 
-
-		//fence
-
+#pragma region fence
 		glm::vec3 initialFenceTranslationLine0(0.0f, 0.5f, 50.0f);
 		glm::vec3 initialFenceTranslationLine15(0.0f, 0.5f, 70.0f);
 		glm::vec3 initialFenceTranslationLeft(-1.0f, 0.5f, 50.0f);
@@ -651,6 +649,8 @@ int main()
 			initialFenceTranslationRight.z += 0.7f;
 		}
 
+#pragma endregion
+		
 		//cat
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		glm::mat4 catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
@@ -661,9 +661,7 @@ int main()
 		catObjModel->RenderModel(shadowMappingShader, catModel);
 		catObjModel->RenderModel(shadowMappingDepthShader, catModel);
 
-
-		
-
+#pragma region StreetLamps
 		//streetLamp
 		glActiveTexture(GL_TEXTURE0); // Activate the texture unit 0
 		glBindTexture(GL_TEXTURE_2D, streetLampTextureId); // Bind the texture
@@ -718,7 +716,6 @@ int main()
 		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel5);
 		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel5);
 
-
 		glm::mat4 streetLampModel6 = glm::scale(glm::mat4(0.5), glm::vec3(0.3f));
 		streetLampModel6 = glm::translate(streetLampModel6, glm::vec3(-5.0, -8.0, -90.0));
 		shadowMappingShader.setMat4("model", streetLampModel6);
@@ -730,6 +727,9 @@ int main()
 		shadowMappingShader.setMat4("model", streetLampModel7);
 		streetLampObjModel->RenderModel(shadowMappingShader, streetLampModel7);
 		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel7);
+#pragma endregion
+
+		
 		glBindVertexArray(lightVAO);
 
 		glfwSwapBuffers(window);
