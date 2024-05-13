@@ -486,8 +486,12 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, depthMap);  // Bind shadow map
 		RenderScene(shadowMappingShader, false);
 
-		glm::mat4 signModel = glm::scale(glm::mat4(1.0), glm::vec3(0.2f));
-		signModel = glm::translate(signModel, glm::vec3(0.0, 1.2, 0.0));
+		
+	  
+		glm::mat4 signModel = glm::mat4(1.0);
+		signModel = glm::translate(signModel, glm::vec3(-50.0, 0.0, -0.0));
+		signModel = glm::rotate(signModel, glm::radians(270.0f), glm::vec3(0, 1, 0));
+		signModel=glm::scale(signModel, glm::vec3(0.5f));
 		shadowMappingShader.setMat4("model", signModel);
 		signObjModel->RenderModel(shadowMappingShader, signModel);
 		signObjModel->RenderModel(shadowMappingDepthShader, signModel);
@@ -510,8 +514,9 @@ int main()
 		glm::mat4 treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel2 = glm::translate(treeModel, glm::vec3(-6.0, 0.0, 1.0));
 		shadowMappingShader.setMat4("model", treeModel2);
-		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+		
 		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
+		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
 
 		//ANIMALS
 		float horseSpeed = 2.0f; // Viteza de deplasare a calului
