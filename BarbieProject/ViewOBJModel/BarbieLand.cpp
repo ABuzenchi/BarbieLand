@@ -602,7 +602,12 @@ int main()
 
 		float time = glfwGetTime();
 		float verticalOffset = Amplitude * sin(Speed * time);
-
+		glm::mat4 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+		sphereModel = glm::translate(sphereModel, glm::vec3(-28.0, 80.0 + verticalOffset, -27.5));
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.setMat4("model", sphereModel);
+		sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
+		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel);
 		for (int i = 0; i < numSpheres; ++i) {
 			float angle = i * (2 * M_PI / numSpheres); // Calculate the angle for each sphere
 			float x = -29.0 + radius * cos(angle); // Calculate the x position
