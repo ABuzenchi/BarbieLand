@@ -43,9 +43,9 @@ std::unique_ptr<Mesh> floorObj;
 std::unique_ptr<Model> poolObjModel;
 std::unique_ptr<Model> horseObjModel;
 std::unique_ptr<Model> treeObjModel;
-std::unique_ptr<Model> pinkTreeObjModel;
 std::unique_ptr<Model> houseObjModel;
 std::unique_ptr<Model> houseMainObjModel;
+std::unique_ptr<Model> womenObjModel;
 std::unique_ptr<Model> fenceMainObjModel;
 std::unique_ptr<Model> firObjModel;
 std::unique_ptr<Model> streetLampObjModel;
@@ -162,11 +162,12 @@ void LoadScene()
 	std::string treeFileName = (currentPath + "\\Models\\plants\\tree\\tree.obj");
 	treeObjModel = std::make_unique<Model>(treeFileName, false);
 
-	std::string pinkTreeFileName = (currentPath + "\\Models\\plants\\pinkTree\\pinkTree.obj");
-	pinkTreeObjModel = std::make_unique<Model>(pinkTreeFileName, false);
-
+	
 	std::string houseMainFileName = (currentPath + "\\Models\\Object\\MainHouse\\mainHouse.obj");
 	houseMainObjModel = std::make_unique<Model>(houseMainFileName, false);
+
+	std::string womenMainFileName = (currentPath + "\\Models\\Object\\women\\women.obj");
+	womenObjModel = std::make_unique<Model>(womenMainFileName, false);
 
 	std::string fenceFileName = (currentPath + "\\Models\\Object\\fence\\fence.obj");
 	fenceMainObjModel = std::make_unique<Model>(fenceFileName, false);
@@ -535,13 +536,7 @@ int main()
 		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
 
 
-		glm::mat4 treeModel3 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		treeModel3 = glm::translate(treeModel3, glm::vec3(0.0, 0.0, 1.0));
-		shadowMappingShader.setMat4("model", treeModel3);
-
-		pinkTreeObjModel->RenderModel(shadowMappingDepthShader, treeModel3);
-		pinkTreeObjModel->RenderModel(shadowMappingShader, treeModel3);
-
+		
 		////ANIMALS
 		
 		glm::mat4 horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
@@ -568,6 +563,14 @@ int main()
 		shadowMappingShader.setMat4("model", carModel);
 		carObjModel->RenderModel(shadowMappingShader, carModel);
 		carObjModel->RenderModel(shadowMappingDepthShader, carModel);
+
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 womenModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		womenModel = glm::translate(womenModel, glm::vec3(0.0, 0.0, 0.0));
+
+		shadowMappingShader.setMat4("model", womenModel);
+		womenObjModel->RenderModel(shadowMappingShader, womenModel);
+		womenObjModel->RenderModel(shadowMappingDepthShader, womenModel);
 
 
 
