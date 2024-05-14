@@ -52,6 +52,7 @@ std::unique_ptr<Model> streetLampObjModel;
 std::unique_ptr<Model> groundObj;
 std::unique_ptr<Model>catObjModel;
 std::unique_ptr<Model> signObjModel;
+std::unique_ptr<Model> carObjModel;
 
 GLuint floorTextureId;
 GLuint streetLampTextureId;
@@ -186,6 +187,10 @@ void LoadScene()
 
 	std::string signObjFilename = (currentPath + "\\Models\\Object\\sign\\BarbieLandsign.obj");
 	signObjModel = std::make_unique<Model>(signObjFilename, false);
+
+	std::string carObjFilename = (currentPath + "\\Models\\Object\\car\\sportsCar.obj");
+	carObjModel = std::make_unique<Model>(carObjFilename, false);
+
 }
 
 float horseSpeed = 1.0f; // Horse movement speed
@@ -553,6 +558,17 @@ int main()
 		shadowMappingShader.setMat4("model", poolModel);
 		poolObjModel->RenderModel(shadowMappingShader, poolModel);
 		poolObjModel->RenderModel(shadowMappingDepthShader, poolModel);
+
+
+		//car
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 carModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		carModel = glm::translate(carModel, glm::vec3(10.0, 0.0, 0.0));
+
+		shadowMappingShader.setMat4("model", carModel);
+		carObjModel->RenderModel(shadowMappingShader, carModel);
+		carObjModel->RenderModel(shadowMappingDepthShader, carModel);
+
 
 
 
