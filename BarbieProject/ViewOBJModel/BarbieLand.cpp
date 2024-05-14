@@ -50,6 +50,10 @@ const float carRadius = 8.1f;
 const glm::vec3 circleCenter = glm::vec3(-2.0f, 0.0f, -4.0f); 
 const float carSpeed = 0.5f; 
 float carAngle = 0.0f;
+const int numSpheres = 10;
+const float radius = 10.0f;
+const float Speed = 2.0f;
+const float Amplitude = 3.0f;
 std::unique_ptr<Mesh> floorObj;
 std::unique_ptr<Model> poolObjModel;
 std::unique_ptr<Model> sphereObjModel;
@@ -596,74 +600,21 @@ int main()
 
 #pragma region Water
 
-		float Speed = 2.0f;
-		float Amplitude = 3.0f;
 		float time = glfwGetTime();
 		float verticalOffset = Amplitude * sin(Speed * time);
 
-		glm::mat4 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel = glm::translate(sphereModel, glm::vec3(-28.0, 80.0 + verticalOffset, -27.5));
-		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-		shadowMappingShader.setMat4("model", sphereModel);
-		sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
-		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel);
+		for (int i = 0; i < numSpheres; ++i) {
+			float angle = i * (2 * M_PI / numSpheres); // Calculate the angle for each sphere
+			float x = -29.0 + radius * cos(angle); // Calculate the x position
+			float z = -29.5 +radius * sin(angle); // Calculate the z position
 
-		glm::mat4 sphereModel2 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel2 = glm::translate(sphereModel2, glm::vec3(-26.0, 60.0 + verticalOffset, -23.0));
-		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-		shadowMappingShader.setMat4("model", sphereModel2);
-		sphereObjModel->RenderModel(shadowMappingShader, sphereModel2);
-		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel2);
-
-		glm::mat4 sphereModel3 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel3 = glm::translate(sphereModel3, glm::vec3(-34.0, 60.0 + verticalOffset, -26.0));
-		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-		shadowMappingShader.setMat4("model", sphereModel3);
-		sphereObjModel->RenderModel(shadowMappingShader, sphereModel3);
-		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel3);
-
-		glm::mat4 sphereModel4 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel4 = glm::translate(sphereModel4, glm::vec3(-30.0, 60.0 + verticalOffset, -23.0));
-		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-		shadowMappingShader.setMat4("model", sphereModel4);
-		sphereObjModel->RenderModel(shadowMappingShader, sphereModel4);
-		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel4);
-
-		glm::mat4 sphereModel5 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel5 = glm::translate(sphereModel5, glm::vec3(-30.0, 60.0 + verticalOffset, -37.0));
-		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-		shadowMappingShader.setMat4("model", sphereModel5);
-		sphereObjModel->RenderModel(shadowMappingShader, sphereModel5);
-		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel5);
-
-		glm::mat4 sphereModel6 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel6 = glm::translate(sphereModel6, glm::vec3(-34.0, 60.0 + verticalOffset, -35.0));
-		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-		shadowMappingShader.setMat4("model", sphereModel6);
-		sphereObjModel->RenderModel(shadowMappingShader, sphereModel6);
-		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel6);
-
-		glm::mat4 sphereModel7 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel7 = glm::translate(sphereModel7, glm::vec3(-38.0, 60.0 + verticalOffset, -33.0));
-		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-		shadowMappingShader.setMat4("model", sphereModel7);
-		sphereObjModel->RenderModel(shadowMappingShader, sphereModel7);
-		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel7);
-
-		glm::mat4 sphereModel8 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel8 = glm::translate(sphereModel8, glm::vec3(-41.0, 60.0 + verticalOffset, -29.0));
-		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-		shadowMappingShader.setMat4("model", sphereModel8);
-		sphereObjModel->RenderModel(shadowMappingShader, sphereModel8);
-		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel8);
-
-		glm::mat4 sphereModel9 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel9 = glm::translate(sphereModel9, glm::vec3(-28.0, 60.0 + verticalOffset, -29.0));
-		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-		shadowMappingShader.setMat4("model", sphereModel9);
-		sphereObjModel->RenderModel(shadowMappingShader, sphereModel9);
-		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel9);
-
+			glm::mat4 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+			sphereModel = glm::translate(sphereModel, glm::vec3(x, 60.0 + verticalOffset, z));
+			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+			shadowMappingShader.setMat4("model", sphereModel);
+			sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
+			sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel);
+		}
 
 #pragma endregion
 
