@@ -41,6 +41,7 @@ const unsigned int SCR_HEIGHT = 600;
 
 std::unique_ptr<Mesh> floorObj;
 std::unique_ptr<Model> poolObjModel;
+std::unique_ptr<Model> sphereObjModel;
 std::unique_ptr<Model> horseObjModel;
 std::unique_ptr<Model> treeObjModel;
 std::unique_ptr<Model> palmTreeObjModel;
@@ -184,6 +185,8 @@ void LoadScene()
 	std::string palmtreeFileName = (currentPath + "\\Models\\plants\\palmTree\\palmTree.obj");
 	palmTreeObjModel = std::make_unique<Model>(palmtreeFileName, false);
 
+	std::string sphereFileName = (currentPath + "\\Models\\Object\\waterPearl\\webtrcc.obj");
+	sphereObjModel = std::make_unique<Model>(sphereFileName, false);
 
 	std::string houseMainFileName = (currentPath + "\\Models\\Object\\MainHouse\\mainHouse.obj");
 	houseMainObjModel = std::make_unique<Model>(houseMainFileName, false);
@@ -579,6 +582,18 @@ int main()
 		poolObjModel->RenderModel(shadowMappingShader, poolModel);
 		poolObjModel->RenderModel(shadowMappingDepthShader, poolModel);
 
+		float Speed = 2.0f; // Viteza de deplasare a calului
+		float Amplitude = 3.0f;
+		float time = glfwGetTime(); // Get current time
+		float verticalOffset = Amplitude * sin(Speed * time); // Calculate vertical offset using sine function
+
+		// Update the translation matrix of the sphere to move it upwards
+		glm::mat4 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+		sphereModel = glm::translate(sphereModel, glm::vec3(-30.0, 80.0 + verticalOffset, -20.0));
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.setMat4("model", sphereModel);
+		sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
+		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel);
 
 		//car
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
