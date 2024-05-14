@@ -199,4 +199,5 @@ public:
 
 	bool bFirstMouseMove = true;
 	float lastX = 0.f, lastY = 0.f;
+	void setViewMatrix(glm::vec3 pos);
 };
