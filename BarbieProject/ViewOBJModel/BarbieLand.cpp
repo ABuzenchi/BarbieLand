@@ -46,6 +46,7 @@ std::unique_ptr<Model> treeObjModel;
 std::unique_ptr<Model> houseObjModel;
 std::unique_ptr<Model> houseMainObjModel;
 std::unique_ptr<Model> womenObjModel;
+std::unique_ptr<Model> women2ObjModel;
 std::unique_ptr<Model> fenceMainObjModel;
 std::unique_ptr<Model> firObjModel;
 std::unique_ptr<Model> streetLampObjModel;
@@ -168,6 +169,9 @@ void LoadScene()
 
 	std::string womenMainFileName = (currentPath + "\\Models\\Object\\women\\women.obj");
 	womenObjModel = std::make_unique<Model>(womenMainFileName, false);
+
+	std::string women2MainFileName = (currentPath + "\\Models\\Object\\women2\\Girl With Black & Pink Dress.obj");
+	women2ObjModel = std::make_unique<Model>(women2MainFileName, false);
 
 	std::string fenceFileName = (currentPath + "\\Models\\Object\\fence\\fence.obj");
 	fenceMainObjModel = std::make_unique<Model>(fenceFileName, false);
@@ -571,6 +575,14 @@ int main()
 		shadowMappingShader.setMat4("model", womenModel);
 		womenObjModel->RenderModel(shadowMappingShader, womenModel);
 		womenObjModel->RenderModel(shadowMappingDepthShader, womenModel);
+
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 womenModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		womenModel2 = glm::translate(womenModel2, glm::vec3(2.0, 0.0, 0.0));
+
+		shadowMappingShader.setMat4("model", womenModel2);
+		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
+		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
 
 
 
