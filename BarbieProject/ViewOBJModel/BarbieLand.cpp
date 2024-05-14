@@ -43,6 +43,7 @@ std::unique_ptr<Mesh> floorObj;
 std::unique_ptr<Model> poolObjModel;
 std::unique_ptr<Model> horseObjModel;
 std::unique_ptr<Model> treeObjModel;
+std::unique_ptr<Model> palmTreeObjModel;
 std::unique_ptr<Model> houseObjModel;
 std::unique_ptr<Model> houseMainObjModel;
 std::unique_ptr<Model> womenObjModel;
@@ -54,6 +55,23 @@ std::unique_ptr<Model> groundObj;
 std::unique_ptr<Model>catObjModel;
 std::unique_ptr<Model> signObjModel;
 std::unique_ptr<Model> carObjModel;
+
+float startX = -50.0f;
+float startY = 0.0f;
+float startZ = 2.0f;
+
+float degreesY = 0.0f;
+float degreesZ = 0.0f;
+
+bool start = false;
+
+
+enum class CameraType
+{
+	Free,
+	SceneUp,
+	EnterTown
+};
 
 GLuint floorTextureId;
 GLuint streetLampTextureId;
@@ -163,7 +181,10 @@ void LoadScene()
 	std::string treeFileName = (currentPath + "\\Models\\plants\\tree\\tree.obj");
 	treeObjModel = std::make_unique<Model>(treeFileName, false);
 
-	
+	std::string palmtreeFileName = (currentPath + "\\Models\\plants\\palmTree\\palmTree.obj");
+	palmTreeObjModel = std::make_unique<Model>(palmtreeFileName, false);
+
+
 	std::string houseMainFileName = (currentPath + "\\Models\\Object\\MainHouse\\mainHouse.obj");
 	houseMainObjModel = std::make_unique<Model>(houseMainFileName, false);
 
@@ -183,7 +204,7 @@ void LoadScene()
 	Texture streetLampTexture("../Models/Object/streetLamp/StreetLamp.jpg");
 	streetLampObjModel = std::make_unique<Model>(streetLampFileName, false);
 	streetLampTextureId = streetLampTexture.id;
-	
+
 	std::string groundFileName = (currentPath + "\\Models\\objects\\ground\\ground.obj");
 	groundObj = std::make_unique<Model>(groundFileName, false);
 
@@ -507,12 +528,12 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, depthMap);  // Bind shadow map
 		RenderScene(shadowMappingShader, false);
 
-		
-	  
+
+
 		glm::mat4 signModel = glm::mat4(1.0);
 		signModel = glm::translate(signModel, glm::vec3(-50.0, 0.0, -0.0));
 		signModel = glm::rotate(signModel, glm::radians(270.0f), glm::vec3(0, 1, 0));
-		signModel=glm::scale(signModel, glm::vec3(0.5f));
+		signModel = glm::scale(signModel, glm::vec3(0.5f));
 		shadowMappingShader.setMat4("model", signModel);
 		signObjModel->RenderModel(shadowMappingShader, signModel);
 		signObjModel->RenderModel(shadowMappingDepthShader, signModel);
@@ -535,14 +556,14 @@ int main()
 		glm::mat4 treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel2 = glm::translate(treeModel2, glm::vec3(-6.0, 0.0, 1.0));
 		shadowMappingShader.setMat4("model", treeModel2);
-		
+
 		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
 		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
 
 
-		
+
 		////ANIMALS
-		
+
 		glm::mat4 horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
 		horseModel2 = glm::translate(horseModel2, glm::vec3(28.0f, 0.0f, 55.0f));
 		shadowMappingShader.setMat4("model", horseModel2);
@@ -583,6 +604,15 @@ int main()
 		shadowMappingShader.setMat4("model", womenModel2);
 		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
 		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
+
+
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 tree = glm::scale(glm::mat4(1.0), glm::vec3(0.5f));
+		tree = glm::translate(tree, glm::vec3(70.0, 0.0, 0.0));
+
+		shadowMappingShader.setMat4("model", tree);
+		palmTreeObjModel->RenderModel(shadowMappingShader, tree);
+		palmTreeObjModel->RenderModel(shadowMappingDepthShader, tree);
 
 
 
@@ -676,7 +706,7 @@ int main()
 		}
 
 #pragma endregion
-		
+
 		//cat
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		glm::mat4 catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
@@ -755,7 +785,8 @@ int main()
 		streetLampObjModel->RenderModel(shadowMappingDepthShader, streetLampModel7);
 #pragma endregion
 
-		
+
+
 		glBindVertexArray(lightVAO);
 
 		glfwSwapBuffers(window);
@@ -772,6 +803,7 @@ int main()
 	return 0;
 }
 
+CameraType cameraType = CameraType::Free;
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 void processInput(GLFWwindow* window)
 {
@@ -794,6 +826,18 @@ void processInput(GLFWwindow* window)
 		transitioning = true;
 		nightMode = !nightMode;  // Toggle mode
 	}
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) // EnterTown camera
+	{
+		cameraType = CameraType::EnterTown;
+	}
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) // 3rd person camera
+	{
+		cameraType = CameraType::SceneUp;
+	}
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) // free camera
+	{
+		cameraType = CameraType::Free;
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 		int width, height;
@@ -801,10 +845,22 @@ void processInput(GLFWwindow* window)
 		pCamera->Reset(width, height);
 
 	}
+	switch (cameraType)
+	{
+	case CameraType::Free:
+		break;
+	case CameraType::SceneUp:
+		pCamera->setViewMatrix(glm::vec3(startX - 15, startY + 50, startZ + 100));
+		break;
+	case CameraType::EnterTown:
+		pCamera->setViewMatrix(glm::vec3(startX, startY + 2, startZ - 9.5));
+		break;
+	default:;
+	}
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	// make sure the viewport matches the new window dimensions; note that width and 

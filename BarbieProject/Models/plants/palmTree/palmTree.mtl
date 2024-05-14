@@ -1,0 +1,6 @@
+newmtl bark
+d 1.0
+map_Kd bark_roughness.png
+newmtl leaf
+d 1.0
+map_Kd leaf_normal.png
