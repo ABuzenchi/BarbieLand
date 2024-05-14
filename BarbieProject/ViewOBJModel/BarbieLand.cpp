@@ -181,7 +181,7 @@ void LoadScene()
 	std::string catObjFileName = (currentPath + "\\Models\\Animals\\Cat\\cat.obj");
 	catObjModel = std::make_unique<Model>(catObjFileName, false);
 
-	std::string signObjFilename = (currentPath + "\\Models\\Object\\sign\\sign.obj");
+	std::string signObjFilename = (currentPath + "\\Models\\Object\\sign\\BarbieLandSign.obj");
 	signObjModel = std::make_unique<Model>(signObjFilename, false);
 
 	std::string carObjFilename = (currentPath + "\\Models\\Object\\car\\sportsCar.obj");
