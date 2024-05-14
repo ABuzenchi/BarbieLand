@@ -1,0 +1,55 @@
+# Blender MTL File: 'sakura tree.blend'
+# Material Count: 5
+
+newmtl Material.001
+Ns 359.999993
+Ka 1.000000 1.000000 1.000000
+Kd 0.162625 0.125156 0.099383
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+map_Kd pink.jpg
+illum 2
+
+newmtl None
+Ns 500
+Ka 0.8 0.8 0.8
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+map_Kd pink.jpg
+illum 2
+
+newmtl main_color_flower
+Ns 359.999993
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.217735 0.610096
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+map_Kd pink.jpg
+illum 2
+
+newmtl second_color_flower_1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.355584 0.069622
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+map_Kd pink.jpg
+illum 1
+
+newmtl second_color_flower_2
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.707182 0.296995
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+map_Kd pink.jpg
+illum 1

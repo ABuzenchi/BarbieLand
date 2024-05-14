@@ -43,6 +43,7 @@ std::unique_ptr<Mesh> floorObj;
 std::unique_ptr<Model> poolObjModel;
 std::unique_ptr<Model> horseObjModel;
 std::unique_ptr<Model> treeObjModel;
+std::unique_ptr<Model> pinkTreeObjModel;
 std::unique_ptr<Model> houseObjModel;
 std::unique_ptr<Model> houseMainObjModel;
 std::unique_ptr<Model> fenceMainObjModel;
@@ -160,6 +161,9 @@ void LoadScene()
 	std::string treeFileName = (currentPath + "\\Models\\plants\\tree\\tree.obj");
 	treeObjModel = std::make_unique<Model>(treeFileName, false);
 
+	std::string pinkTreeFileName = (currentPath + "\\Models\\plants\\pinkTree\\pinkTree.obj");
+	pinkTreeObjModel = std::make_unique<Model>(pinkTreeFileName, false);
+
 	std::string houseMainFileName = (currentPath + "\\Models\\Object\\MainHouse\\mainHouse.obj");
 	houseMainObjModel = std::make_unique<Model>(houseMainFileName, false);
 
@@ -180,7 +184,7 @@ void LoadScene()
 	std::string catObjFileName = (currentPath + "\\Models\\Animals\\Cat\\cat.obj");
 	catObjModel = std::make_unique<Model>(catObjFileName, false);
 
-	std::string signObjFilename = (currentPath + "\\Models\\Object\\sign\\sign.obj");
+	std::string signObjFilename = (currentPath + "\\Models\\Object\\sign\\BarbieLandsign.obj");
 	signObjModel = std::make_unique<Model>(signObjFilename, false);
 }
 
@@ -519,11 +523,19 @@ int main()
 
 
 		glm::mat4 treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		treeModel2 = glm::translate(treeModel, glm::vec3(-6.0, 0.0, 1.0));
+		treeModel2 = glm::translate(treeModel2, glm::vec3(-6.0, 0.0, 1.0));
 		shadowMappingShader.setMat4("model", treeModel2);
 		
 		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
 		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+
+
+		glm::mat4 treeModel3 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel3 = glm::translate(treeModel3, glm::vec3(0.0, 0.0, 1.0));
+		shadowMappingShader.setMat4("model", treeModel3);
+
+		pinkTreeObjModel->RenderModel(shadowMappingDepthShader, treeModel3);
+		pinkTreeObjModel->RenderModel(shadowMappingShader, treeModel3);
 
 		////ANIMALS
 		
