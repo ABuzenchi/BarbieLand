@@ -582,19 +582,80 @@ int main()
 		poolObjModel->RenderModel(shadowMappingShader, poolModel);
 		poolObjModel->RenderModel(shadowMappingDepthShader, poolModel);
 
-		float Speed = 2.0f; // Viteza de deplasare a calului
-		float Amplitude = 3.0f;
-		float time = glfwGetTime(); // Get current time
-		float verticalOffset = Amplitude * sin(Speed * time); // Calculate vertical offset using sine function
+#pragma region Water
 
-		// Update the translation matrix of the sphere to move it upwards
+		float Speed = 2.0f;
+		float Amplitude = 3.0f;
+		float time = glfwGetTime();
+		float verticalOffset = Amplitude * sin(Speed * time);
+
 		glm::mat4 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel = glm::translate(sphereModel, glm::vec3(-30.0, 80.0 + verticalOffset, -20.0));
+		sphereModel = glm::translate(sphereModel, glm::vec3(-28.0, 80.0 + verticalOffset, -27.5));
 		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
 		shadowMappingShader.setMat4("model", sphereModel);
 		sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
 		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel);
 
+		glm::mat4 sphereModel2 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+		sphereModel2 = glm::translate(sphereModel2, glm::vec3(-26.0, 60.0 + verticalOffset, -23.0));
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.setMat4("model", sphereModel2);
+		sphereObjModel->RenderModel(shadowMappingShader, sphereModel2);
+		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel2);
+
+		glm::mat4 sphereModel3 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+		sphereModel3 = glm::translate(sphereModel3, glm::vec3(-34.0, 60.0 + verticalOffset, -26.0));
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.setMat4("model", sphereModel3);
+		sphereObjModel->RenderModel(shadowMappingShader, sphereModel3);
+		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel3);
+
+		glm::mat4 sphereModel4 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+		sphereModel4 = glm::translate(sphereModel4, glm::vec3(-30.0, 60.0 + verticalOffset, -23.0));
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.setMat4("model", sphereModel4);
+		sphereObjModel->RenderModel(shadowMappingShader, sphereModel4);
+		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel4);
+
+		glm::mat4 sphereModel5 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+		sphereModel5 = glm::translate(sphereModel5, glm::vec3(-30.0, 60.0 + verticalOffset, -37.0));
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.setMat4("model", sphereModel5);
+		sphereObjModel->RenderModel(shadowMappingShader, sphereModel5);
+		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel5);
+
+		glm::mat4 sphereModel6 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+		sphereModel6 = glm::translate(sphereModel6, glm::vec3(-34.0, 60.0 + verticalOffset, -35.0));
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.setMat4("model", sphereModel6);
+		sphereObjModel->RenderModel(shadowMappingShader, sphereModel6);
+		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel6);
+
+		glm::mat4 sphereModel7 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+		sphereModel7 = glm::translate(sphereModel7, glm::vec3(-38.0, 60.0 + verticalOffset, -33.0));
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.setMat4("model", sphereModel7);
+		sphereObjModel->RenderModel(shadowMappingShader, sphereModel7);
+		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel7);
+
+		glm::mat4 sphereModel8 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+		sphereModel8 = glm::translate(sphereModel8, glm::vec3(-41.0, 60.0 + verticalOffset, -29.0));
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.setMat4("model", sphereModel8);
+		sphereObjModel->RenderModel(shadowMappingShader, sphereModel8);
+		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel8);
+
+		glm::mat4 sphereModel9 = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+		sphereModel9 = glm::translate(sphereModel9, glm::vec3(-28.0, 60.0 + verticalOffset, -29.0));
+		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+		shadowMappingShader.setMat4("model", sphereModel9);
+		sphereObjModel->RenderModel(shadowMappingShader, sphereModel9);
+		sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel9);
+
+
+#pragma endregion
+
+		
 		//car
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		glm::mat4 carModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
