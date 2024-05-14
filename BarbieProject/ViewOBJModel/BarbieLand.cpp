@@ -669,30 +669,24 @@ int main()
 
 		
 		//car
-		//car
 		glm::mat4 carModel = glm::mat4(1.0f);
 
 
+		carPathAngle += angularSpeedPath * deltaTime; 
+		carPathAngle = fmod(carPathAngle, 2.0f * M_PI);
 
-		carPathAngle += angularSpeedPath * deltaTime; // Updates the car's path movement
-		carPathAngle = fmod(carPathAngle, 2.0f * M_PI); // Keeps the path angle within 0 to 2π
-
-		// Check if it's time to rotate the car
 		if (timeSinceLastRotation >= rotationInterval) {
-			carAngle += rotationAngle; // Rotate the car by 30 degrees
-			timeSinceLastRotation = 0.0f; // Reset the timer
+			carAngle += rotationAngle; 
+			timeSinceLastRotation = 0.0f; 
 		}
-
 		// Calculate the position of the car on the circular path
 		glm::vec3 carPosition = circleCenter + glm::vec3(cos(carPathAngle) * carRadius, 0.0f, sin(carPathAngle) * carRadius);
 
-		// Construct the model matrix for the car
-		carModel = glm::translate(glm::mat4(1.0f), carPosition); // Position on path
+		carModel = glm::translate(glm::mat4(1.0f), carPosition);
 		carModel = glm::rotate(carModel, glm::radians(180.0f), glm::vec3(0, 1, 0));
-		//carModel = glm::rotate(carModel, carPathAngle, glm::vec3(0, 1, 0)); // Orient to face direction of motion
+		//carModel = glm::rotate(carModel, carPathAngle, glm::vec3(0, 1, 0)); /
 		carModel = glm::rotate(carModel, carAngle, glm::vec3(0, 1, 0)); // Add fixed 30-degree rotation every 2 seconds
 
-		// Use the model matrix to draw the car
 		shadowMappingShader.setMat4("model", carModel);
 		carObjModel->RenderModel(shadowMappingShader, carModel);
 		carObjModel->RenderModel(shadowMappingDepthShader, carModel);
