@@ -224,7 +224,7 @@ void LoadScene()
 	streetLampObjModel = std::make_unique<Model>(streetLampFileName, false);
 	streetLampTextureId = streetLampTexture.id;
 
-	std::string groundFileName = (currentPath + "\\Models\\objects\\ground\\ground.obj");
+	std::string groundFileName = (currentPath + "\\Models\\objects\\ground\\BarbieLandFloor.obj");
 	groundObj = std::make_unique<Model>(groundFileName, false);
 
 	std::string catObjFileName = (currentPath + "\\Models\\Animals\\Cat\\cat.obj");
@@ -258,7 +258,7 @@ void RenderScene(Shader& shader, bool shadowPass = false) {
 	}
 
 	// Floor rendering
-	floorObj->RenderMesh(shader);
+	//floorObj->RenderMesh(shader);
 }
 
 int main()
@@ -569,7 +569,7 @@ int main()
 		groundObj->RenderModel(shadowMappingDepthShader, groundModel);
 
 		//landscape
-		glm::mat4 landscapeModel = glm::scale(glm::mat4(1.0), glm::vec3(20.f));
+		glm::mat4 landscapeModel = glm::scale(glm::mat4(1.0), glm::vec3(10.f));
 		landscapeModel = glm::translate(landscapeModel, glm::vec3(0.0, 0.0, 0.0));
 		shadowMappingShader.setMat4("model", landscapeModel);
 		landscapeObjModel->RenderModel(shadowMappingShader, landscapeModel);
