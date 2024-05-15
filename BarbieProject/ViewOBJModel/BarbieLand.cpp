@@ -598,7 +598,7 @@ int main()
 
 
 		// Number of trees
-		const float radius = 1.0f;  // Radius of the circle
+		const float radius = 10.0f;  // Radius of the circle
 		const float circleRadius = 25.0f;  // The radius of the circle on which trees will be placed
 		const float circleRadius2 = 8.0f;// The radius of the circle on which trees will be placed
 		const float circleRadius3 = 40.0f;
@@ -733,6 +733,13 @@ int main()
 		shadowMappingShader.setMat4("model", poolModel);
 		poolObjModel->RenderModel(shadowMappingShader, poolModel);
 		poolObjModel->RenderModel(shadowMappingDepthShader, poolModel);
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 musicModel = glm::scale(glm::mat4(1.0), glm::vec3(0.001f));
+		musicModel = glm::translate(musicModel, glm::vec3(10.0, 2.0, 10.0));
+
+		shadowMappingShader.setMat4("model", musicModel);
+		musicObjModel->RenderModel(shadowMappingShader, musicModel);
+		musicObjModel->RenderModel(shadowMappingDepthShader, musicModel);
 
 		//BENCHES
 		glm::mat4 benchModel = glm::scale(glm::mat4(1.0), glm::vec3(0.01f));
@@ -754,7 +761,7 @@ int main()
 		float time = glfwGetTime();
 		float verticalOffset = Amplitude * sin(Speed * time);
 		glm::mat4 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-		sphereModel = glm::translate(sphereModel, glm::vec3(-28.0, 80.0 + verticalOffset, -27.5));
+		sphereModel = glm::translate(sphereModel, glm::vec3(-29.0, 80.0 + verticalOffset, -29.5));
 		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
 		shadowMappingShader.setMat4("model", sphereModel);
 		sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
@@ -921,13 +928,7 @@ int main()
 		houseMainObjModel->RenderModel(shadowMappingShader, houseMainModel5);
 		houseMainObjModel->RenderModel(shadowMappingDepthShader, houseMainModel5);
 #pragma endregion
-		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
-		glm::mat4 musicModel = glm::scale(glm::mat4(1.0), glm::vec3(0.001f));
-		musicModel = glm::translate(musicModel, glm::vec3(0.0, 2.0, 0.0));
-
-		shadowMappingShader.setMat4("model", musicModel);
-		musicObjModel->RenderModel(shadowMappingShader, musicModel);
-		musicObjModel->RenderModel(shadowMappingDepthShader, musicModel);
+		
 
 
 #pragma region fence
