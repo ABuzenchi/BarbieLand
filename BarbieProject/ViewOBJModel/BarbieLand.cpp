@@ -706,13 +706,13 @@ int main()
 		////ANIMALS
 
 		glm::mat4 horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
-		horseModel2 = glm::translate(horseModel2, glm::vec3(28.0f, 0.0f, 55.0f));
+		horseModel2 = glm::translate(horseModel2, glm::vec3(28.0f, 0.0f, 35.0f));
 		shadowMappingShader.setMat4("model", horseModel2);
 		horseObjModel->RenderModel(shadowMappingShader, horseModel2);
 		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel2);
 
 		horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
-		horseModel2 = glm::translate(horseModel2, glm::vec3(24.0f, 0.0f, 55.0f));
+		horseModel2 = glm::translate(horseModel2, glm::vec3(24.0f, 0.0f, 35.0f));
 		shadowMappingShader.setMat4("model", horseModel2);
 		horseObjModel->RenderModel(shadowMappingShader, horseModel2);
 		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel2);
@@ -879,10 +879,11 @@ int main()
 		houseMainObjModel->RenderModel(shadowMappingDepthShader, houseMainModel5);
 #pragma endregion
 
+
 #pragma region fence
-		glm::vec3 initialFenceTranslationLine0(0.0f, 0.5f, 50.0f);
-		glm::vec3 initialFenceTranslationLine15(0.0f, 0.5f, 70.0f);
-		glm::vec3 initialFenceTranslationLeft(-1.0f, 0.5f, 50.0f);
+		glm::vec3 initialFenceTranslationLine0(0.0f, 0.5f, 30.0f);
+		glm::vec3 initialFenceTranslationLine15(0.0f, 0.5f, 50.0f);
+		glm::vec3 initialFenceTranslationLeft(-1.0f, 0.5f, 30.0f);
 		glm::vec3 initialFenceTranslationRight(32.0f, 0.0f, 0.0f);
 		for (int coloana = 0; coloana < 16; coloana++)
 		{
