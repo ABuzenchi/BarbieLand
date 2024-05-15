@@ -236,7 +236,7 @@ void LoadScene()
 	std::string carObjFilename = (currentPath + "\\Models\\Object\\car\\sportsCar.obj");
 	carObjModel = std::make_unique<Model>(carObjFilename, false);
 
-	std::string landscapeFilename = (currentPath + "\\Models\\objects\\landscape\\landscapeBarbie.obj");
+	std::string landscapeFilename = (currentPath + "\\Models\\objects\\landscape\\landscape.obj");
 	landscapeObjModel = std::make_unique<Model>(landscapeFilename, false);
 
 }
