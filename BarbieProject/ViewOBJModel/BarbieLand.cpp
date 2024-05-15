@@ -943,7 +943,8 @@ int main()
 
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		catModel = glm::translate(catModel, glm::vec3(10.0, 0.0, 50.0));
+		catModel = glm::translate(catModel, glm::vec3(35.0, 0.0, -40.0));
+		catModel = glm::rotate(catModel, glm::radians(320.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		shadowMappingShader.setMat4("model", catModel);
 		houseObjModel->RenderModel(shadowMappingShader, catModel);
 		houseObjModel->RenderModel(shadowMappingDepthShader, catModel);
