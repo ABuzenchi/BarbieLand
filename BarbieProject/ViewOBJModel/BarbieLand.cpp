@@ -40,7 +40,7 @@ const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
 float M_PI = 3.14159265358979323846f;
 float rotationInterval = 0.1f;
-float degrees = 355.3f;// Rotate 30 degrees
+float degrees = 355.3f;
 float rotationAngle = glm::radians(degrees);
 float timeSinceLastRotation = 0.0f;
 float carPathAngle = 0.0f;
@@ -75,7 +75,7 @@ std::unique_ptr<Model> signObjModel;
 std::unique_ptr<Model> carObjModel;
 std::unique_ptr<Model> landscapeObjModel;
 std::unique_ptr<Model> benchObjModel;
-
+std::unique_ptr<Model> musicObjModel;
 float startX = -50.0f;
 float startY = 0.0f;
 float startZ = 2.0f;
@@ -248,6 +248,8 @@ void LoadScene()
 	std::string landscapeFilename = (currentPath + "\\Models\\objects\\landscape\\landscape.obj");
 	landscapeObjModel = std::make_unique<Model>(landscapeFilename, false);
 
+	std::string musicObjFilename = (currentPath + "\\Models\\Object\\music\\3d-model.obj");
+	musicObjModel = std::make_unique<Model>(musicObjFilename, false);
 }
 
 float horseSpeed = 1.0f; // Horse movement speed
@@ -919,6 +921,13 @@ int main()
 		houseMainObjModel->RenderModel(shadowMappingShader, houseMainModel5);
 		houseMainObjModel->RenderModel(shadowMappingDepthShader, houseMainModel5);
 #pragma endregion
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 musicModel = glm::scale(glm::mat4(1.0), glm::vec3(0.001f));
+		musicModel = glm::translate(musicModel, glm::vec3(0.0, 2.0, 0.0));
+
+		shadowMappingShader.setMat4("model", musicModel);
+		musicObjModel->RenderModel(shadowMappingShader, musicModel);
+		musicObjModel->RenderModel(shadowMappingDepthShader, musicModel);
 
 
 #pragma region fence
