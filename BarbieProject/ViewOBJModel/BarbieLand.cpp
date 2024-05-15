@@ -72,6 +72,7 @@ std::unique_ptr<Model>catObjModel;
 std::unique_ptr<Model> signObjModel;
 std::unique_ptr<Model> carObjModel;
 std::unique_ptr<Model> landscapeObjModel;
+std::unique_ptr<Model> benchObjModel;
 
 float startX = -50.0f;
 float startY = 0.0f;
@@ -232,6 +233,9 @@ void LoadScene()
 
 	std::string catObjFileName = (currentPath + "\\Models\\Animals\\Cat\\cat.obj");
 	catObjModel = std::make_unique<Model>(catObjFileName, false);
+
+	std::string benchFilename = (currentPath + "\\Models\\Object\\bench\\Bench_HighRes.obj");
+	benchObjModel = std::make_unique<Model>(benchFilename, false);
 
 	std::string signObjFilename = (currentPath + "\\Models\\Object\\sign\\BarbieLandsign.obj");
 	signObjModel = std::make_unique<Model>(signObjFilename, false);
@@ -725,6 +729,21 @@ int main()
 		shadowMappingShader.setMat4("model", poolModel);
 		poolObjModel->RenderModel(shadowMappingShader, poolModel);
 		poolObjModel->RenderModel(shadowMappingDepthShader, poolModel);
+
+		//BENCHES
+		glm::mat4 benchModel = glm::scale(glm::mat4(1.0), glm::vec3(0.01f));
+		benchModel = glm::translate(benchModel, glm::vec3(200.0, 0.0, -100.0));
+		benchModel = glm::rotate(benchModel, glm::radians(-130.0f), glm::vec3(0, 1, 0));
+		shadowMappingDepthShader.setMat4("model", benchModel);
+		benchObjModel->RenderModel(shadowMappingShader, benchModel);
+		benchObjModel->RenderModel(shadowMappingDepthShader, benchModel);
+
+		benchModel = glm::scale(glm::mat4(1.0), glm::vec3(0.01f));
+		benchModel = glm::translate(benchModel, glm::vec3(-500.0, 0.0, -40.0));
+		benchModel = glm::rotate(benchModel, glm::radians(140.0f), glm::vec3(0, 1, 0));
+		shadowMappingDepthShader.setMat4("model", benchModel);
+		benchObjModel->RenderModel(shadowMappingShader, benchModel);
+		benchObjModel->RenderModel(shadowMappingDepthShader, benchModel);
 
 #pragma region Water
 
