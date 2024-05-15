@@ -39,9 +39,9 @@
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
 float M_PI = 3.14159265358979323846f;
-float rotationInterval = 0.05f;
-float degrees = 358.045f;// Rotate 30 degrees
-float rotationAngle = degrees * static_cast<float>(M_PI) / 180.0f;
+float rotationInterval = 0.1f;
+float degrees = 355.3f;// Rotate 30 degrees
+float rotationAngle = glm::radians(degrees);
 float timeSinceLastRotation = 0.0f;
 float carPathAngle = 0.0f;
 const float lapTime = 10.0f;
@@ -49,7 +49,9 @@ const float angularSpeedPath = (2.0f * M_PI) / lapTime;
 const float carRadius = 8.1f;
 const glm::vec3 circleCenter = glm::vec3(-2.0f, 0.0f, -4.0f);
 const float carSpeed = 0.5f;
-float carAngle = 0.0f;
+float carAngle = 0.5f;
+float totalTime = 0.0f;
+float resetInterval = 10.0f;
 const int numSpheres = 10;
 const float radius = 10.0f;
 const float Speed = 2.0f;
@@ -772,16 +774,35 @@ int main()
 
 
 		//car
+		//car
+		totalTime += deltaTime;  // Increment the total time by the elapsed time since the last frame
+
+		if (totalTime >= resetInterval) {
+			float excessTime = totalTime - resetInterval;
+			float requiredRotation = -fmod(carAngle, 2.0f * M_PI);  // Negative because we want to reverse the accumulated rotation
+
+			// Apply the correction in the current frame if the excess time is less than your frame interval
+			if (excessTime < deltaTime) {
+				carAngle += requiredRotation;
+			}
+
+			totalTime = excessTime;  // Reset the timer, keep the overflow to maintain accuracy
+			carAngle = 0.0f;  // Reset car angle or set to initial orientation if not originally zero
+		}
+
 		glm::mat4 carModel = glm::mat4(1.0f);
-		carModel = glm::rotate(carModel, glm::radians(180.0f), glm::vec3(0, 1, 0));
+		//carModel = glm::rotate(carModel, glm::radians(180.0f), glm::vec3(0, 1, 0));
 
 		carPathAngle += angularSpeedPath * deltaTime;
 		carPathAngle = fmod(carPathAngle, 2.0f * M_PI);
 
-		if (timeSinceLastRotation >= rotationInterval) {
+		if (timeSinceLastRotation >= rotationInterval && totalTime + deltaTime < resetInterval) {
 			carAngle += rotationAngle;
 			timeSinceLastRotation = 0.0f;
 		}
+
+		//carAngle = fmod(carAngle, 2.0f * M_PI);
+
 		// Calculate the position of the car on the circular path
 		glm::vec3 carPosition = circleCenter + glm::vec3(cos(carPathAngle) * carRadius, 0.0f, sin(carPathAngle) * carRadius);
 
@@ -793,6 +814,7 @@ int main()
 		shadowMappingShader.setMat4("model", carModel);
 		carObjModel->RenderModel(shadowMappingShader, carModel);
 		carObjModel->RenderModel(shadowMappingDepthShader, carModel);
+
 
 
 		//car2
