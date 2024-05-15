@@ -552,21 +552,23 @@ int main()
 		RenderScene(shadowMappingShader, false);
 
 
-
+		//sign
 		glm::mat4 signModel = glm::mat4(1.0);
-		signModel = glm::translate(signModel, glm::vec3(-50.0, 0.0, -0.0));
+		signModel = glm::translate(signModel, glm::vec3(-50.0, 0.0, -4.0));
 		signModel = glm::rotate(signModel, glm::radians(270.0f), glm::vec3(0, 1, 0));
-		signModel = glm::scale(signModel, glm::vec3(0.5f));
+		signModel = glm::scale(signModel, glm::vec3(1.2f));
 		shadowMappingShader.setMat4("model", signModel);
 		signObjModel->RenderModel(shadowMappingShader, signModel);
 		signObjModel->RenderModel(shadowMappingDepthShader, signModel);
 
+		//ground
 		glm::mat4 groundModel = glm::scale(glm::mat4(1.0), glm::vec3(3.f));
 		groundModel = glm::translate(groundModel, glm::vec3(0.0, 1.2, 0.0));
 		shadowMappingShader.setMat4("model", groundModel);
 		groundObj->RenderModel(shadowMappingShader, groundModel);
 		groundObj->RenderModel(shadowMappingDepthShader, groundModel);
 
+		//landscape
 		glm::mat4 landscapeModel = glm::scale(glm::mat4(1.0), glm::vec3(20.f));
 		landscapeModel = glm::translate(landscapeModel, glm::vec3(0.0, 0.0, 0.0));
 		shadowMappingShader.setMat4("model", landscapeModel);
