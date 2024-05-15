@@ -36,8 +36,8 @@
 #pragma comment (lib, "OpenGL32.lib")
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1920;
+const unsigned int SCR_HEIGHT = 1080;
 float M_PI = 3.14159265358979323846f;
 float rotationInterval = 0.05f;
 float degrees = 358.045f;// Rotate 30 degrees
@@ -567,8 +567,8 @@ int main()
 		groundObj->RenderModel(shadowMappingShader, groundModel);
 		groundObj->RenderModel(shadowMappingDepthShader, groundModel);
 
-		glm::mat4 landscapeModel = glm::scale(glm::mat4(1.0), glm::vec3(3.f));
-		landscapeModel = glm::translate(landscapeModel, glm::vec3(0.0, 1.2, 0.0));
+		glm::mat4 landscapeModel = glm::scale(glm::mat4(1.0), glm::vec3(20.f));
+		landscapeModel = glm::translate(landscapeModel, glm::vec3(0.0, 0.0, 0.0));
 		shadowMappingShader.setMat4("model", landscapeModel);
 		landscapeObjModel->RenderModel(shadowMappingShader, landscapeModel);
 		landscapeObjModel->RenderModel(shadowMappingDepthShader, landscapeModel);
