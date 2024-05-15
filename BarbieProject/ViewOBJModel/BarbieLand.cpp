@@ -575,21 +575,128 @@ int main()
 		landscapeObjModel->RenderModel(shadowMappingShader, landscapeModel);
 		landscapeObjModel->RenderModel(shadowMappingDepthShader, landscapeModel);
 
-		//NATURE
-		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+#pragma region Trees
+
+
+
 		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		treeModel = glm::translate(treeModel, glm::vec3(-3.0, 0.0, 0.0));
+		treeModel = glm::translate(treeModel, glm::vec3(-10.0, 0.0, 10.0));
 		shadowMappingShader.setMat4("model", treeModel);
 		treeObjModel->RenderModel(shadowMappingShader, treeModel);
 		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel);
 
 
-		glm::mat4 treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		treeModel2 = glm::translate(treeModel2, glm::vec3(-6.0, 0.0, 1.0));
-		shadowMappingShader.setMat4("model", treeModel2);
+		// Number of trees
+		const float radius = 1.0f;  // Radius of the circle
+		const float circleRadius = 25.0f;  // The radius of the circle on which trees will be placed
+		const float circleRadius2 = 8.0f;// The radius of the circle on which trees will be placed
+		const float circleRadius3 = 40.0f;
 
+		for (int i = 0; i < 10; ++i) {
+			float angle = i * (2 * M_PI / numSpheres); // Calculate the angle for each tree
+
+			// Big circle of trees
+			float x1 = -45.0f + circleRadius * cos(angle); // Calculate the x position
+			float z1 = -29.5f + circleRadius * sin(angle); // Calculate the z position
+			glm::mat4 sphereModel1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)); // Include scaling if needed
+			sphereModel1 = glm::translate(sphereModel1, glm::vec3(x1, 0.0, z1));
+			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+			shadowMappingShader.setMat4("model", sphereModel1);
+			treeObjModel->RenderModel(shadowMappingShader, sphereModel1);
+			treeObjModel->RenderModel(shadowMappingDepthShader, sphereModel1);
+
+			// Big circle of trees
+			x1 = 0.0f + circleRadius3 * cos(angle); // Calculate the x position
+			z1 = 0.0f + circleRadius3 * sin(angle); // Calculate the z position
+			sphereModel1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)); // Include scaling if needed
+			sphereModel1 = glm::translate(sphereModel1, glm::vec3(x1, 0.0, z1));
+			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+			shadowMappingShader.setMat4("model", sphereModel1);
+			treeObjModel->RenderModel(shadowMappingShader, sphereModel1);
+			treeObjModel->RenderModel(shadowMappingDepthShader, sphereModel1);
+
+			// Big circle of trees
+			x1 = -45.0f + circleRadius * cos(angle); // Calculate the x position
+			z1 = 15.5f + circleRadius * sin(angle); // Calculate the z position
+			sphereModel1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)); // Include scaling if needed
+			sphereModel1 = glm::translate(sphereModel1, glm::vec3(x1, 0.0, z1));
+			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+			shadowMappingShader.setMat4("model", sphereModel1);
+			treeObjModel->RenderModel(shadowMappingShader, sphereModel1);
+			treeObjModel->RenderModel(shadowMappingDepthShader, sphereModel1);
+
+			// Small circle of trees
+			float x2 = -45.0f + circleRadius2 * cos(angle); // Calculate the x position
+			float z2 = -29.5f + circleRadius2 * sin(angle); // Calculate the z position
+			glm::mat4 sphereModel2 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)); // Include scaling if needed
+			sphereModel2 = glm::translate(sphereModel2, glm::vec3(x2, 0.0, z2));
+			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+			shadowMappingShader.setMat4("model", sphereModel2);
+			treeObjModel->RenderModel(shadowMappingShader, sphereModel2);
+			treeObjModel->RenderModel(shadowMappingDepthShader, sphereModel2);
+
+			// Small circle of trees
+			x2 = -45.0f + circleRadius2 * cos(angle); // Calculate the x position
+			z2 = 15.5f + circleRadius2 * sin(angle); // Calculate the z position
+			sphereModel2 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f)); // Include scaling if needed
+			sphereModel2 = glm::translate(sphereModel2, glm::vec3(x2, 0.0, z2));
+			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+			shadowMappingShader.setMat4("model", sphereModel2);
+			treeObjModel->RenderModel(shadowMappingShader, sphereModel2);
+			treeObjModel->RenderModel(shadowMappingDepthShader, sphereModel2);
+		}
+
+
+		// Static trees outside the loop
+		glm::mat4 treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel2 = glm::translate(treeModel2, glm::vec3(-15.0, 0.0, 1.0));
+		shadowMappingShader.setMat4("model", treeModel2);
+		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
+
+		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel2 = glm::translate(treeModel2, glm::vec3(-15.0, 0.0, -10.0));
+		shadowMappingShader.setMat4("model", treeModel2);
+		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
+
+		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel2 = glm::translate(treeModel2, glm::vec3(0.0, 0.0, -35.0));
+		shadowMappingShader.setMat4("model", treeModel2);
 		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
 		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+
+		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel2 = glm::translate(treeModel2, glm::vec3(14.0, 0.0, -35.0));
+		shadowMappingShader.setMat4("model", treeModel2);
+		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
+		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+
+		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel2 = glm::translate(treeModel2, glm::vec3(30.0, 0.0, -30.0));
+		shadowMappingShader.setMat4("model", treeModel2);
+		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
+		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+
+		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel2 = glm::translate(treeModel2, glm::vec3(30.0, 0.0, 0.0));
+		shadowMappingShader.setMat4("model", treeModel2);
+		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
+		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+
+		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel2 = glm::translate(treeModel2, glm::vec3(35.0, 0.0, 10.0));
+		shadowMappingShader.setMat4("model", treeModel2);
+		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
+		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+
+		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel2 = glm::translate(treeModel2, glm::vec3(25.0, 0.0, 20.0));
+		shadowMappingShader.setMat4("model", treeModel2);
+		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
+		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
+#pragma endregion
+
 
 
 
