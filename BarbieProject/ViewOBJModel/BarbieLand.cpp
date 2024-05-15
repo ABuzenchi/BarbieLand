@@ -687,7 +687,9 @@ int main()
 		//car6
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		glm::mat4 carModel6 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		carModel6 = glm::translate(carModel6, glm::vec3(21.5, 0.0, -10.5));
+		
+		carModel6 = glm::translate(carModel6, glm::vec3(18.5, 0.0, -1.5));
+		carModel6 = glm::rotate(carModel6, glm::radians(270.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		shadowMappingShader.setMat4("model", carModel6);
 		carObjModel->RenderModel(shadowMappingShader, carModel6);
