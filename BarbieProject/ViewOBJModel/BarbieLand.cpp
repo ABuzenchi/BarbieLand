@@ -210,6 +210,9 @@ void LoadScene()
 	std::string womenMainFileName = (currentPath + "\\Models\\Object\\women\\women.obj");
 	womenObjModel = std::make_unique<Model>(womenMainFileName, false);
 
+	std::string houseFileName = (currentPath + "\\Models\\Object\\house\\export.obj");
+	houseObjModel = std::make_unique<Model>(houseFileName, false);
+
 	std::string women2MainFileName = (currentPath + "\\Models\\Object\\women2\\Girl With Black & Pink Dress.obj");
 	women2ObjModel = std::make_unique<Model>(women2MainFileName, false);
 
@@ -708,6 +711,12 @@ int main()
 		horseObjModel->RenderModel(shadowMappingShader, horseModel2);
 		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel2);
 
+		horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
+		horseModel2 = glm::translate(horseModel2, glm::vec3(24.0f, 0.0f, 55.0f));
+		shadowMappingShader.setMat4("model", horseModel2);
+		horseObjModel->RenderModel(shadowMappingShader, horseModel2);
+		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel2);
+
 
 		//OBJECTS
 		shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
@@ -832,18 +841,6 @@ int main()
 		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
 		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
 
-
-		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
-		glm::mat4 tree = glm::scale(glm::mat4(1.0), glm::vec3(0.5f));
-		tree = glm::translate(tree, glm::vec3(70.0, 0.0, 0.0));
-
-		shadowMappingShader.setMat4("model", tree);
-		palmTreeObjModel->RenderModel(shadowMappingShader, tree);
-		palmTreeObjModel->RenderModel(shadowMappingDepthShader, tree);
-
-
-
-
 #pragma region MainHouses
 		shadowMappingShader.SetVec3("color", 0.8f, 0.40f, 0.40f);
 		glm::mat4 houseMainModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
@@ -943,6 +940,13 @@ int main()
 		shadowMappingShader.setMat4("model", catModel);
 		catObjModel->RenderModel(shadowMappingShader, catModel);
 		catObjModel->RenderModel(shadowMappingDepthShader, catModel);
+
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		catModel = glm::translate(catModel, glm::vec3(10.0, 0.0, 50.0));
+		shadowMappingShader.setMat4("model", catModel);
+		houseObjModel->RenderModel(shadowMappingShader, catModel);
+		houseObjModel->RenderModel(shadowMappingDepthShader, catModel);
 
 #pragma region StreetLamps
 		//streetLamp
