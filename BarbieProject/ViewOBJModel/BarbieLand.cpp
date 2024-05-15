@@ -71,6 +71,7 @@ std::unique_ptr<Model> groundObj;
 std::unique_ptr<Model>catObjModel;
 std::unique_ptr<Model> signObjModel;
 std::unique_ptr<Model> carObjModel;
+std::unique_ptr<Model> landscapeObjModel;
 
 float startX = -50.0f;
 float startY = 0.0f;
@@ -234,6 +235,9 @@ void LoadScene()
 
 	std::string carObjFilename = (currentPath + "\\Models\\Object\\car\\sportsCar.obj");
 	carObjModel = std::make_unique<Model>(carObjFilename, false);
+
+	std::string landscapeFilename = (currentPath + "\\Models\\objects\\landscape\\landscapeBarbie.obj");
+	landscapeObjModel = std::make_unique<Model>(landscapeFilename, false);
 
 }
 
@@ -562,6 +566,12 @@ int main()
 		shadowMappingShader.setMat4("model", groundModel);
 		groundObj->RenderModel(shadowMappingShader, groundModel);
 		groundObj->RenderModel(shadowMappingDepthShader, groundModel);
+
+		glm::mat4 landscapeModel = glm::scale(glm::mat4(1.0), glm::vec3(3.f));
+		landscapeModel = glm::translate(landscapeModel, glm::vec3(0.0, 1.2, 0.0));
+		shadowMappingShader.setMat4("model", landscapeModel);
+		landscapeObjModel->RenderModel(shadowMappingShader, landscapeModel);
+		landscapeObjModel->RenderModel(shadowMappingDepthShader, landscapeModel);
 
 		//NATURE
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
