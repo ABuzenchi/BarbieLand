@@ -44,11 +44,11 @@ float degrees = 358.045f;// Rotate 30 degrees
 float rotationAngle = degrees * static_cast<float>(M_PI) / 180.0f;
 float timeSinceLastRotation = 0.0f;
 float carPathAngle = 0.0f;
-const float lapTime = 10.0f; 
-const float angularSpeedPath = (2.0f * M_PI) / lapTime; 
-const float carRadius = 8.1f; 
-const glm::vec3 circleCenter = glm::vec3(-2.0f, 0.0f, -4.0f); 
-const float carSpeed = 0.5f; 
+const float lapTime = 10.0f;
+const float angularSpeedPath = (2.0f * M_PI) / lapTime;
+const float carRadius = 8.1f;
+const glm::vec3 circleCenter = glm::vec3(-2.0f, 0.0f, -4.0f);
+const float carSpeed = 0.5f;
 float carAngle = 0.0f;
 const int numSpheres = 10;
 const float radius = 10.0f;
@@ -611,21 +611,10 @@ int main()
 		for (int i = 0; i < numSpheres; ++i) {
 			float angle = i * (2 * M_PI / numSpheres); // Calculate the angle for each sphere
 			float x = -29.0 + radius * cos(angle); // Calculate the x position
-			float z = -29.5 +radius * sin(angle); // Calculate the z position
+			float z = -29.5 + radius * sin(angle); // Calculate the z position
 
 			glm::mat4 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
 			sphereModel = glm::translate(sphereModel, glm::vec3(x, 60.0 + verticalOffset, z));
-			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
-			shadowMappingShader.setMat4("model", sphereModel);
-			sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
-			sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel);
-
-			 angle = i * (2 * M_PI / numSpheres); // Calculate the angle for each sphere
-			float x2 = -29.0 + 1.8*radius * cos(angle); // Calculate the x position
-			float z2 = -29.5 + 1.8*radius * sin(angle); // Calculate the z position
-
-			 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
-			sphereModel = glm::translate(sphereModel, glm::vec3(x2, 40.0 + verticalOffset, z2));
 			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
 			shadowMappingShader.setMat4("model", sphereModel);
 			sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
@@ -634,23 +623,23 @@ int main()
 
 #pragma endregion
 
-		
+
 		//car
 		glm::mat4 carModel = glm::mat4(1.0f);
+		carModel = glm::rotate(carModel, glm::radians(180.0f), glm::vec3(0, 1, 0));
 
-
-		carPathAngle += angularSpeedPath * deltaTime; 
+		carPathAngle += angularSpeedPath * deltaTime;
 		carPathAngle = fmod(carPathAngle, 2.0f * M_PI);
 
 		if (timeSinceLastRotation >= rotationInterval) {
-			carAngle += rotationAngle; 
-			timeSinceLastRotation = 0.0f; 
+			carAngle += rotationAngle;
+			timeSinceLastRotation = 0.0f;
 		}
 		// Calculate the position of the car on the circular path
 		glm::vec3 carPosition = circleCenter + glm::vec3(cos(carPathAngle) * carRadius, 0.0f, sin(carPathAngle) * carRadius);
 
 		carModel = glm::translate(glm::mat4(1.0f), carPosition);
-		carModel = glm::rotate(carModel, glm::radians(180.0f), glm::vec3(0, 1, 0));
+
 		//carModel = glm::rotate(carModel, carPathAngle, glm::vec3(0, 1, 0)); /
 		carModel = glm::rotate(carModel, carAngle, glm::vec3(0, 1, 0)); // Add fixed 30-degree rotation every 2 seconds
 
@@ -659,7 +648,52 @@ int main()
 		carObjModel->RenderModel(shadowMappingDepthShader, carModel);
 
 
+		//car2
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 carModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		carModel2 = glm::translate(carModel2, glm::vec3(10.0, 0.0, 10.0));
 
+		shadowMappingShader.setMat4("model", carModel2);
+		carObjModel->RenderModel(shadowMappingShader, carModel2);
+		carObjModel->RenderModel(shadowMappingDepthShader, carModel2);
+
+		//car3
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 carModel3 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		carModel3 = glm::translate(carModel3, glm::vec3(-8.0, 0.0, 12.0));
+
+		shadowMappingShader.setMat4("model", carModel3);
+		carObjModel->RenderModel(shadowMappingShader, carModel3);
+		carObjModel->RenderModel(shadowMappingDepthShader, carModel3);
+
+		//car4
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 carModel4 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		carModel4 = glm::translate(carModel4, glm::vec3(-5.0, 0.0, -20.0));
+
+		shadowMappingShader.setMat4("model", carModel4);
+		carObjModel->RenderModel(shadowMappingShader, carModel4);
+		carObjModel->RenderModel(shadowMappingDepthShader, carModel4);
+
+		//car5
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 carModel5 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		carModel5 = glm::translate(carModel5, glm::vec3(11.5, 0.0, -20.5));
+
+		shadowMappingShader.setMat4("model", carModel5);
+		carObjModel->RenderModel(shadowMappingShader, carModel5);
+		carObjModel->RenderModel(shadowMappingDepthShader, carModel5);
+
+		//car6
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 carModel6 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		carModel6 = glm::translate(carModel6, glm::vec3(21.5, 0.0, -10.5));
+
+		shadowMappingShader.setMat4("model", carModel6);
+		carObjModel->RenderModel(shadowMappingShader, carModel6);
+		carObjModel->RenderModel(shadowMappingDepthShader, carModel6);
+
+		//women
 
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		glm::mat4 womenModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
