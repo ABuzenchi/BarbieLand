@@ -835,7 +835,7 @@ int main()
 
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		glm::mat4 womenModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		womenModel2 = glm::translate(womenModel2, glm::vec3(2.0, 0.0, 0.0));
+		womenModel2 = glm::translate(womenModel2, glm::vec3(30.0, 0.0, 35.0));
 
 		shadowMappingShader.setMat4("model", womenModel2);
 		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
