@@ -54,6 +54,7 @@ const int numSpheres = 10;
 const float radius = 10.0f;
 const float Speed = 2.0f;
 const float Amplitude = 3.0f;
+glm::vec3 carPosition;
 std::unique_ptr<Mesh> floorObj;
 std::unique_ptr<Model> poolObjModel;
 std::unique_ptr<Model> sphereObjModel;
@@ -88,7 +89,8 @@ enum class CameraType
 {
 	Free,
 	SceneUp,
-	EnterTown
+	EnterTown,
+	Car
 };
 
 GLuint floorTextureId;
@@ -815,7 +817,7 @@ int main()
 		//carAngle = fmod(carAngle, 2.0f * M_PI);
 
 		// Calculate the position of the car on the circular path
-		glm::vec3 carPosition = circleCenter + glm::vec3(cos(carPathAngle) * carRadius, 0.0f, sin(carPathAngle) * carRadius);
+		carPosition = circleCenter + glm::vec3(cos(carPathAngle) * carRadius, 0.0f, sin(carPathAngle) * carRadius);
 
 		carModel = glm::translate(glm::mat4(1.0f), carPosition);
 
@@ -1124,6 +1126,10 @@ void processInput(GLFWwindow* window)
 	{
 		cameraType = CameraType::Free;
 	}
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS) // Follow car camera
+	{
+		cameraType = CameraType::Car;
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 		int width, height;
@@ -1140,6 +1146,11 @@ void processInput(GLFWwindow* window)
 		break;
 	case CameraType::EnterTown:
 		pCamera->setViewMatrix(glm::vec3(startX, startY + 2, startZ - 9.5));
+		break;
+	case CameraType::Car:
+		// Assuming carPosition is the position of the car
+		//carPosition = circleCenter + glm::vec3(cos(carPathAngle) * carRadius, 0.0f, sin(carPathAngle) * carRadius);
+		pCamera->setViewMatrix(carPosition + glm::vec3(0.0f, 5.0f, 0.0f)); // Adjust the offset as needed
 		break;
 	default:;
 	}
