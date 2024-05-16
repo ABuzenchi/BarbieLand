@@ -1,22 +1,23 @@
-#pragma once
+#ifndef SOUNDMANAGER_H
+#define SOUNDMANAGER_H
 
+#include <GLM.hpp>
 #include <irrKlang.h>
 #include <string>
 
-// Forward declaration of irrklang::ISoundEngine to avoid including it in the header file
-namespace irrklang {
-    class ISoundEngine;
-}
 
 class SoundManager {
 public:
-    SoundManager(); // Constructor
-    ~SoundManager(); // Destructor
+    SoundManager();
+    ~SoundManager();
 
     void playSound(const std::string& soundFile, bool loop = false);
     void play3DSound(const std::string& soundFile, float x, float y, float z, bool loop = false);
     void stopAllSounds();
+    void updateListenerPosition(const glm::vec3& position, const glm::vec3& lookAt, const glm::vec3& upVector);
 
 private:
     irrklang::ISoundEngine* engine;
 };
+
+#endif // SOUNDMANAGER_H

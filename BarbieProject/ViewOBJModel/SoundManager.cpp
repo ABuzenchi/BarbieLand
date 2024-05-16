@@ -28,3 +28,10 @@ void SoundManager::play3DSound(const std::string& soundFile, float x, float y, f
 void SoundManager::stopAllSounds() {
     engine->stopAllSounds();
 }
+
+void SoundManager::updateListenerPosition(const glm::vec3& position, const glm::vec3& lookAt, const glm::vec3& upVector) {
+    vec3df irrPosition(position.x, position.y, position.z);
+    vec3df irrLookAt(lookAt.x, lookAt.y, lookAt.z);
+    vec3df irrUpVector(upVector.x, upVector.y, upVector.z);
+    engine->setListenerPosition(irrPosition, irrLookAt, vec3df(0, 0, 0), irrUpVector);
+}

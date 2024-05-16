@@ -9,8 +9,6 @@
 #include <math.h> 
 #include "SoundManager.h"
 #include <GL/glew.h>
-#define GLM_FORCE_CTOR_INIT
-#include <GLM.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
@@ -40,7 +38,7 @@ const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
 float M_PI = 3.14159265358979323846f;
 float rotationInterval = 0.1f;
-float degrees = 355.3f;
+float degrees = 356.f;
 float rotationAngle = glm::radians(degrees);
 float timeSinceLastRotation = 0.0f;
 float carPathAngle = 0.0f;
