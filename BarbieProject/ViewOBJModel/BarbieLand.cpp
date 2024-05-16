@@ -300,7 +300,7 @@ int main()
 
 	// Play 3D sound at a specific position in your scene
 	glm::vec3 soundPosition = glm::vec3(-1.0f, 0.0f, -6.5f); // Adjust as needed
-	soundManager.play3DSound("../Audio/barbie.mp3", soundPosition.x, soundPosition.y, soundPosition.z, true);
+	soundManager.play3DSound("../Audio/barbie.mp3", soundPosition.x, soundPosition.y, soundPosition.z, true, false, true);
 
 	glewInit();
 
@@ -480,7 +480,8 @@ int main()
 		glm::vec3 camPos = pCamera->GetPosition();
 		glm::vec3 camLookAt = pCamera->GetPosition() + pCamera->forward;
 		glm::vec3 camUp = pCamera->up;
-		soundManager.updateListenerPosition(camPos, camLookAt, camUp);
+		glm::vec3 camVelocity = glm::vec3(0.0f);
+		soundManager.updateListenerPosition(camPos, camLookAt, camUp, camVelocity);
 
 		//Day-Night transitions (to refactor)
 		if (transitioning) {
