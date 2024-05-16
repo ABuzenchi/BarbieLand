@@ -733,10 +733,12 @@ int main()
 		shadowMappingShader.setMat4("model", poolModel);
 		poolObjModel->RenderModel(shadowMappingShader, poolModel);
 		poolObjModel->RenderModel(shadowMappingDepthShader, poolModel);
-		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
-		glm::mat4 musicModel = glm::scale(glm::mat4(1.0), glm::vec3(0.001f));
-		musicModel = glm::translate(musicModel, glm::vec3(10.0, 2.0, 10.0));
 
+		//shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		 
+		
+		glm::mat4 musicModel = glm::scale(glm::mat4(1.0), glm::vec3(0.001f));
+		musicModel = glm::translate(musicModel, glm::vec3(-1000.0, 0.0, -6500.0));
 		shadowMappingShader.setMat4("model", musicModel);
 		musicObjModel->RenderModel(shadowMappingShader, musicModel);
 		musicObjModel->RenderModel(shadowMappingDepthShader, musicModel);
