@@ -297,14 +297,10 @@ int main()
 
 
 	SoundManager soundManager;
-	try {
-		soundManager.playSound("../Audio/barbie.mp3", true);  // Replace with the actual path and set loop to true or false as needed
-	}
-	catch (const std::runtime_error& e) {
-		std::cerr << "Error: " << e.what() << std::endl;
-		glfwTerminate();
-		return -1;
-	}
+
+	// Play 3D sound at a specific position in your scene
+	glm::vec3 soundPosition = glm::vec3(-1.0f, 0.0f, -6.5f); // Adjust as needed
+	soundManager.play3DSound("../Audio/barbie.mp3", soundPosition.x, soundPosition.y, soundPosition.z, true);
 
 	glewInit();
 
@@ -480,6 +476,11 @@ int main()
 
 		glm::mat4 view;
 		glm::mat4 projection = glm::perspective(glm::radians(pCamera->FoVy), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+
+		glm::vec3 camPos = pCamera->GetPosition();
+		glm::vec3 camLookAt = pCamera->GetPosition() + pCamera->forward;
+		glm::vec3 camUp = pCamera->up;
+		soundManager.updateListenerPosition(camPos, camLookAt, camUp);
 
 		//Day-Night transitions (to refactor)
 		if (transitioning) {
