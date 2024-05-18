@@ -1033,6 +1033,20 @@ int main()
 		houseObjModel->RenderModel(shadowMappingShader, catModel);
 		houseObjModel->RenderModel(shadowMappingDepthShader, catModel);
 
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		catModel = glm::translate(catModel, glm::vec3(35.0, 0.5, -20.0));
+		catModel = glm::rotate(catModel, glm::radians(320.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		shadowMappingShader.setMat4("model", catModel);
+		women2ObjModel->RenderModel(shadowMappingShader, catModel);
+		women2ObjModel->RenderModel(shadowMappingDepthShader, catModel);
+
+		catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		catModel = glm::translate(catModel, glm::vec3(-30.0, 0.3, -4.0));
+		catModel = glm::rotate(catModel, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		shadowMappingShader.setMat4("model", catModel);
+		womenObjModel->RenderModel(shadowMappingShader, catModel);
+		womenObjModel->RenderModel(shadowMappingDepthShader, catModel);
 #pragma region StreetLamps
 		//streetLamp
 		glActiveTexture(GL_TEXTURE0); // Activate the texture unit 0
