@@ -990,7 +990,7 @@ int main()
 		//cat
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		glm::mat4 catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		catModel = glm::translate(catModel, glm::vec3(7.0, 0.0, 0.0));
+		catModel = glm::translate(catModel, glm::vec3(1.0, 0.0, 0.0));
 		catModel = glm::rotate(catModel, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		catModel = glm::scale(catModel, glm::vec3(0.01, 0.01, 0.01));
 		shadowMappingShader.setMat4("model", catModel);
