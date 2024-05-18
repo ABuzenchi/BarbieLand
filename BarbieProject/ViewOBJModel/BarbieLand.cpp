@@ -70,6 +70,7 @@ std::unique_ptr<Model> firObjModel;
 std::unique_ptr<Model> streetLampObjModel;
 std::unique_ptr<Model> groundObj;
 std::unique_ptr<Model>catObjModel;
+std::unique_ptr<Model>gateObjModel;
 std::unique_ptr<Model> signObjModel;
 std::unique_ptr<Model> carObjModel;
 std::unique_ptr<Model> landscapeObjModel;
@@ -201,6 +202,10 @@ void LoadScene()
 
 	std::string treeFileName = (currentPath + "\\Models\\plants\\tree\\tree.obj");
 	treeObjModel = std::make_unique<Model>(treeFileName, false);
+
+	std::string gateObjFileName = (currentPath + "\\Models\\Object\\gate\\gate.obj");
+	gateObjModel = std::make_unique<Model>(gateObjFileName, false);
+
 
 	std::string palmtreeFileName = (currentPath + "\\Models\\plants\\palmTree\\palmTree.obj");
 	palmTreeObjModel = std::make_unique<Model>(palmtreeFileName, false);
@@ -589,6 +594,12 @@ int main()
 		landscapeObjModel->RenderModel(shadowMappingShader, landscapeModel);
 		landscapeObjModel->RenderModel(shadowMappingDepthShader, landscapeModel);
 
+		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(0.03f));
+		treeModel = glm::translate(treeModel, glm::vec3(490.0, 00.0, 80.0));
+		treeModel = glm::rotate(treeModel, glm::radians(70.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		shadowMappingShader.setMat4("model", treeModel);
+		gateObjModel->RenderModel(shadowMappingShader, treeModel);
+		gateObjModel->RenderModel(shadowMappingDepthShader, treeModel);
 #pragma region Trees
 
 		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
