@@ -936,6 +936,22 @@ int main()
 		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
 		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
 
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		womenModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		womenModel2 = glm::translate(womenModel2, glm::vec3(-9.0, 0.0, -18.0));
+
+		shadowMappingShader.setMat4("model", womenModel2);
+		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
+		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
+
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		womenModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		womenModel2 = glm::translate(womenModel2, glm::vec3(13.0, 4.0, 13.3));
+
+		shadowMappingShader.setMat4("model", womenModel2);
+		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
+		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
+
 #pragma region MainHouses
 		shadowMappingShader.SetVec3("color", 0.8f, 0.40f, 0.40f);
 		glm::mat4 houseMainModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
