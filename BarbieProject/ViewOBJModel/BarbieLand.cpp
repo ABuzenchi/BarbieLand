@@ -601,7 +601,7 @@ int main()
 
 		// Number of trees
 		const float radius = 10.0f;  // Radius of the circle
-		const float circleRadius = 25.0f;  // The radius of the circle on which trees will be placed
+		const float circleRadius = 18.0f;  // The radius of the circle on which trees will be placed
 		const float circleRadius2 = 8.0f;// The radius of the circle on which trees will be placed
 		const float circleRadius3 = 40.0f;
 
