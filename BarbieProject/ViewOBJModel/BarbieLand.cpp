@@ -90,7 +90,8 @@ enum class CameraType
 	Free,
 	SceneUp,
 	EnterTown,
-	Car
+	Car,
+	House
 };
 
 GLuint floorTextureId;
@@ -590,8 +591,6 @@ int main()
 
 #pragma region Trees
 
-
-
 		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel = glm::translate(treeModel, glm::vec3(-10.0, 0.0, 10.0));
 		shadowMappingShader.setMat4("model", treeModel);
@@ -601,7 +600,7 @@ int main()
 
 		// Number of trees
 		const float radius = 10.0f;  // Radius of the circle
-		const float circleRadius = 25.0f;  // The radius of the circle on which trees will be placed
+		const float circleRadius = 18.0f;  // The radius of the circle on which trees will be placed
 		const float circleRadius2 = 8.0f;// The radius of the circle on which trees will be placed
 		const float circleRadius3 = 40.0f;
 
@@ -685,12 +684,7 @@ int main()
 		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
 		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
 
-		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		treeModel2 = glm::translate(treeModel2, glm::vec3(30.0, 0.0, -30.0));
-		shadowMappingShader.setMat4("model", treeModel2);
-		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
-		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
-
+		
 		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel2 = glm::translate(treeModel2, glm::vec3(30.0, 0.0, 0.0));
 		shadowMappingShader.setMat4("model", treeModel2);
@@ -715,17 +709,43 @@ int main()
 
 		////ANIMALS
 
-		glm::mat4 horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
-		horseModel2 = glm::translate(horseModel2, glm::vec3(28.0f, 0.0f, 35.0f));
-		shadowMappingShader.setMat4("model", horseModel2);
-		horseObjModel->RenderModel(shadowMappingShader, horseModel2);
-		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel2);
 
-		horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
-		horseModel2 = glm::translate(horseModel2, glm::vec3(24.0f, 0.0f, 35.0f));
-		shadowMappingShader.setMat4("model", horseModel2);
-		horseObjModel->RenderModel(shadowMappingShader, horseModel2);
-		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel2);
+		glm::mat4 horseModel;
+		float positions[10][3] = {
+			{28.0f, 0.0f, 35.0f},
+			{24.0f, 0.0f, 40.0f},
+			{16.0f, 0.0f, 40.0f},
+			{16.0f, 0.0f, 33.0f},
+			{12.0f, 0.0f, 37.0f},
+			{1.0f, 0.0f, 40.0f},
+			{9.0f, 0.0f, 42.0f},
+			{5.0f, 0.0f, 31.0f},
+			{7.0f, 0.0f, 39.0f},
+			{4.0f, 0.0f, 34.0f}
+		};
+		float rotations[10] = {
+			0.0f,
+			15.0f,
+			30.0f,
+			45.0f,
+			60.0f,
+			75.0f,
+			90.0f,
+			105.0f,
+			120.0f,
+			180.0f
+		};
+
+		for (int i = 0; i < 10; ++i) {
+			horseModel = glm::mat4(1.0f);
+			horseModel = glm::translate(horseModel, glm::vec3(positions[i][0], positions[i][1], positions[i][2]));
+			horseModel = glm::rotate(horseModel, glm::radians(rotations[i]), glm::vec3(0.0f, 1.0f, 0.0f));
+			horseModel = glm::scale(horseModel, glm::vec3(1.0f));
+			shadowMappingShader.setMat4("model", horseModel);
+			horseObjModel->RenderModel(shadowMappingShader, horseModel);
+			horseObjModel->RenderModel(shadowMappingDepthShader, horseModel);
+		}
+
 
 
 		//OBJECTS
@@ -777,6 +797,19 @@ int main()
 
 			glm::mat4 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
 			sphereModel = glm::translate(sphereModel, glm::vec3(x, 60.0 + verticalOffset, z));
+			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+			shadowMappingShader.setMat4("model", sphereModel);
+			sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
+			sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel);
+		}
+
+		for (int i = 0; i < 12; ++i) {
+			float angle = i * (2 * M_PI / 12); // Calculate the angle for each sphere
+			float x = -29.0 + 15.0 * cos(angle); // Calculate the x position
+			float z = -29.5 + 15.0 * sin(angle); // Calculate the z position
+
+			glm::mat4 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+			sphereModel = glm::translate(sphereModel, glm::vec3(x, 40.0 + verticalOffset, z));
 			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
 			shadowMappingShader.setMat4("model", sphereModel);
 			sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
@@ -895,6 +928,30 @@ int main()
 		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
 		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
 
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		womenModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		womenModel2 = glm::translate(womenModel2, glm::vec3(35.0, 0.0, -40.0));
+
+		shadowMappingShader.setMat4("model", womenModel2);
+		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
+		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
+
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		womenModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		womenModel2 = glm::translate(womenModel2, glm::vec3(-9.0, 0.0, -18.0));
+
+		shadowMappingShader.setMat4("model", womenModel2);
+		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
+		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
+
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		womenModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		womenModel2 = glm::translate(womenModel2, glm::vec3(13.0, 4.0, 13.3));
+
+		shadowMappingShader.setMat4("model", womenModel2);
+		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
+		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
+
 #pragma region MainHouses
 		shadowMappingShader.SetVec3("color", 0.8f, 0.40f, 0.40f);
 		glm::mat4 houseMainModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
@@ -990,7 +1047,7 @@ int main()
 		//cat
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		glm::mat4 catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		catModel = glm::translate(catModel, glm::vec3(7.0, 0.0, 0.0));
+		catModel = glm::translate(catModel, glm::vec3(1.0, 0.0, 0.0));
 		catModel = glm::rotate(catModel, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		catModel = glm::scale(catModel, glm::vec3(0.01, 0.01, 0.01));
 		shadowMappingShader.setMat4("model", catModel);
@@ -999,12 +1056,26 @@ int main()
 
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		catModel = glm::translate(catModel, glm::vec3(35.0, 0.0, -40.0));
+		catModel = glm::translate(catModel, glm::vec3(35.0, 0.5, -40.0));
 		catModel = glm::rotate(catModel, glm::radians(320.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		shadowMappingShader.setMat4("model", catModel);
 		houseObjModel->RenderModel(shadowMappingShader, catModel);
 		houseObjModel->RenderModel(shadowMappingDepthShader, catModel);
 
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		catModel = glm::translate(catModel, glm::vec3(35.0, 0.5, -20.0));
+		catModel = glm::rotate(catModel, glm::radians(320.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		shadowMappingShader.setMat4("model", catModel);
+		women2ObjModel->RenderModel(shadowMappingShader, catModel);
+		women2ObjModel->RenderModel(shadowMappingDepthShader, catModel);
+
+		catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		catModel = glm::translate(catModel, glm::vec3(-30.0, 0.3, -4.0));
+		catModel = glm::rotate(catModel, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		shadowMappingShader.setMat4("model", catModel);
+		womenObjModel->RenderModel(shadowMappingShader, catModel);
+		womenObjModel->RenderModel(shadowMappingDepthShader, catModel);
 #pragma region StreetLamps
 		//streetLamp
 		glActiveTexture(GL_TEXTURE0); // Activate the texture unit 0
@@ -1130,6 +1201,10 @@ void processInput(GLFWwindow* window)
 	{
 		cameraType = CameraType::Car;
 	}
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS) // Follow car camera
+	{
+		cameraType = CameraType::House;
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 		int width, height;
@@ -1151,6 +1226,10 @@ void processInput(GLFWwindow* window)
 		// Assuming carPosition is the position of the car
 		//carPosition = circleCenter + glm::vec3(cos(carPathAngle) * carRadius, 0.0f, sin(carPathAngle) * carRadius);
 		pCamera->setViewMatrix(carPosition + glm::vec3(0.0f, 5.0f, 0.0f)); // Adjust the offset as needed
+		break;
+		
+	case CameraType::House:
+		pCamera->setViewMatrix(glm::vec3(35.0, 2.0, -40.0));
 		break;
 	default:;
 	}
