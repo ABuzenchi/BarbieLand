@@ -236,7 +236,7 @@ void LoadScene()
 	streetLampObjModel = std::make_unique<Model>(streetLampFileName, false);
 	streetLampTextureId = streetLampTexture.id;
 
-	std::string groundFileName = (currentPath + "\\Models\\objects\\ground\\BarbieLandFloor.obj");
+	std::string groundFileName = (currentPath + "\\Models\\objects\\ground\\paths.obj");
 	groundObj = std::make_unique<Model>(groundFileName, false);
 
 	std::string catObjFileName = (currentPath + "\\Models\\Animals\\Cat\\cat.obj");
@@ -602,7 +602,7 @@ int main()
 		gateObjModel->RenderModel(shadowMappingDepthShader, treeModel);
 #pragma region Trees
 
-		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel = glm::translate(treeModel, glm::vec3(-10.0, 0.0, 10.0));
 		shadowMappingShader.setMat4("model", treeModel);
 		treeObjModel->RenderModel(shadowMappingShader, treeModel);
