@@ -803,6 +803,19 @@ int main()
 			sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel);
 		}
 
+		for (int i = 0; i < 12; ++i) {
+			float angle = i * (2 * M_PI / 12); // Calculate the angle for each sphere
+			float x = -29.0 + 15.0 * cos(angle); // Calculate the x position
+			float z = -29.5 + 15.0 * sin(angle); // Calculate the z position
+
+			glm::mat4 sphereModel = glm::scale(glm::mat4(1.0), glm::vec3(0.05f));
+			sphereModel = glm::translate(sphereModel, glm::vec3(x, 40.0 + verticalOffset, z));
+			shadowMappingShader.SetVec3("color", 1.0f, 1.0f, 0.6f);
+			shadowMappingShader.setMat4("model", sphereModel);
+			sphereObjModel->RenderModel(shadowMappingShader, sphereModel);
+			sphereObjModel->RenderModel(shadowMappingDepthShader, sphereModel);
+		}
+
 #pragma endregion
 
 
