@@ -70,6 +70,7 @@ std::unique_ptr<Model> firObjModel;
 std::unique_ptr<Model> streetLampObjModel;
 std::unique_ptr<Model> groundObj;
 std::unique_ptr<Model>catObjModel;
+std::unique_ptr<Model>sittingCatObjModel;
 std::unique_ptr<Model>gateObjModel;
 std::unique_ptr<Model> signObjModel;
 std::unique_ptr<Model> carObjModel;
@@ -241,6 +242,8 @@ void LoadScene()
 
 	std::string catObjFileName = (currentPath + "\\Models\\Animals\\Cat\\cat.obj");
 	catObjModel = std::make_unique<Model>(catObjFileName, false);
+	std::string sittingCatObjFileName = (currentPath + "\\Models\\Animals\\sitting-cat\\sitting-cat.obj");
+	sittingCatObjModel = std::make_unique<Model>(sittingCatObjFileName, false);
 
 	std::string benchFilename = (currentPath + "\\Models\\Object\\bench\\Bench_HighRes.obj");
 	benchObjModel = std::make_unique<Model>(benchFilename, false);
@@ -518,7 +521,7 @@ int main()
 				sound1Volume -= deltaTime * transitionSpeed;
 				if (sound1Volume <= 0.0f) sound1Volume = 0.0f;
 				sound2Volume += deltaTime * transitionSpeed * 5;
-				if (sound2Volume >= 2.0f) sound2Volume = 1000.0f;
+				if (sound2Volume >= 20.0f) sound2Volume = 20.0f;
 			}
 			else {
 				mixValue -= deltaTime * transitionSpeed;
@@ -1082,6 +1085,16 @@ int main()
 		shadowMappingShader.setMat4("model", catModel);
 		catObjModel->RenderModel(shadowMappingShader, catModel);
 		catObjModel->RenderModel(shadowMappingDepthShader, catModel);
+		
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		glm::mat4 sittingCatModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		sittingCatModel = glm::translate(sittingCatModel, glm::vec3(-5.0, 0.65, -0.4));
+		
+		//catModel = glm::scale(catModel, glm::vec3(0.01, 0.01, 0.01));
+		shadowMappingShader.setMat4("model", sittingCatModel);
+		sittingCatObjModel->RenderModel(shadowMappingShader, sittingCatModel);
+		sittingCatObjModel->RenderModel(shadowMappingDepthShader, sittingCatModel);
+
 
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
