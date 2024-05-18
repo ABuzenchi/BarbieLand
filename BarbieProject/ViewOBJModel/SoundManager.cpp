@@ -16,13 +16,14 @@ SoundManager::~SoundManager() {
     }
 }
 
-void SoundManager::playSound(const std::string& soundFile, bool loop) {
-    engine->play2D(soundFile.c_str(), loop);
+irrklang::ISound* SoundManager::playSound(const std::string& soundFile, bool loop) {
+    return engine->play2D(soundFile.c_str(), loop);
 }
 
-void SoundManager::play3DSound(const std::string& soundFile, float x, float y, float z, bool loop, bool startPaused, bool track) {
+
+irrklang::ISound* SoundManager::play3DSound(const std::string& soundFile, float x, float y, float z, bool loop, bool startPaused, bool track) {
     vec3df position(x, y, z);
-    engine->play3D(soundFile.c_str(), position, loop, startPaused, track);
+    return engine->play3D(soundFile.c_str(), position, loop, startPaused, track);
 }
 
 void SoundManager::stopAllSounds() {
@@ -34,4 +35,8 @@ void SoundManager::updateListenerPosition(const glm::vec3& position, const glm::
     vec3df irrUpVector(upVector.x, upVector.y, upVector.z);
     vec3df irrVelocity(velocity.x, velocity.y, velocity.z);
     engine->setListenerPosition(irrPosition, irrLookAt, irrVelocity, irrUpVector);
+}
+
+void SoundManager::setVolume(irrklang::ISound* sound, float volume) {
+        sound->setVolume(volume);
 }
