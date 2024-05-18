@@ -120,9 +120,9 @@ double lastFrame = 0.0f;
 float mixValue = 0.0f;
 bool transitioning = false;
 bool nightMode = false;
-float factorAmbienta = 1.0f; //pentru modificarea intensitatii luminii noapte-zi
-float factorDifuzie = 1.0f;
-float factorSpecular = 1.0f;
+float factorAmbienta = 2.0f; //pentru modificarea intensitatii luminii noapte-zi
+float factorDifuzie = 2.0f;
+float factorSpecular = 2.0f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -303,13 +303,20 @@ int main()
 	// tell GLFW to capture our mouse
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-
 	SoundManager soundManager;
 
 	// Play 3D sound at a specific position in your scene
-	glm::vec3 soundPosition = glm::vec3(-1.0f, 0.0f, -6.5f); // Adjust as needed
-	soundManager.play3DSound("../Audio/barbie.mp3", soundPosition.x, soundPosition.y, soundPosition.z, true, false, true);
+	glm::vec3 soundPosition = glm::vec3(-1.0f, 0.0f, -6.5f);
+	irrklang::ISound* sound1 = soundManager.play3DSound("../Audio/barbie.mp3", soundPosition.x, soundPosition.y, soundPosition.z, true, false, true);
 
+	glm::vec3 soundPosition2 = glm::vec3(28.0f, 0.0f, 35.0f);
+	irrklang::ISound* sound2 = soundManager.play3DSound("../Audio/Crickets.mp3", soundPosition2.x, soundPosition2.y, soundPosition2.z, true, false, true);
+
+
+	// Initially set the second sound volume to 0
+	soundManager.setVolume(sound2, 0.0f);
+	float sound1Volume = 1.0f; // Initial volume of the first sound
+	float sound2Volume = 0.0f; // Initial volume of the second sound
 	glewInit();
 
 	glEnable(GL_DEPTH_TEST);
@@ -491,43 +498,54 @@ int main()
 		glm::vec3 camVelocity = glm::vec3(0.0f);
 		soundManager.updateListenerPosition(camPos, camLookAt, camUp, camVelocity);
 
-		//Day-Night transitions (to refactor)
 		if (transitioning) {
 			const float transitionSpeed = 0.3f; // Transition speed factor
+
 			if (nightMode) {
 				mixValue += deltaTime * transitionSpeed;
 				factorAmbienta -= deltaTime * transitionSpeed;
-				if (factorAmbienta <= 0.0f)
-					factorAmbienta = 0.0f;
+				if (factorAmbienta <= 0.2f) factorAmbienta = 0.0f;
 				factorDifuzie -= deltaTime * transitionSpeed;
-				if (factorDifuzie <= 0.2f)
-					factorDifuzie = 0.2f;
+				if (factorDifuzie <= 0.5f) factorDifuzie = 0.2f;
 				factorSpecular -= deltaTime * transitionSpeed;
-				if (factorSpecular <= 0.2f)
-					factorSpecular = 0.2f;
+				if (factorSpecular <= 0.5f) factorSpecular = 0.2f;
 				if (mixValue >= 1.0f) {
 					mixValue = 1.0f;
-					transitioning = false;  // Stop transitioning
+					transitioning = false; // Stop transitioning
 				}
+
+				// Adjust sound volumes
+				sound1Volume -= deltaTime * transitionSpeed;
+				if (sound1Volume <= 0.0f) sound1Volume = 0.0f;
+				sound2Volume += deltaTime * transitionSpeed * 5;
+				if (sound2Volume >= 2.0f) sound2Volume = 1000.0f;
 			}
 			else {
 				mixValue -= deltaTime * transitionSpeed;
 				factorAmbienta += deltaTime * transitionSpeed;
-				if (factorAmbienta >= 1.0f)
-					factorAmbienta = 1.0f;
+				if (factorAmbienta >= 2.0f) factorAmbienta = 2.0f;
 				factorDifuzie += deltaTime * transitionSpeed;
-				if (factorDifuzie >= 1.0f)
-					factorDifuzie = 1.0f;
+				if (factorDifuzie >= 2.0f) factorDifuzie = 2.0f;
 				factorSpecular += deltaTime * transitionSpeed;
-				if (factorSpecular >= 1.0f)
-					factorSpecular = 1.0f;
-
+				if (factorSpecular >= 2.0f) factorSpecular = 2.0f;
 				if (mixValue <= 0.0f) {
 					mixValue = 0.0f;
-					transitioning = false;  // Stop transitioning
+					transitioning = false; // Stop transitioning
 				}
+
+				// Adjust sound volumes
+				sound1Volume += deltaTime * transitionSpeed;
+				if (sound1Volume >= 1.0f) sound1Volume = 1.0f;
+				sound2Volume -= deltaTime * transitionSpeed*5;
+				if (sound2Volume <= 0.0f) sound2Volume = 0.0f;
 			}
+
+			// Set sound volumes
+			soundManager.setVolume(sound1, sound1Volume);
+			soundManager.setVolume(sound2, sound2Volume);
 		}
+
+
 
 		//Render skybox
 		skybox.renderSkybox(mixValue, pCamera, SCR_WIDTH, SCR_HEIGHT);
