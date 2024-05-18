@@ -1,6 +1,16 @@
 # Blender 4.1.1 MTL File: 'landscape.blend'
 # www.blender.org
 
+newmtl Material
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd white-marble-3.jpg
+
 newmtl Material.001
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
@@ -10,3 +20,13 @@ Ni 1.500000
 d 1.000000
 illum 2
 map_Kd grass.png
+
+newmtl Material.003
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd barbie_pink-173-sat-1_2.jpg
