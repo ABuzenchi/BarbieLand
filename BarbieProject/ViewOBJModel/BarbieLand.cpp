@@ -709,17 +709,43 @@ int main()
 
 		////ANIMALS
 
-		glm::mat4 horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
-		horseModel2 = glm::translate(horseModel2, glm::vec3(28.0f, 0.0f, 35.0f));
-		shadowMappingShader.setMat4("model", horseModel2);
-		horseObjModel->RenderModel(shadowMappingShader, horseModel2);
-		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel2);
 
-		horseModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.0f));
-		horseModel2 = glm::translate(horseModel2, glm::vec3(24.0f, 0.0f, 35.0f));
-		shadowMappingShader.setMat4("model", horseModel2);
-		horseObjModel->RenderModel(shadowMappingShader, horseModel2);
-		horseObjModel->RenderModel(shadowMappingDepthShader, horseModel2);
+		glm::mat4 horseModel;
+		float positions[10][3] = {
+			{28.0f, 0.0f, 35.0f},
+			{24.0f, 0.0f, 40.0f},
+			{16.0f, 0.0f, 40.0f},
+			{16.0f, 0.0f, 33.0f},
+			{12.0f, 0.0f, 37.0f},
+			{1.0f, 0.0f, 40.0f},
+			{9.0f, 0.0f, 42.0f},
+			{5.0f, 0.0f, 31.0f},
+			{7.0f, 0.0f, 39.0f},
+			{4.0f, 0.0f, 34.0f}
+		};
+		float rotations[10] = {
+			0.0f,
+			15.0f,
+			30.0f,
+			45.0f,
+			60.0f,
+			75.0f,
+			90.0f,
+			105.0f,
+			120.0f,
+			180.0f
+		};
+
+		for (int i = 0; i < 10; ++i) {
+			horseModel = glm::mat4(1.0f);
+			horseModel = glm::translate(horseModel, glm::vec3(positions[i][0], positions[i][1], positions[i][2]));
+			horseModel = glm::rotate(horseModel, glm::radians(rotations[i]), glm::vec3(0.0f, 1.0f, 0.0f));
+			horseModel = glm::scale(horseModel, glm::vec3(1.0f));
+			shadowMappingShader.setMat4("model", horseModel);
+			horseObjModel->RenderModel(shadowMappingShader, horseModel);
+			horseObjModel->RenderModel(shadowMappingDepthShader, horseModel);
+		}
+
 
 
 		//OBJECTS
