@@ -90,7 +90,8 @@ enum class CameraType
 	Free,
 	SceneUp,
 	EnterTown,
-	Car
+	Car,
+	House
 };
 
 GLuint floorTextureId;
@@ -895,6 +896,14 @@ int main()
 		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
 		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
 
+		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
+		womenModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
+		womenModel2 = glm::translate(womenModel2, glm::vec3(35.0, 0.0, -40.0));
+
+		shadowMappingShader.setMat4("model", womenModel2);
+		women2ObjModel->RenderModel(shadowMappingShader, womenModel2);
+		women2ObjModel->RenderModel(shadowMappingDepthShader, womenModel2);
+
 #pragma region MainHouses
 		shadowMappingShader.SetVec3("color", 0.8f, 0.40f, 0.40f);
 		glm::mat4 houseMainModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
@@ -999,7 +1008,7 @@ int main()
 
 		shadowMappingShader.SetVec3("color", 0.76f, 0.64f, 0.6f);
 		catModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		catModel = glm::translate(catModel, glm::vec3(35.0, 0.0, -40.0));
+		catModel = glm::translate(catModel, glm::vec3(35.0, 0.5, -40.0));
 		catModel = glm::rotate(catModel, glm::radians(320.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		shadowMappingShader.setMat4("model", catModel);
 		houseObjModel->RenderModel(shadowMappingShader, catModel);
@@ -1130,6 +1139,10 @@ void processInput(GLFWwindow* window)
 	{
 		cameraType = CameraType::Car;
 	}
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS) // Follow car camera
+	{
+		cameraType = CameraType::House;
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 		int width, height;
@@ -1151,6 +1164,10 @@ void processInput(GLFWwindow* window)
 		// Assuming carPosition is the position of the car
 		//carPosition = circleCenter + glm::vec3(cos(carPathAngle) * carRadius, 0.0f, sin(carPathAngle) * carRadius);
 		pCamera->setViewMatrix(carPosition + glm::vec3(0.0f, 5.0f, 0.0f)); // Adjust the offset as needed
+		break;
+		
+	case CameraType::House:
+		pCamera->setViewMatrix(glm::vec3(35.0, 4.0, -40.0));
 		break;
 	default:;
 	}
