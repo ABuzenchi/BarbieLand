@@ -591,8 +591,6 @@ int main()
 
 #pragma region Trees
 
-
-
 		glm::mat4 treeModel = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel = glm::translate(treeModel, glm::vec3(-10.0, 0.0, 10.0));
 		shadowMappingShader.setMat4("model", treeModel);
@@ -686,12 +684,7 @@ int main()
 		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
 		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
 
-		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
-		treeModel2 = glm::translate(treeModel2, glm::vec3(30.0, 0.0, -30.0));
-		shadowMappingShader.setMat4("model", treeModel2);
-		treeObjModel->RenderModel(shadowMappingDepthShader, treeModel2);
-		treeObjModel->RenderModel(shadowMappingShader, treeModel2);
-
+		
 		treeModel2 = glm::scale(glm::mat4(1.0), glm::vec3(1.f));
 		treeModel2 = glm::translate(treeModel2, glm::vec3(30.0, 0.0, 0.0));
 		shadowMappingShader.setMat4("model", treeModel2);
@@ -1167,7 +1160,7 @@ void processInput(GLFWwindow* window)
 		break;
 		
 	case CameraType::House:
-		pCamera->setViewMatrix(glm::vec3(35.0, 4.0, -40.0));
+		pCamera->setViewMatrix(glm::vec3(35.0, 2.0, -40.0));
 		break;
 	default:;
 	}
